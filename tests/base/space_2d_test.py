@@ -1,12 +1,12 @@
-from elettromagneto.space_2d import Space2DBase
+from elettromagneto.base.space_2d import Space2D, ScalarValue, ScalarSource
 
 
 def test_point_coordinate():
-    assert Space2DBase.point_coordinate(-3, 7, 5, 9) == 3.25
+    assert Space2D.point_coordinate(-3, 7, 5, 9) == 3.25
 
 
 def test_create_grid():
-    assert Space2DBase.create_grid(-5, 5, -5, 5, 10, 10) == [
+    assert Space2D.create_grid(-5, 5, -5, 5, 10, 10) == [
         [
             (-5.0, -5.0),
             (-3.888888888888889, -5.0),
@@ -131,11 +131,23 @@ def test_create_grid():
 
 
 def test_radius():
-    assert Space2DBase.radius((7, 3), (5, 4)) == 2.23606797749979
+    assert Space2D.radius((7, 3), (5, 4)) == 2.23606797749979
 
 
-def test_set_get_value():
-    space = Space2DBase(100, 100, -1, 1, -1, 1)
-    space.set_value((-3, 4), 999)
-    assert space.get_value((-3, 4)) == 999
-    assert space.get_value((-3, 5), 888) == 888
+def test_set_get_scalar_value():
+    space = Space2D(100, 100, -1, 1, -1, 1)
+    space.set_scalar_value((-3, 4), ScalarValue(value=999))
+    assert space.get_scalar_value((-3, 4)) == ScalarValue(value=999)
+    assert space.get_scalar_value((-3, 5), ScalarValue(value=888)) == ScalarValue(
+        value=888
+    )
+
+
+def test_add_get_scalar_sources():
+    space = Space2D(100, 100, -1, 1, -1, 1)
+    space.add_scalar_source(ScalarSource(point=(2, 3), value=100))
+    space.add_scalar_source(ScalarSource(point=(6, 7), value=999))
+    assert space.get_all_sources() == [
+        ScalarSource(point=(2, 3), value=100),
+        ScalarSource(point=(6, 7), value=999),
+    ]
