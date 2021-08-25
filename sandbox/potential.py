@@ -1,10 +1,9 @@
+import math
 from typing import List, Tuple
 
 from sandbox.plot2d import plot2dmesh
 
 EPSILON_ZERO: float = 8.854e-12
-
-import math
 
 
 class ChargeSpace:
