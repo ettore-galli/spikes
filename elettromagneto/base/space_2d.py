@@ -1,4 +1,4 @@
-from typing import List, Tuple, Dict, Any, Optional
+from typing import List, Tuple, Dict, Optional
 
 import attr
 
@@ -7,7 +7,7 @@ Point2D = Tuple[float, float]
 SpaceRange2D = List[List[Point2D]]
 
 
-@attr.s
+@attr.s(order=True)
 class ScalarValue:
     value: float = attr.ib()
 
@@ -19,6 +19,13 @@ ScalarSpace2D = Dict[Point2D, ScalarValue]
 class ScalarSource:
     point: Point2D = attr.ib()
     value: float = attr.ib()
+
+
+@attr.s
+class ScalarField:
+    min_value: ScalarValue = attr.ib()
+    max_value: ScalarValue = attr.ib()
+    values: List[List[ScalarValue]] = attr.ib()
 
 
 class Space2D:
@@ -49,7 +56,9 @@ class Space2D:
     def set_scalar_value(self, point: Point2D, value: ScalarValue):
         self.values[point] = value
 
-    def get_scalar_value(self, point: Point2D, fallback: Optional[ScalarValue] = None) -> ScalarValue:
+    def get_scalar_value(
+        self, point: Point2D, fallback: Optional[ScalarValue] = ScalarValue(value=0)
+    ) -> ScalarValue:
         return self.values.get(point, fallback)
 
     def add_scalar_source(self, source: ScalarSource):
@@ -57,6 +66,26 @@ class Space2D:
 
     def get_all_sources(self) -> List[ScalarSource]:
         return self.scalar_sources
+
+    def get_scalar_field(
+        self, fallback_value: ScalarValue = ScalarValue(value=0)
+    ) -> ScalarField:
+        min_value: ScalarValue = self.get_scalar_value(self.grid[0][0])
+        max_value: ScalarValue = self.get_scalar_value(self.grid[0][0])
+        scalar_field_values = []
+        for grid_row in self.grid:
+            row = []
+            for grid_point in grid_row:
+                scalar_value = self.get_scalar_value(grid_point)
+                row.append(scalar_value)
+                if scalar_value < min_value:
+                    min_value = scalar_value
+                if scalar_value > max_value:
+                    max_value = scalar_value
+            scalar_field_values.append(row)
+        return ScalarField(
+            min_value=min_value, max_value=max_value, values=scalar_field_values
+        )
 
     @staticmethod
     def create_grid(

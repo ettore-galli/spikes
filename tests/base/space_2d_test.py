@@ -1,4 +1,4 @@
-from elettromagneto.base.space_2d import Space2D, ScalarValue, ScalarSource
+from elettromagneto.base.space_2d import Space2D, ScalarValue, ScalarSource, ScalarField
 
 
 def test_point_coordinate():
@@ -151,3 +151,18 @@ def test_add_get_scalar_sources():
         ScalarSource(point=(2, 3), value=100),
         ScalarSource(point=(6, 7), value=999),
     ]
+
+
+def test_set_get_scalar_field():
+    space = Space2D(3, 3, -1, 1, -1, 1)
+    space.set_scalar_value((0, 0), ScalarValue(value=999))
+    space.set_scalar_value((1, 1), ScalarValue(value=888))
+    assert space.get_scalar_field() == ScalarField(
+        min_value=ScalarValue(value=0),
+        max_value=ScalarValue(value=999),
+        values=[
+            [ScalarValue(value=0), ScalarValue(value=0), ScalarValue(value=0)],
+            [ScalarValue(value=0), ScalarValue(value=999), ScalarValue(value=0)],
+            [ScalarValue(value=0), ScalarValue(value=0), ScalarValue(value=888)],
+        ],
+    )
