@@ -1,5 +1,5 @@
 from elettromagneto.base.space_2d import ScalarSource
-from elettromagneto.draw.plot2d import plot2dmesh, plot2contour
+from elettromagneto.draw.plot2d import plot2dmesh, plot2dcontour, plot2dascii
 from elettromagneto.potential.potential import ElectrostaticPotentialsSpace2D
 
 
@@ -17,9 +17,10 @@ def potential_calculation_workflow():
 
     electrostatic_space.calculate_potentials()
 
-    potentials = electrostatic_space.get_scalar_field_as_float_matrix()
+    potentials = electrostatic_space.get_scalar_field_as_float_matrix(normalize=True)
     plot2dmesh(potentials)
-    plot2contour(potentials)
+    plot2dcontour(potentials)
+    plot2dascii(potentials)
 
 
 if __name__ == "__main__":
