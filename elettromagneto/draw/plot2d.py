@@ -1,20 +1,19 @@
 from typing import List
 
 
-
-
-
 def plot2dmesh(values) -> None:
     import matplotlib.pyplot as plt
-    # plt.pcolormesh(values)
-    # plt.pcolor(values)
+    plt.pcolormesh(values)
+    plt.show()
+
+def plot2contour(values) -> None:
+    import matplotlib.pyplot as plt
     plt.contour(values, levels=200)
     plt.show()
 
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     pass
-    '''
+    """
     import matplotlib.pyplot as plt
 
     # x axis values
@@ -41,4 +40,4 @@ if __name__ == '__main__':
                     ])
     # function to show the plot
     plt.show()
-    '''
+    """

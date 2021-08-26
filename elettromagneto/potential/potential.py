@@ -1,9 +1,7 @@
 import math
-from typing import List, Tuple
 
 from elettromagneto.base.physical_constants import EPSILON_ZERO
-from elettromagneto.base.space_2d import Space2D, ScalarValue, ScalarSource
-from elettromagneto.draw.plot2d import plot2dmesh
+from elettromagneto.base.space_2d import Space2D, ScalarValue
 
 
 class ElectrostaticPotentialsSpace2D(Space2D):
