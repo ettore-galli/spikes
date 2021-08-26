@@ -130,8 +130,8 @@ def test_create_grid():
     ]
 
 
-def test_radius():
-    assert Space2D.radius((7, 3), (5, 4)) == 2.23606797749979
+def test_distance():
+    assert Space2D.distance((7, 3), (5, 4)) == 2.23606797749979
 
 
 def test_set_get_scalar_value():
