@@ -68,7 +68,9 @@ class Space2D:
         return self.scalar_sources
 
     def get_scalar_field(
-        self, fallback_value: ScalarValue = ScalarValue(value=0)
+        self,
+        fallback_value: ScalarValue = ScalarValue(value=0),
+        normalize: bool = False,
     ) -> ScalarField:
         min_value: ScalarValue = self.get_scalar_value(self.grid[0][0])
         max_value: ScalarValue = self.get_scalar_value(self.grid[0][0])
@@ -83,8 +85,41 @@ class Space2D:
                 if scalar_value > max_value:
                     max_value = scalar_value
             scalar_field_values.append(row)
-        return ScalarField(
+
+        scalar_field = ScalarField(
             min_value=min_value, max_value=max_value, values=scalar_field_values
+        )
+        if normalize:
+            return self.normalize_scalar_field(scalar_field)
+
+        return scalar_field
+
+    def get_scalar_field_as_float_matrix(
+        self, fallback_value: float = 0, normalize: bool = False
+    ):
+        field = self.get_scalar_field(
+            fallback_value=ScalarValue(value=fallback_value), normalize=normalize
+        )
+        return [[point.value for point in row] for row in field.values]
+
+    @staticmethod
+    def normalize_scalar_field(scalar_field: ScalarField) -> ScalarField:
+        values_range: float = (
+            scalar_field.max_value.value - scalar_field.min_value.value
+        )
+        return ScalarField(
+            min_value=scalar_field.min_value,
+            max_value=scalar_field.max_value,
+            values=[
+                [
+                    ScalarValue(
+                        value=(scalar_value.value - scalar_field.min_value.value)
+                        / values_range
+                    )
+                    for scalar_value in row
+                ]
+                for row in scalar_field.values
+            ],
         )
 
     @staticmethod
@@ -112,5 +147,5 @@ class Space2D:
         return p_from + p_i * (p_to - p_from) / (p_points - 1)
 
     @staticmethod
-    def radius(a: Tuple, b: Tuple):
+    def distance(a: Tuple, b: Tuple):
         return sum([(ta - tb) ** 2 for ta, tb in zip(a, b)]) ** 0.5
