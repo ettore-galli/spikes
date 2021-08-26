@@ -1,15 +1,33 @@
-from typing import List
+def render_2d_ascii(grid) -> str:
+    scale = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1{}[]?-_+~<>i!lI;:,\"^`'. "
+    # scale = " .:-=+*#%@"
+    pots = ""
+    for grid_row in grid:
+        for value in grid_row:
+            print(value)
+            render_pot = int((len(scale) - 1) * value)
+            pots += str(scale[render_pot])
+        pots += "\n"
+    return pots
+
+
+def plot2dascii(values) -> None:
+    print(render_2d_ascii(values))
 
 
 def plot2dmesh(values) -> None:
     import matplotlib.pyplot as plt
+
     plt.pcolormesh(values)
     plt.show()
 
-def plot2contour(values) -> None:
+
+def plot2dcontour(values) -> None:
     import matplotlib.pyplot as plt
+
     plt.contour(values, levels=200)
     plt.show()
+
 
 if __name__ == "__main__":
     pass
