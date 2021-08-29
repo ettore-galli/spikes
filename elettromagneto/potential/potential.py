@@ -10,7 +10,7 @@ class ElectrostaticPotentialsSpace2D(Space2D):
         return charge / (4 * math.pi * EPSILON_ZERO * radius)
 
     def calculate_potentials(self):
-        minimum_radius = 2 * max(
+        minimum_radius = 5 * max(
             self.x_scale / self.x_points, self.y_scale / self.y_points
         )
         for grid_row in self.grid:
