@@ -26,3 +26,6 @@ class ElectrostaticPotentialsSpace2D(Space2D):
                         potential_value = 0
 
                 self.set_scalar_value(grid_point, ScalarValue(potential_value))
+
+    def calculate_field(self):
+        pass

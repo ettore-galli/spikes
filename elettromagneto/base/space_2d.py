@@ -12,6 +12,10 @@ class ScalarValue:
     value: float = attr.ib()
 
 
+class VectorValue2D:
+    value: Tuple[float, float] = attr.ib()
+
+
 ScalarSpace2D = Dict[Point2D, ScalarValue]
 
 
@@ -23,6 +27,13 @@ class ScalarSource:
 
 @attr.s
 class ScalarField:
+    min_value: ScalarValue = attr.ib()
+    max_value: ScalarValue = attr.ib()
+    values: List[List[ScalarValue]] = attr.ib()
+
+
+@attr.s
+class VectorField:
     min_value: ScalarValue = attr.ib()
     max_value: ScalarValue = attr.ib()
     values: List[List[ScalarValue]] = attr.ib()
