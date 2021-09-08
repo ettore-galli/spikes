@@ -1,13 +1,20 @@
 import math
+from typing import Tuple
 
 from elettromagneto.base.physical_constants import EPSILON_ZERO
-from elettromagneto.base.space_2d import Space2D, ScalarValue
+from elettromagneto.base.space_2d import Space2D, ScalarValue, VectorValue2D
 
 
 class ElectrostaticPotentialsSpace2D(Space2D):
     @staticmethod
     def single_charge_potential(charge: float, radius: float) -> float:
         return charge / (4 * math.pi * EPSILON_ZERO * radius)
+
+    @staticmethod
+    def single_charge_electric_field_magnitude(
+        charge: float, radius: float
+    ) -> float:
+        return charge / (4 * math.pi * EPSILON_ZERO * (radius ** 2))
 
     def calculate_potentials(self):
         minimum_radius = 5 * max(
@@ -28,4 +35,18 @@ class ElectrostaticPotentialsSpace2D(Space2D):
                 self.set_scalar_value(grid_point, ScalarValue(potential_value))
 
     def calculate_field(self):
-        pass
+        minimum_radius = 5 * max(
+            self.x_scale / self.x_points, self.y_scale / self.y_points
+        )
+        for grid_row in self.grid:
+            for grid_point in grid_row:
+                field_total = [0, 0]
+                for charge in self.get_all_sources():
+                    radius = Space2D.distance(grid_point, charge.point)
+                    field = self.projection(
+                        self.single_charge_electric_field_magnitude(charge.value, radius),
+                        grid_point,
+                        charge.point,
+                    )
+                    field_total = self.sum_vectors(field_total, field)
+                self.set_vector_value(grid_point, VectorValue2D(value=(1, 1)))

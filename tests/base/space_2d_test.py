@@ -1,4 +1,10 @@
-from elettromagneto.base.space_2d import Space2D, ScalarValue, ScalarSource, ScalarField
+from elettromagneto.base.space_2d import (
+    Space2D,
+    ScalarValue,
+    ScalarSource,
+    ScalarField,
+    VectorValue2D,
+)
 
 
 def test_point_coordinate():
@@ -134,6 +140,17 @@ def test_distance():
     assert Space2D.distance((7, 3), (5, 4)) == 2.23606797749979
 
 
+def test_projection():
+    assert Space2D.projection(5, (7, 3), (5, 4)) == [
+        -4.47213595499958,
+        2.23606797749979,
+    ]
+
+
+def test_sum_vectors():
+    assert Space2D.sum_vectors((2, 3), (100, 1000)) == [102, 1003]
+
+
 def test_set_get_scalar_value():
     space = Space2D(100, 100, -1, 1, -1, 1)
     space.set_scalar_value((-3, 4), ScalarValue(value=999))
@@ -141,6 +158,15 @@ def test_set_get_scalar_value():
     assert space.get_scalar_value((-3, 5), ScalarValue(value=888)) == ScalarValue(
         value=888
     )
+
+
+def test_set_get_vector_value():
+    space = Space2D(100, 100, -1, 1, -1, 1)
+    space.set_vector_value((-3, 4), VectorValue2D(value=(111, 222)))
+    assert space.get_vector_value((-3, 4)) == VectorValue2D(value=(111, 222))
+    assert space.get_vector_value(
+        (-3, 5), VectorValue2D(value=(555, 666))
+    ) == VectorValue2D(value=(555, 666))
 
 
 def test_add_get_scalar_sources():
