@@ -12,11 +12,13 @@ class ScalarValue:
     value: float = attr.ib()
 
 
+@attr.s(order=True)
 class VectorValue2D:
     value: Tuple[float, float] = attr.ib()
 
 
 ScalarSpace2D = Dict[Point2D, ScalarValue]
+VectorSpace2D = Dict[Point2D, VectorValue2D]
 
 
 @attr.s
@@ -62,15 +64,26 @@ class Space2D:
             x_from, x_to, y_from, y_to, x_points, y_points
         )
         self.values: ScalarSpace2D = {}
+        self.vectors: VectorSpace2D = {}
         self.scalar_sources: List[ScalarSource] = []
 
     def set_scalar_value(self, point: Point2D, value: ScalarValue):
         self.values[point] = value
 
+    def set_vector_value(self, point: Point2D, value: VectorValue2D):
+        self.vectors[point] = value
+
     def get_scalar_value(
         self, point: Point2D, fallback: Optional[ScalarValue] = ScalarValue(value=0)
     ) -> ScalarValue:
         return self.values.get(point, fallback)
+
+    def get_vector_value(
+        self,
+        point: Point2D,
+        fallback: Optional[VectorValue2D] = VectorValue2D(value=(0, 0)),
+    ) -> VectorValue2D:
+        return self.vectors.get(point, fallback)
 
     def add_scalar_source(self, source: ScalarSource):
         self.scalar_sources.append(source)
@@ -111,6 +124,20 @@ class Space2D:
         field = self.get_scalar_field(
             fallback_value=ScalarValue(value=fallback_value), normalize=normalize
         )
+        return [[point.value for point in row] for row in field.values]
+
+    def get_vector_field(
+        self, fallback_value: VectorValue2D = VectorValue2D(value=(0, 0))
+    ):
+        return self.vectors
+
+    def get_vector_field_as_floats_matrix(
+        self, fallback_value: Tuple[float, float] = 0, normalize: bool = False
+    ):
+        field = self.get_vector_field(
+            fallback_value=ScalarValue(value=fallback_value), normalize=normalize
+        )
+
         return [[point.value for point in row] for row in field.values]
 
     @staticmethod
@@ -160,3 +187,12 @@ class Space2D:
     @staticmethod
     def distance(a: Tuple, b: Tuple):
         return sum([(ta - tb) ** 2 for ta, tb in zip(a, b)]) ** 0.5
+
+    @staticmethod
+    def projection(v: float, a: Tuple, b: Tuple):
+        radius = Space2D.distance(a, b)
+        return [v * (tb - ta) / radius for ta, tb in zip(a, b)]
+
+    @staticmethod
+    def sum_vectors(va: Tuple, vb: Tuple):
+        return list(map(sum, zip(va, vb)))

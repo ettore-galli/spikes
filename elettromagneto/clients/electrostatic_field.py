@@ -17,11 +17,12 @@ def field_calculation_workflow():
 
     electrostatic_space.calculate_field()
 
-    potentials = electrostatic_space.get_scalar_field_as_float_matrix(normalize=True)
+    field = electrostatic_space.get_vector_field()
 
+    print(field)
     # plot2dmesh(potentials)
     # plot2dcontour(potentials)
-    plot2dascii(potentials)
+    plot2dascii(field)
 
 
 if __name__ == "__main__":
