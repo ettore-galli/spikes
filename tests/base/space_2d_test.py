@@ -1,3 +1,5 @@
+import pytest
+
 from elettromagneto.base.space_2d import (
     Space2D,
     ScalarValue,
@@ -192,3 +194,11 @@ def test_set_get_scalar_field():
             [ScalarValue(value=0), ScalarValue(value=0), ScalarValue(value=888)],
         ],
     )
+
+
+@pytest.mark.parametrize(
+    "rough, nice",
+    [(-3, -1.0986122886681098), (-0.5, -0.5), (0.5, 0.5), (3, 1.0986122886681098)],
+)
+def test_nice_value(rough, nice):
+    assert Space2D.nice_value(rough) == nice

@@ -1,3 +1,4 @@
+import math
 from typing import List, Tuple, Dict, Optional
 
 import attr
@@ -141,13 +142,26 @@ class Space2D:
         return vector_field_values
 
     def get_vector_field_as_floats_matrix(
-        self, fallback_value: Tuple[float, float] = (0, 0)
+        self,
+        fallback_value: Tuple[float, float] = (0, 0),
+        export_nice_values: bool = False,
     ):
         field = self.get_vector_field(
             fallback_value=VectorValue2D(value=fallback_value)
         )
 
-        return [[[point.value[i] for point in row] for row in field] for i in [0, 1]]
+        return [
+            [
+                [
+                    Space2D.nice_value(point.value[i])
+                    if export_nice_values
+                    else point.value[i]
+                    for point in row
+                ]
+                for row in field
+            ]
+            for i in [0, 1]
+        ]
 
     @staticmethod
     def normalize_scalar_field(scalar_field: ScalarField) -> ScalarField:
@@ -167,6 +181,12 @@ class Space2D:
                 ]
                 for row in scalar_field.values
             ],
+        )
+
+    @staticmethod
+    def nice_value(rough: float) -> float:
+        return (-1 if rough < 0 else 1) * (
+            abs(rough) if abs(rough) < 1 else math.log(abs(rough))
         )
 
     @staticmethod
