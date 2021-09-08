@@ -129,16 +129,25 @@ class Space2D:
     def get_vector_field(
         self, fallback_value: VectorValue2D = VectorValue2D(value=(0, 0))
     ):
-        return self.vectors
+        vector_field_values = []
+        for grid_row in self.grid:
+            row = []
+            for grid_point in grid_row:
+                vector_value = self.get_vector_value(
+                    grid_point, fallback=fallback_value
+                )
+                row.append(vector_value)
+            vector_field_values.append(row)
+        return vector_field_values
 
     def get_vector_field_as_floats_matrix(
-        self, fallback_value: Tuple[float, float] = 0, normalize: bool = False
+        self, fallback_value: Tuple[float, float] = (0, 0)
     ):
         field = self.get_vector_field(
-            fallback_value=ScalarValue(value=fallback_value), normalize=normalize
+            fallback_value=VectorValue2D(value=fallback_value)
         )
 
-        return [[point.value for point in row] for row in field.values]
+        return [[[point.value[i] for point in row] for row in field] for i in [0, 1]]
 
     @staticmethod
     def normalize_scalar_field(scalar_field: ScalarField) -> ScalarField:

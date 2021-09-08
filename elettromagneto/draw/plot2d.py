@@ -28,6 +28,12 @@ def plot2dcontour(values) -> None:
     plt.show()
 
 
+def plotquiver(u, v) -> None:
+    import matplotlib.pyplot as plt
+
+    plt.quiver(u, v)
+    plt.show()
+
 if __name__ == "__main__":
     pass
     """
