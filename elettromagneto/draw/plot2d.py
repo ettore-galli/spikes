@@ -31,8 +31,17 @@ def plot2dcontour(values) -> None:
 def plotquiver(u, v) -> None:
     import matplotlib.pyplot as plt
 
-    plt.quiver(u, v)
+    plt.quiver(u, v, headwidth=2, headlength=2)
     plt.show()
+
+
+def streamplot(x, y, u, v) -> None:
+    import numpy as np
+    import matplotlib.pyplot as plt
+
+    plt.streamplot(np.array(x), np.array(y), np.array(u), np.array(v))
+    plt.show()
+
 
 if __name__ == "__main__":
     pass

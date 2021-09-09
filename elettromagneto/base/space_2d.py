@@ -149,7 +149,6 @@ class Space2D:
         field = self.get_vector_field(
             fallback_value=VectorValue2D(value=fallback_value)
         )
-
         return [
             [
                 [
@@ -161,6 +160,11 @@ class Space2D:
                 for row in field
             ]
             for i in [0, 1]
+        ]
+
+    def get_x_y_grid(self):
+        return [
+            [[point[i] for point in row] for row in self.grid] for i in [0, 1]
         ]
 
     @staticmethod
@@ -186,7 +190,7 @@ class Space2D:
     @staticmethod
     def nice_value(rough: float) -> float:
         return (-1 if rough < 0 else 1) * (
-            abs(rough) if abs(rough) < 1 else math.log(abs(rough))
+            abs(rough) if abs(rough) < 1 else 1 + math.log(abs(rough))
         )
 
     @staticmethod
@@ -218,10 +222,10 @@ class Space2D:
         return sum([(ta - tb) ** 2 for ta, tb in zip(a, b)]) ** 0.5
 
     @staticmethod
-    def projection(v: float, a: Tuple, b: Tuple):
+    def projection(v: float, a: Tuple[float, float], b: Tuple[float, float]):
         radius = Space2D.distance(a, b)
-        return [v * (tb - ta) / radius for ta, tb in zip(a, b)]
+        return [v * (tb - ta) / radius for tb, ta in zip(b, a)]
 
     @staticmethod
-    def sum_vectors(va: Tuple, vb: Tuple):
+    def sum_vectors(va: Tuple[float, float], vb: Tuple[float, float]):
         return list(map(sum, zip(va, vb)))

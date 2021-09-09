@@ -198,7 +198,14 @@ def test_set_get_scalar_field():
 
 @pytest.mark.parametrize(
     "rough, nice",
-    [(-3, -1.0986122886681098), (-0.5, -0.5), (0.5, 0.5), (3, 1.0986122886681098)],
+    [
+        (-3, -2.0986122886681098),
+        (-1, -1),
+        (-0.5, -0.5),
+        (0.5, 0.5),
+        (1, 1),
+        (3, 2.0986122886681098),
+    ],
 )
 def test_nice_value(rough, nice):
     assert Space2D.nice_value(rough) == nice
