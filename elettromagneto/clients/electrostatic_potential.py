@@ -17,10 +17,10 @@ def potential_calculation_workflow():
 
     electrostatic_space.calculate_potentials()
 
-    potentials = electrostatic_space.get_scalar_field_as_float_matrix(normalize=True)
+    potentials = electrostatic_space.get_scalar_field(normalize=True)
 
-    # plot2dmesh(potentials)
-    # plot2dcontour(potentials)
+    plot2dmesh(potentials.values)
+    # plot2dcontour(potentials.values)
     plot2dascii(potentials)
 
 
