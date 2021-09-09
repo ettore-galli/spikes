@@ -2,7 +2,7 @@ def render_2d_ascii(grid) -> str:
     scale = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1{}[]?-_+~<>i!lI;:,\"^`'. "
     # scale = " .:-=+*#%@"
     pots = ""
-    for grid_row in grid:
+    for grid_row in grid.values:
         for value in grid_row:
             render_pot = int((len(scale) - 1) * value)
             pots += str(scale[render_pot])

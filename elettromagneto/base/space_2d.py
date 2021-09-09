@@ -4,18 +4,10 @@ from typing import List, Tuple, Dict, Optional
 import attr
 
 Point2D = Tuple[float, float]
-
 SpaceRange2D = List[List[Point2D]]
 
-
-@attr.s(order=True)
-class ScalarValue:
-    value: float = attr.ib()
-
-
-@attr.s(order=True)
-class VectorValue2D:
-    value: Tuple[float, float] = attr.ib()
+ScalarValue = float
+VectorValue2D = Tuple[float, float]
 
 
 ScalarSpace2D = Dict[Point2D, ScalarValue]
@@ -37,8 +29,6 @@ class ScalarField:
 
 @attr.s
 class VectorField:
-    min_value: ScalarValue = attr.ib()
-    max_value: ScalarValue = attr.ib()
     values: List[List[ScalarValue]] = attr.ib()
 
 
@@ -75,14 +65,14 @@ class Space2D:
         self.vectors[point] = value
 
     def get_scalar_value(
-        self, point: Point2D, fallback: Optional[ScalarValue] = ScalarValue(value=0)
+        self, point: Point2D, fallback: Optional[ScalarValue] = 0
     ) -> ScalarValue:
         return self.values.get(point, fallback)
 
     def get_vector_value(
         self,
         point: Point2D,
-        fallback: Optional[VectorValue2D] = VectorValue2D(value=(0, 0)),
+        fallback: Optional[VectorValue2D] = (0, 0),
     ) -> VectorValue2D:
         return self.vectors.get(point, fallback)
 
@@ -94,7 +84,7 @@ class Space2D:
 
     def get_scalar_field(
         self,
-        fallback_value: ScalarValue = ScalarValue(value=0),
+        fallback_value: ScalarValue = 0,
         normalize: bool = False,
     ) -> ScalarField:
         min_value: ScalarValue = self.get_scalar_value(self.grid[0][0])
@@ -119,17 +109,7 @@ class Space2D:
 
         return scalar_field
 
-    def get_scalar_field_as_float_matrix(
-        self, fallback_value: float = 0, normalize: bool = False
-    ):
-        field = self.get_scalar_field(
-            fallback_value=ScalarValue(value=fallback_value), normalize=normalize
-        )
-        return [[point.value for point in row] for row in field.values]
-
-    def get_vector_field(
-        self, fallback_value: VectorValue2D = VectorValue2D(value=(0, 0))
-    ):
+    def get_vector_field(self, fallback_value: VectorValue2D = (0, 0)):
         vector_field_values = []
         for grid_row in self.grid:
             row = []
@@ -141,20 +121,16 @@ class Space2D:
             vector_field_values.append(row)
         return vector_field_values
 
-    def get_vector_field_as_floats_matrix(
+    def get_vector_field_matrices(
         self,
         fallback_value: Tuple[float, float] = (0, 0),
         export_nice_values: bool = False,
     ):
-        field = self.get_vector_field(
-            fallback_value=VectorValue2D(value=fallback_value)
-        )
+        field = self.get_vector_field(fallback_value=fallback_value)
         return [
             [
                 [
-                    Space2D.nice_value(point.value[i])
-                    if export_nice_values
-                    else point.value[i]
+                    Space2D.nice_value(point[i]) if export_nice_values else point[i]
                     for point in row
                 ]
                 for row in field
@@ -163,24 +139,17 @@ class Space2D:
         ]
 
     def get_x_y_grid(self):
-        return [
-            [[point[i] for point in row] for row in self.grid] for i in [0, 1]
-        ]
+        return [[[point[i] for point in row] for row in self.grid] for i in [0, 1]]
 
     @staticmethod
     def normalize_scalar_field(scalar_field: ScalarField) -> ScalarField:
-        values_range: float = (
-            scalar_field.max_value.value - scalar_field.min_value.value
-        )
+        values_range: float = scalar_field.max_value - scalar_field.min_value
         return ScalarField(
             min_value=scalar_field.min_value,
             max_value=scalar_field.max_value,
             values=[
                 [
-                    ScalarValue(
-                        value=(scalar_value.value - scalar_field.min_value.value)
-                        / values_range
-                    )
+                    (scalar_value - scalar_field.min_value) / values_range
                     for scalar_value in row
                 ]
                 for row in scalar_field.values

@@ -1,7 +1,7 @@
 import math
 
 from elettromagneto.base.physical_constants import EPSILON_ZERO
-from elettromagneto.base.space_2d import Space2D, ScalarValue, VectorValue2D
+from elettromagneto.base.space_2d import Space2D
 
 
 class ElectrostaticFieldSpace2D(Space2D):
@@ -29,7 +29,7 @@ class ElectrostaticFieldSpace2D(Space2D):
                     else:
                         potential_value = 0
 
-                self.set_scalar_value(grid_point, ScalarValue(potential_value))
+                self.set_scalar_value(grid_point, potential_value)
 
     def calculate_field(self):
         for grid_row in self.grid:
@@ -48,6 +48,4 @@ class ElectrostaticFieldSpace2D(Space2D):
                     else:
                         field = (0, 0)
                     field_total = self.sum_vectors(field_total, field)
-                self.set_vector_value(
-                    grid_point, VectorValue2D(value=tuple(field_total))
-                )
+                self.set_vector_value(grid_point, field_total)

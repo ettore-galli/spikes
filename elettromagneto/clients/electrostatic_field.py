@@ -26,7 +26,7 @@ def field_calculation_workflow():
 
     electrostatic_space.calculate_field()
 
-    field = electrostatic_space.get_vector_field_as_floats_matrix(
+    field = electrostatic_space.get_vector_field_matrices(
         export_nice_values=False
     )
 
