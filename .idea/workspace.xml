@@ -1,30 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2ad0ed95-a5f9-4d59-8495-dbb57e40c17d" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/elettromagneto.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/elettromagneto/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/elettromagneto/base/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/elettromagneto/base/physical_constants.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/elettromagneto/base/space_2d.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/elettromagneto/clients/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/elettromagneto/clients/electrostatic_field.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/elettromagneto/clients/electrostatic_potential.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/elettromagneto/draw/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/elettromagneto/draw/plot2d.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/elettromagneto/electrostatic_field/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/elettromagneto/electrostatic_field/electrostatic_field.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sandbox/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sandbox/facebook.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sandbox/plot2d.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sandbox/potential.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sandbox/potential_test.py" beforeDir="false" />
-    </list>
+    <list default="true" id="2ad0ed95-a5f9-4d59-8495-dbb57e40c17d" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -34,6 +11,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="243k4eMUZUnaegSjz3ZWxOyI1rS" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -42,6 +20,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -55,5 +34,11 @@
       <updated>1642866467319</updated>
     </task>
     <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="149" y="36" key="SettingsEditor" timestamp="1642866787532">
+      <screen x="0" y="0" width="1280" height="800" />
+    </state>
+    <state x="149" y="36" key="SettingsEditor/0.0.1280.800@0.0.1280.800" timestamp="1642866787532" />
   </component>
 </project>
