@@ -1,1 +1,0 @@
-EPSILON_ZERO: float = 8.854e-12
