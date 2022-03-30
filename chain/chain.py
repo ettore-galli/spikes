@@ -6,6 +6,7 @@ DATA = [
     {"id": 5},
 ]
 
+
 # https://medium.com/analytics-vidhya/building-a-data-pipeline-with-python-generators-a80a4d19019e
 
 def add_color(data):
