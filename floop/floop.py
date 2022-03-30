@@ -5,6 +5,7 @@ Given a data source, calls a consumer funcion
 providing a data window of a number of specified elements
 
 """
+from functools import reduce
 from typing import List, Callable
 
 
@@ -13,7 +14,7 @@ def floop(
     consumer: Callable[[List[any]], None],
     data_window_length: int = 2,
 ):
-
+    reduce()
     data_window = []
     for element in source:
         data_window = (
