@@ -2,13 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2ad0ed95-a5f9-4d59-8495-dbb57e40c17d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/TOPICS.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/floop/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/floop/floop.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/floop/test_floop.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/turtle-lines/tl.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/spikes.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/spikes.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/logscale/logscale.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/plotextdemo/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/plotextdemo/foto.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/plotextdemo/pe.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/serial/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/serial/sp.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/floop/floop.py" beforeDir="false" afterPath="$PROJECT_DIR$/floop/floop.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,9 +51,13 @@
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/qrr" />
     </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/plotextdemo" />
+    </key>
   </component>
-  <component name="RunManager" selected="Python tests.pytest for test_floop.test_floop">
-    <configuration name="floop" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Python.sp">
+    <configuration name="logscale" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="spikes" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -60,11 +65,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/floop" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/logscale" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/floop/floop.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/logscale/logscale.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -73,7 +78,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="qrr" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="pe" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="spikes" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -81,11 +86,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/qrr" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/plotextdemo" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/qrr/qrr.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/plotextdemo/pe.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -94,7 +99,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="tl" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="plotext" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="spikes" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -102,11 +107,53 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/turtle-lines" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/plotext" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/turtle-lines/tl.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/plotext/plotext.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="scratch_5" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="spikes" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$APPLICATION_CONFIG_DIR$/scratches" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$APPLICATION_CONFIG_DIR$/scratches/scratch_5.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="sp" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="spikes" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/serial" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/serial/sp.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -133,10 +180,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.sp" />
+        <item itemvalue="Python.logscale" />
+        <item itemvalue="Python.scratch_5" />
+        <item itemvalue="Python.pe" />
         <item itemvalue="Python tests.pytest for test_floop.test_floop" />
-        <item itemvalue="Python.floop" />
-        <item itemvalue="Python.tl" />
-        <item itemvalue="Python.qrr" />
       </list>
     </recent_temporary>
   </component>
@@ -154,26 +202,58 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state width="1259" height="69" key="GridCell.Tab.0.bottom" timestamp="1644145621943">
+    <state x="104" y="59" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1644700914830">
       <screen x="0" y="0" width="1280" height="800" />
     </state>
-    <state width="1259" height="69" key="GridCell.Tab.0.bottom/0.0.1280.800@0.0.1280.800" timestamp="1644145621943" />
-    <state width="1259" height="379" key="GridCell.Tab.0.bottom/0.25.1280.775@0.25.1280.775" timestamp="1643838779081" />
-    <state width="1259" height="69" key="GridCell.Tab.0.center" timestamp="1644145621942">
-      <screen x="0" y="0" width="1280" height="800" />
+    <state x="104" y="59" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1280.800@0.0.1280.800" timestamp="1644700914830" />
+    <state x="484" y="307" key="#com.jetbrains.python.refactoring.move.PyMoveModuleMembersDialog" timestamp="1648376059090">
+      <screen x="0" y="25" width="1280" height="775" />
     </state>
-    <state width="1259" height="69" key="GridCell.Tab.0.center/0.0.1280.800@0.0.1280.800" timestamp="1644145621942" />
-    <state width="1259" height="379" key="GridCell.Tab.0.center/0.25.1280.775@0.25.1280.775" timestamp="1643838779079" />
-    <state width="1259" height="69" key="GridCell.Tab.0.left" timestamp="1644145621941">
-      <screen x="0" y="0" width="1280" height="800" />
+    <state x="484" y="307" key="#com.jetbrains.python.refactoring.move.PyMoveModuleMembersDialog/0.25.1280.775@0.25.1280.775" timestamp="1648376059090" />
+    <state x="403" y="120" key="#xdebugger.evaluate" timestamp="1648377984255">
+      <screen x="0" y="25" width="1280" height="775" />
     </state>
-    <state width="1259" height="69" key="GridCell.Tab.0.left/0.0.1280.800@0.0.1280.800" timestamp="1644145621941" />
-    <state width="1259" height="379" key="GridCell.Tab.0.left/0.25.1280.775@0.25.1280.775" timestamp="1643838779077" />
-    <state width="1259" height="69" key="GridCell.Tab.0.right" timestamp="1644145621943">
-      <screen x="0" y="0" width="1280" height="800" />
+    <state x="403" y="120" key="#xdebugger.evaluate/0.25.1280.775@0.25.1280.775" timestamp="1648377984255" />
+    <state width="1259" height="321" key="GridCell.Tab.0.bottom" timestamp="1648378711983">
+      <screen x="0" y="25" width="1280" height="775" />
     </state>
-    <state width="1259" height="69" key="GridCell.Tab.0.right/0.0.1280.800@0.0.1280.800" timestamp="1644145621943" />
-    <state width="1259" height="379" key="GridCell.Tab.0.right/0.25.1280.775@0.25.1280.775" timestamp="1643838779080" />
+    <state width="1259" height="350" key="GridCell.Tab.0.bottom/0.0.1280.800@0.0.1280.800" timestamp="1648375636719" />
+    <state width="1259" height="321" key="GridCell.Tab.0.bottom/0.25.1280.775@0.25.1280.775" timestamp="1648378711983" />
+    <state width="1259" height="321" key="GridCell.Tab.0.center" timestamp="1648378711982">
+      <screen x="0" y="25" width="1280" height="775" />
+    </state>
+    <state width="1259" height="350" key="GridCell.Tab.0.center/0.0.1280.800@0.0.1280.800" timestamp="1648375636717" />
+    <state width="1259" height="321" key="GridCell.Tab.0.center/0.25.1280.775@0.25.1280.775" timestamp="1648378711982" />
+    <state width="1259" height="321" key="GridCell.Tab.0.left" timestamp="1648378711981">
+      <screen x="0" y="25" width="1280" height="775" />
+    </state>
+    <state width="1259" height="350" key="GridCell.Tab.0.left/0.0.1280.800@0.0.1280.800" timestamp="1648375636715" />
+    <state width="1259" height="321" key="GridCell.Tab.0.left/0.25.1280.775@0.25.1280.775" timestamp="1648378711981" />
+    <state width="1259" height="321" key="GridCell.Tab.0.right" timestamp="1648378711982">
+      <screen x="0" y="25" width="1280" height="775" />
+    </state>
+    <state width="1259" height="350" key="GridCell.Tab.0.right/0.0.1280.800@0.0.1280.800" timestamp="1648375636718" />
+    <state width="1259" height="321" key="GridCell.Tab.0.right/0.25.1280.775@0.25.1280.775" timestamp="1648378711982" />
+    <state width="1259" height="232" key="GridCell.Tab.1.bottom" timestamp="1648378028285">
+      <screen x="0" y="25" width="1280" height="775" />
+    </state>
+    <state width="1259" height="254" key="GridCell.Tab.1.bottom/0.0.1280.800@0.0.1280.800" timestamp="1644702965843" />
+    <state width="1259" height="232" key="GridCell.Tab.1.bottom/0.25.1280.775@0.25.1280.775" timestamp="1648378028285" />
+    <state width="1259" height="232" key="GridCell.Tab.1.center" timestamp="1648378028285">
+      <screen x="0" y="25" width="1280" height="775" />
+    </state>
+    <state width="1259" height="254" key="GridCell.Tab.1.center/0.0.1280.800@0.0.1280.800" timestamp="1644702965842" />
+    <state width="1259" height="232" key="GridCell.Tab.1.center/0.25.1280.775@0.25.1280.775" timestamp="1648378028285" />
+    <state width="1259" height="232" key="GridCell.Tab.1.left" timestamp="1648378028284">
+      <screen x="0" y="25" width="1280" height="775" />
+    </state>
+    <state width="1259" height="254" key="GridCell.Tab.1.left/0.0.1280.800@0.0.1280.800" timestamp="1644702965841" />
+    <state width="1259" height="232" key="GridCell.Tab.1.left/0.25.1280.775@0.25.1280.775" timestamp="1648378028284" />
+    <state width="1259" height="232" key="GridCell.Tab.1.right" timestamp="1648378028285">
+      <screen x="0" y="25" width="1280" height="775" />
+    </state>
+    <state width="1259" height="254" key="GridCell.Tab.1.right/0.0.1280.800@0.0.1280.800" timestamp="1644702965843" />
+    <state width="1259" height="232" key="GridCell.Tab.1.right/0.25.1280.775@0.25.1280.775" timestamp="1648378028285" />
     <state x="149" y="36" key="SettingsEditor" timestamp="1642867138325">
       <screen x="0" y="0" width="1280" height="800" />
     </state>
@@ -182,5 +262,16 @@
       <screen x="0" y="0" width="1280" height="800" />
     </state>
     <state width="600" height="428" key="javadoc.popup/0.0.1280.800@0.0.1280.800" timestamp="1643839655481" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/serial/sp.py</url>
+          <line>8</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
