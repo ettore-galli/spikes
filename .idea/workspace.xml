@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2ad0ed95-a5f9-4d59-8495-dbb57e40c17d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/functional_workflow/writer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/functional_workflow/cfg/config.ini" beforeDir="false" afterPath="$PROJECT_DIR$/functional_workflow/cfg/config.ini" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/functional_workflow/workflow.py" beforeDir="false" afterPath="$PROJECT_DIR$/functional_workflow/workflow.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functional_workflow/writer.py" beforeDir="false" afterPath="$PROJECT_DIR$/functional_workflow/writer.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -230,25 +228,25 @@
       <screen x="0" y="0" width="1280" height="800" />
     </state>
     <state width="494" height="466" key="DebuggerActiveHint/0.0.1280.800@0.0.1280.800" timestamp="1650122471565" />
-    <state width="1259" height="148" key="GridCell.Tab.0.bottom" timestamp="1650140368303">
+    <state width="1259" height="148" key="GridCell.Tab.0.bottom" timestamp="1650140444570">
       <screen x="0" y="0" width="1280" height="800" />
     </state>
-    <state width="1259" height="148" key="GridCell.Tab.0.bottom/0.0.1280.800@0.0.1280.800" timestamp="1650140368303" />
+    <state width="1259" height="148" key="GridCell.Tab.0.bottom/0.0.1280.800@0.0.1280.800" timestamp="1650140444570" />
     <state width="1259" height="176" key="GridCell.Tab.0.bottom/0.25.1280.775@0.25.1280.775" timestamp="1650008801720" />
-    <state width="1259" height="148" key="GridCell.Tab.0.center" timestamp="1650140368302">
+    <state width="1259" height="148" key="GridCell.Tab.0.center" timestamp="1650140444567">
       <screen x="0" y="0" width="1280" height="800" />
     </state>
-    <state width="1259" height="148" key="GridCell.Tab.0.center/0.0.1280.800@0.0.1280.800" timestamp="1650140368302" />
+    <state width="1259" height="148" key="GridCell.Tab.0.center/0.0.1280.800@0.0.1280.800" timestamp="1650140444567" />
     <state width="1259" height="176" key="GridCell.Tab.0.center/0.25.1280.775@0.25.1280.775" timestamp="1650008801718" />
-    <state width="1259" height="148" key="GridCell.Tab.0.left" timestamp="1650140368301">
+    <state width="1259" height="148" key="GridCell.Tab.0.left" timestamp="1650140444564">
       <screen x="0" y="0" width="1280" height="800" />
     </state>
-    <state width="1259" height="148" key="GridCell.Tab.0.left/0.0.1280.800@0.0.1280.800" timestamp="1650140368301" />
+    <state width="1259" height="148" key="GridCell.Tab.0.left/0.0.1280.800@0.0.1280.800" timestamp="1650140444564" />
     <state width="1259" height="176" key="GridCell.Tab.0.left/0.25.1280.775@0.25.1280.775" timestamp="1650008801717" />
-    <state width="1259" height="148" key="GridCell.Tab.0.right" timestamp="1650140368303">
+    <state width="1259" height="148" key="GridCell.Tab.0.right" timestamp="1650140444569">
       <screen x="0" y="0" width="1280" height="800" />
     </state>
-    <state width="1259" height="148" key="GridCell.Tab.0.right/0.0.1280.800@0.0.1280.800" timestamp="1650140368303" />
+    <state width="1259" height="148" key="GridCell.Tab.0.right/0.0.1280.800@0.0.1280.800" timestamp="1650140444569" />
     <state width="1259" height="176" key="GridCell.Tab.0.right/0.25.1280.775@0.25.1280.775" timestamp="1650008801719" />
     <state width="1259" height="87" key="GridCell.Tab.1.bottom" timestamp="1650140099632">
       <screen x="0" y="0" width="1280" height="800" />
@@ -306,11 +304,6 @@
           <url>file://$PROJECT_DIR$/serial/sp.py</url>
           <line>8</line>
           <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/functional_workflow/workflow.py</url>
-          <line>94</line>
-          <option name="timeStamp" value="15" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
