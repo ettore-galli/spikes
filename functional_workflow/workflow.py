@@ -121,7 +121,7 @@ def write_output_step(value: WorkflowData) -> WorkflowResult:
         output_file_name = compose_output_file_name(entry_data, value.config)
         write_output(entry_data, output_file_name)
 
-        return WorkflowResult()
+    return WorkflowResult()
 
 
 if __name__ == "__main__":
