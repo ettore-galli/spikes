@@ -2,7 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2ad0ed95-a5f9-4d59-8495-dbb57e40c17d" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/chain/chain.py" beforeDir="false" afterPath="$PROJECT_DIR$/chain/chain.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/functional_workflow/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/functional_workflow/cfg/config.ini" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/functional_workflow/config.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/functional_workflow/input/list.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/functional_workflow/logger.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/functional_workflow/reader.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/functional_workflow/workflow.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,7 +36,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="Python" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/functional_workflow" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyIntegratedToolsModulesConfigurable" />
   </component>
   <component name="PyConsoleOptionsProvider">
@@ -41,15 +48,17 @@
     </option>
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/functional_workflow" />
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/operators" />
+      <recent name="$PROJECT_DIR$/plotextdemo" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/qrr" />
     </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$" />
-      <recent name="$PROJECT_DIR$/plotextdemo" />
-    </key>
   </component>
-  <component name="RunManager" selected="Python.chain">
+  <component name="RunManager" selected="Python.workflow">
     <configuration name="chain" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="spikes" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -92,7 +101,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="pe" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="ope" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="spikes" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -100,11 +109,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/plotextdemo" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/operators" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/plotextdemo/pe.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/operators/ope.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -134,27 +143,6 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="scratch_5" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="spikes" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$APPLICATION_CONFIG_DIR$/scratches" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$APPLICATION_CONFIG_DIR$/scratches/scratch_5.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <configuration name="sp" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="spikes" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -176,13 +164,34 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="workflow" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="spikes" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/functional_workflow" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/functional_workflow/workflow.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.workflow" />
+        <item itemvalue="Python.ope" />
         <item itemvalue="Python.chain" />
         <item itemvalue="Python.sp" />
         <item itemvalue="Python.logscale" />
-        <item itemvalue="Python.scratch_5" />
-        <item itemvalue="Python.pe" />
       </list>
     </recent_temporary>
   </component>
@@ -204,62 +213,83 @@
       <screen x="0" y="0" width="1280" height="800" />
     </state>
     <state x="104" y="59" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1280.800@0.0.1280.800" timestamp="1644700914830" />
+    <state x="364" y="206" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1650102206606">
+      <screen x="0" y="0" width="1280" height="800" />
+    </state>
+    <state x="364" y="206" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1280.800@0.0.1280.800" timestamp="1650102206606" />
     <state x="484" y="307" key="#com.jetbrains.python.refactoring.move.PyMoveModuleMembersDialog" timestamp="1648376059090">
       <screen x="0" y="25" width="1280" height="775" />
     </state>
     <state x="484" y="307" key="#com.jetbrains.python.refactoring.move.PyMoveModuleMembersDialog/0.25.1280.775@0.25.1280.775" timestamp="1648376059090" />
-    <state x="403" y="120" key="#xdebugger.evaluate" timestamp="1648377984255">
-      <screen x="0" y="25" width="1280" height="775" />
+    <state x="403" y="98" key="#xdebugger.evaluate" timestamp="1650122559632">
+      <screen x="0" y="0" width="1280" height="800" />
     </state>
+    <state x="403" y="98" key="#xdebugger.evaluate/0.0.1280.800@0.0.1280.800" timestamp="1650122559632" />
     <state x="403" y="120" key="#xdebugger.evaluate/0.25.1280.775@0.25.1280.775" timestamp="1648377984255" />
     <state x="224" y="25" key="CommitChangelistDialog2" timestamp="1648623045516">
       <screen x="0" y="25" width="1280" height="775" />
     </state>
     <state x="224" y="25" key="CommitChangelistDialog2/0.25.1280.775@0.25.1280.775" timestamp="1648623045516" />
-    <state width="1259" height="121" key="GridCell.Tab.0.bottom" timestamp="1648623110918">
-      <screen x="0" y="25" width="1280" height="775" />
+    <state width="494" height="466" key="DebuggerActiveHint" timestamp="1650122471565">
+      <screen x="0" y="0" width="1280" height="800" />
     </state>
-    <state width="1259" height="350" key="GridCell.Tab.0.bottom/0.0.1280.800@0.0.1280.800" timestamp="1648375636719" />
-    <state width="1259" height="121" key="GridCell.Tab.0.bottom/0.25.1280.775@0.25.1280.775" timestamp="1648623110918" />
-    <state width="1259" height="121" key="GridCell.Tab.0.center" timestamp="1648623110914">
-      <screen x="0" y="25" width="1280" height="775" />
+    <state width="494" height="466" key="DebuggerActiveHint/0.0.1280.800@0.0.1280.800" timestamp="1650122471565" />
+    <state width="1259" height="253" key="GridCell.Tab.0.bottom" timestamp="1650122518883">
+      <screen x="0" y="0" width="1280" height="800" />
     </state>
-    <state width="1259" height="350" key="GridCell.Tab.0.center/0.0.1280.800@0.0.1280.800" timestamp="1648375636717" />
-    <state width="1259" height="121" key="GridCell.Tab.0.center/0.25.1280.775@0.25.1280.775" timestamp="1648623110914" />
-    <state width="1259" height="121" key="GridCell.Tab.0.left" timestamp="1648623110912">
-      <screen x="0" y="25" width="1280" height="775" />
+    <state width="1259" height="253" key="GridCell.Tab.0.bottom/0.0.1280.800@0.0.1280.800" timestamp="1650122518883" />
+    <state width="1259" height="176" key="GridCell.Tab.0.bottom/0.25.1280.775@0.25.1280.775" timestamp="1650008801720" />
+    <state width="1259" height="253" key="GridCell.Tab.0.center" timestamp="1650122518878">
+      <screen x="0" y="0" width="1280" height="800" />
     </state>
-    <state width="1259" height="350" key="GridCell.Tab.0.left/0.0.1280.800@0.0.1280.800" timestamp="1648375636715" />
-    <state width="1259" height="121" key="GridCell.Tab.0.left/0.25.1280.775@0.25.1280.775" timestamp="1648623110912" />
-    <state width="1259" height="121" key="GridCell.Tab.0.right" timestamp="1648623110916">
-      <screen x="0" y="25" width="1280" height="775" />
+    <state width="1259" height="253" key="GridCell.Tab.0.center/0.0.1280.800@0.0.1280.800" timestamp="1650122518878" />
+    <state width="1259" height="176" key="GridCell.Tab.0.center/0.25.1280.775@0.25.1280.775" timestamp="1650008801718" />
+    <state width="1259" height="253" key="GridCell.Tab.0.left" timestamp="1650122518878">
+      <screen x="0" y="0" width="1280" height="800" />
     </state>
-    <state width="1259" height="350" key="GridCell.Tab.0.right/0.0.1280.800@0.0.1280.800" timestamp="1648375636718" />
-    <state width="1259" height="121" key="GridCell.Tab.0.right/0.25.1280.775@0.25.1280.775" timestamp="1648623110916" />
-    <state width="1259" height="232" key="GridCell.Tab.1.bottom" timestamp="1648378028285">
-      <screen x="0" y="25" width="1280" height="775" />
+    <state width="1259" height="253" key="GridCell.Tab.0.left/0.0.1280.800@0.0.1280.800" timestamp="1650122518878" />
+    <state width="1259" height="176" key="GridCell.Tab.0.left/0.25.1280.775@0.25.1280.775" timestamp="1650008801717" />
+    <state width="1259" height="253" key="GridCell.Tab.0.right" timestamp="1650122518882">
+      <screen x="0" y="0" width="1280" height="800" />
     </state>
-    <state width="1259" height="254" key="GridCell.Tab.1.bottom/0.0.1280.800@0.0.1280.800" timestamp="1644702965843" />
+    <state width="1259" height="253" key="GridCell.Tab.0.right/0.0.1280.800@0.0.1280.800" timestamp="1650122518882" />
+    <state width="1259" height="176" key="GridCell.Tab.0.right/0.25.1280.775@0.25.1280.775" timestamp="1650008801719" />
+    <state width="1259" height="253" key="GridCell.Tab.1.bottom" timestamp="1650122519953">
+      <screen x="0" y="0" width="1280" height="800" />
+    </state>
+    <state width="1259" height="253" key="GridCell.Tab.1.bottom/0.0.1280.800@0.0.1280.800" timestamp="1650122519953" />
     <state width="1259" height="232" key="GridCell.Tab.1.bottom/0.25.1280.775@0.25.1280.775" timestamp="1648378028285" />
-    <state width="1259" height="232" key="GridCell.Tab.1.center" timestamp="1648378028285">
-      <screen x="0" y="25" width="1280" height="775" />
+    <state width="1259" height="253" key="GridCell.Tab.1.center" timestamp="1650122519952">
+      <screen x="0" y="0" width="1280" height="800" />
     </state>
-    <state width="1259" height="254" key="GridCell.Tab.1.center/0.0.1280.800@0.0.1280.800" timestamp="1644702965842" />
+    <state width="1259" height="253" key="GridCell.Tab.1.center/0.0.1280.800@0.0.1280.800" timestamp="1650122519952" />
     <state width="1259" height="232" key="GridCell.Tab.1.center/0.25.1280.775@0.25.1280.775" timestamp="1648378028285" />
-    <state width="1259" height="232" key="GridCell.Tab.1.left" timestamp="1648378028284">
-      <screen x="0" y="25" width="1280" height="775" />
+    <state width="1259" height="253" key="GridCell.Tab.1.left" timestamp="1650122519951">
+      <screen x="0" y="0" width="1280" height="800" />
     </state>
-    <state width="1259" height="254" key="GridCell.Tab.1.left/0.0.1280.800@0.0.1280.800" timestamp="1644702965841" />
+    <state width="1259" height="253" key="GridCell.Tab.1.left/0.0.1280.800@0.0.1280.800" timestamp="1650122519951" />
     <state width="1259" height="232" key="GridCell.Tab.1.left/0.25.1280.775@0.25.1280.775" timestamp="1648378028284" />
-    <state width="1259" height="232" key="GridCell.Tab.1.right" timestamp="1648378028285">
-      <screen x="0" y="25" width="1280" height="775" />
+    <state width="1259" height="253" key="GridCell.Tab.1.right" timestamp="1650122519952">
+      <screen x="0" y="0" width="1280" height="800" />
     </state>
-    <state width="1259" height="254" key="GridCell.Tab.1.right/0.0.1280.800@0.0.1280.800" timestamp="1644702965843" />
+    <state width="1259" height="253" key="GridCell.Tab.1.right/0.0.1280.800@0.0.1280.800" timestamp="1650122519952" />
     <state width="1259" height="232" key="GridCell.Tab.1.right/0.25.1280.775@0.25.1280.775" timestamp="1648378028285" />
     <state x="149" y="36" key="SettingsEditor" timestamp="1642867138325">
       <screen x="0" y="0" width="1280" height="800" />
     </state>
     <state x="149" y="36" key="SettingsEditor/0.0.1280.800@0.0.1280.800" timestamp="1642867138325" />
+    <state x="401" y="10" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1650023447519">
+      <screen x="0" y="0" width="1280" height="800" />
+    </state>
+    <state x="401" y="10" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.1280.800@0.0.1280.800" timestamp="1650023447519" />
+    <state x="100" y="100" width="1080" height="600" key="dock-window-1" timestamp="1650104274324">
+      <screen x="0" y="25" width="1280" height="775" />
+    </state>
+    <state x="100" y="100" width="1080" height="600" key="dock-window-1/0.25.1280.775@0.25.1280.775" timestamp="1650104274324" />
+    <state x="341" y="155" width="597" height="490" key="find.popup" timestamp="1650103958846">
+      <screen x="0" y="0" width="1280" height="800" />
+    </state>
+    <state x="341" y="155" width="597" height="490" key="find.popup/0.0.1280.800@0.0.1280.800" timestamp="1650103958846" />
     <state width="600" height="428" key="javadoc.popup" timestamp="1643839655481">
       <screen x="0" y="0" width="1280" height="800" />
     </state>
@@ -272,6 +302,16 @@
           <url>file://$PROJECT_DIR$/serial/sp.py</url>
           <line>8</line>
           <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/functional_workflow/workflow.py</url>
+          <line>77</line>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/functional_workflow/reader.py</url>
+          <line>5</line>
+          <option name="timeStamp" value="10" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
