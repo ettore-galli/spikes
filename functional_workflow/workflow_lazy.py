@@ -22,7 +22,7 @@ class WorkflowPayload:
         self.data = data
         self.config = config
 
-    def merge(self, data=None, config=None):
+    def with_attributes(self, data=None, config=None):
         return WorkflowPayload(
             data=data if data else self.data, config=config if config else self.config
         )
@@ -99,7 +99,7 @@ def read_config_step(_: Any) -> WorkflowResult:
 
 def read_source_step(value: WorkflowPayload) -> Optional[WorkflowResult]:
     file_name = value.config["input_file"]
-    return WorkflowResult(payload=value.merge(data=read_input(file_name)))
+    return WorkflowResult(payload=value.with_attributes(data=read_input(file_name)))
 
 
 def log_current_step(value: WorkflowPayload) -> Optional[WorkflowResult]:
