@@ -1,67 +1,65 @@
 from __future__ import annotations
 
 import os
-from dataclasses import dataclass
-from typing import Optional, Any, Callable, Dict, Generator
+from typing import Optional, Any, Callable, Dict, TypeVar, Generic
 
 from functional_workflow.config import read_config
 from functional_workflow.logger import log
 from functional_workflow.reader import read_input
 from functional_workflow.writer import write_output
 
+P = TypeVar("P")
+C = TypeVar("C")
 
-@dataclass
-class WorkflowData:
-    config: Optional[Dict] = None
-    payload: Optional[Generator[str]] = None
-
-    def __repr__(self) -> str:
-        return f"{self.config}\n" f"{self.payload}\n"
-
-    @staticmethod
-    def merge(
-        previous: Optional[WorkflowData], new: Optional[WorkflowData]
-    ) -> Optional[WorkflowData]:
-        if not new and not previous:
-            return None
-
-        if not new:
-            return previous
-
-        return WorkflowData(
-            config=previous.config if previous and previous.config else new.config,
-            payload=previous.payload if previous and previous.payload else new.payload,
-        )
+WorkflowData = str
 
 
-class WorkflowBase:
+class WorkflowResult(Generic[P, C]):
     def __init__(
-        self,
-        value: Optional[Any] = None,
-        success: bool = True,
-        message: Optional[str] = None,
+            self,
+            payload: Optional[P] = None,
+            config: Optional[C] = None,
+            success: bool = True,
+            message: Optional[str] = None,
     ):
-        self.value = value
+        self.payload = payload
+        self.config = config
         self.success = success
         self.message = message
 
-    def __repr__(self) -> str:
-        return (
-            f"{self.value or '<no result>'}\n"
-            f"{self.success or 'message'}\n "
-            f"{self.message or 'OK'}\n"
-        )
-
     @staticmethod
     def unit(value):
-        return WorkflowBase(value)
+        return WorkflowResult(payload=value)
 
     @staticmethod
-    def start():
-        raise Exception("Not implemented")
+    def merge(previous: WorkflowResult, new: WorkflowResult):
+        return WorkflowResult(
+            payload=new.payload or previous.payload,
+            config=new.config or previous.config,
+            success=new.success and previous.success,
+            message=new.message or "",
+        )
 
-    def bind(self, f: Callable[[Any], Any]):
-        raise Exception("Not implemented")
+    def bind(self, f: Callable[[Any], WorkflowResult]):
+        if not self.success:
+            return self
+        try:
+            result = f(self)
+            return self.merge(self, result)
+
+        except Exception as exception:
+            return WorkflowResult(
+                payload=self.payload, success=False, message=str(exception)
+            )
+
+    def __repr__(self) -> str:
+        return (
+            "Workflow Result:"
+            f"\n - Config  : {self.config or '<no config>'}"
+            f"\n - Payload : {self.payload or '<no payload>'}"
+            f"\n - Success : {self.success} "
+            f"\n - Message : {self.message or 'OK'}"
+        )
 
     def __rshift__(self, other):
         return self.bind(other)
@@ -73,47 +71,13 @@ class WorkflowBase:
         return self.bind(other)
 
 
-class WorkflowResult(WorkflowBase):
-    def __init__(
-        self,
-        value: Optional[WorkflowData] = None,
-        success: bool = True,
-        message: Optional[str] = None,
-    ):
-        super().__init__(value=value, success=success, message=message)
-
-    @staticmethod
-    def unit(value):
-        return WorkflowResult(value=value)
-
-    @staticmethod
-    def merge(previous: WorkflowResult, new: WorkflowResult):
-        return WorkflowResult(
-            value=WorkflowData.merge(previous.value, new.value),
-            success=new.success and previous.success,
-            message=new.message or "",
-        )
-
-    def bind(self, f: Callable[[Any], WorkflowResult]):
-        if not self.success:
-            return self
-        try:
-            result = f(self.value)
-            return self.merge(self, result)
-
-        except Exception as exception:
-            return WorkflowResult(
-                value=self.value, success=False, message=str(exception)
-            )
-
-
 def read_config_step(_: Any) -> WorkflowResult:
-    return WorkflowResult(value=WorkflowData(config=read_config("cfg/config.ini")))
+    return WorkflowResult(config=read_config("cfg/config.ini"))
 
 
-def read_source_step(value: WorkflowData) -> WorkflowResult:
+def read_source_step(value: WorkflowResult) -> WorkflowResult:
     file_name = value.config["input_file"]
-    return WorkflowResult(value=WorkflowData(payload=read_input(file_name)))
+    return WorkflowResult(payload=read_input(file_name))
 
 
 def log_file_being_processed_step(value: WorkflowData) -> WorkflowResult:
@@ -128,7 +92,7 @@ def compose_output_file_name(entry: str, config: Dict):
     )
 
 
-def write_output_step(value: WorkflowData) -> WorkflowResult:
+def write_output_step(value: WorkflowResult) -> WorkflowResult:
     for entry_data in value.payload:
         output_file_name = compose_output_file_name(entry_data, value.config)
         write_output(entry_data, output_file_name)
@@ -138,12 +102,10 @@ def write_output_step(value: WorkflowData) -> WorkflowResult:
 
 if __name__ == "__main__":
     main = (
-        WorkflowResult().unit(None)
-        >> read_config_step
-        >> read_source_step
-        >> write_output_step
+            WorkflowResult[WorkflowData, Dict]().unit(None)
+            >> read_config_step
+            >> read_source_step
+            >> write_output_step
     )
 
     print(main)
-
- 
