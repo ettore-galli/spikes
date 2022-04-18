@@ -2,9 +2,10 @@ from __future__ import annotations
 
 import os
 from dataclasses import dataclass
-from typing import Optional, Any, Callable, List, Dict
+from typing import Optional, Any, Callable, Dict, Generator
 
 from functional_workflow.config import read_config
+from functional_workflow.logger import log
 from functional_workflow.reader import read_input
 from functional_workflow.writer import write_output
 
@@ -12,7 +13,7 @@ from functional_workflow.writer import write_output
 @dataclass
 class WorkflowData:
     config: Optional[Dict] = None
-    entries: Optional[List[str]] = None
+    entries: Optional[Generator[str]] = None
 
     def __repr__(self) -> str:
         return f"{self.config}\n" f"{self.entries}\n"
@@ -65,6 +66,12 @@ class WorkflowBase:
     def __rshift__(self, other):
         return self.bind(other)
 
+    def __and__(self, other):
+        return self.bind(other)
+
+    def __or__(self, other):
+        return self.bind(other)
+
 
 class WorkflowResult(WorkflowBase):
     def __init__(
@@ -109,6 +116,11 @@ def read_source_step(value: WorkflowData) -> WorkflowResult:
     return WorkflowResult(value=WorkflowData(entries=read_input(file_name)))
 
 
+def log_file_being_processed_step(value: WorkflowData) -> WorkflowResult:
+    log(str(value))
+    return WorkflowResult()
+
+
 def compose_output_file_name(entry: str, config: Dict):
     return os.path.join(
         config["output_directory"],
@@ -130,6 +142,15 @@ if __name__ == "__main__":
         >> read_config_step
         >> read_source_step
         >> write_output_step
+    )
+
+    print(main)
+
+    main = (
+        WorkflowResult().unit(None)
+        | read_config_step
+        | read_source_step
+        | write_output_step
     )
 
     print(main)
