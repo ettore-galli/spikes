@@ -76,6 +76,9 @@ class WorkflowResult(Generic[P, C]):
     def __or__(self, other):
         return self.bind(other)
 
+    def __gt__(self, other):
+        return self.bind(other)
+
 
 def read_config_step(_: Any) -> WorkflowResult:
     return WorkflowResult(config=read_config("cfg/config.ini"))
