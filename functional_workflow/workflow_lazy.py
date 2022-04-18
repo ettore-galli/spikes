@@ -3,6 +3,8 @@ from __future__ import annotations
 import os
 from typing import Optional, Any, Callable, Dict, TypeVar, Generic, Union, Generator
 
+from attr import dataclass
+
 from functional_workflow.config import read_config
 from functional_workflow.logger import log
 from functional_workflow.reader import read_input
@@ -11,57 +13,65 @@ from functional_workflow.writer import write_output
 P = TypeVar("P")
 C = TypeVar("C")
 
-WorkflowData = str
+
+class WorkflowPayload:
+    data: Optional[Any] = None
+    config: Optional[Dict] = None
+
+    def __init__(self, data=None, config=None):
+        self.data = data
+        self.config = config
+
+    def merge(self, data=None, config=None):
+        return WorkflowPayload(
+            data=data if data else self.data, config=config if config else self.config
+        )
+
+    def with_data(self, data):
+        return WorkflowPayload(data=data, config=self.config)
 
 
-class LazyWorkflowResult(Generic[P, C]):
+class WorkflowResult(Generic[P, C]):
     def __init__(
         self,
-        payload: Optional[Union[P, Generator[P, None, None]]] = None,
-        config: Optional[C] = None,
+        payload: Optional[WorkflowPayload] = None,
         success: bool = True,
         message: Optional[str] = None,
     ):
         self.payload = payload
-        self.config = config
         self.success = success
         self.message = message
 
     @staticmethod
     def unit(value):
-        return LazyWorkflowResult(payload=value)
+        return WorkflowResult(payload=value)
 
     @staticmethod
-    def merge(previous: LazyWorkflowResult, new: LazyWorkflowResult):
-        return LazyWorkflowResult(
+    def merge(previous: WorkflowResult, new: WorkflowResult):
+        return WorkflowResult(
             payload=new.payload or previous.payload,
-            config=new.config or previous.config,
             success=new.success and previous.success,
             message=new.message or "",
         )
 
     def bind(
         self,
-        f: Union[
-            Callable[[LazyWorkflowResult], LazyWorkflowResult],
-            Callable[[LazyWorkflowResult], Generator[LazyWorkflowResult, None, None]],
-        ],
+        f: StepFunction,
     ):
         if not self.success:
             return self
         try:
-            result = f(self)
-            return self.merge(self, result)
+            result = f(self.payload)
+            return self.merge(self, result) if result else self
 
         except Exception as exception:
-            return LazyWorkflowResult(
+            return WorkflowResult(
                 payload=self.payload, success=False, message=str(exception)
             )
 
     def __repr__(self) -> str:
         return (
             "Workflow Result:"
-            f"\n - Config  : {self.config or '<no config>'}"
             f"\n - Payload : {self.payload or '<no payload>'}"
             f"\n - Success : {self.success} "
             f"\n - Message : {self.message or 'OK'}"
@@ -80,18 +90,21 @@ class LazyWorkflowResult(Generic[P, C]):
         return self.bind(other)
 
 
-def read_config_step(_: Any) -> LazyWorkflowResult:
-    return LazyWorkflowResult(config=read_config("cfg/config.ini"))
+StepFunction = Callable[[WorkflowPayload], Optional[WorkflowResult]]
 
 
-def read_source_step(value: LazyWorkflowResult) -> LazyWorkflowResult:
+def read_config_step(_: Any) -> WorkflowResult:
+    return WorkflowResult(payload=WorkflowPayload(config=read_config("cfg/config.ini")))
+
+
+def read_source_step(value: WorkflowPayload) -> Optional[WorkflowResult]:
     file_name = value.config["input_file"]
-    return LazyWorkflowResult(payload=read_input(file_name))
+    return WorkflowResult(payload=value.merge(data=read_input(file_name)))
 
 
-def log_current_step(value: LazyWorkflowResult) -> LazyWorkflowResult:
-    log(f"--> Processing: {str(value.payload)}")
-    return value
+def log_current_step(value: WorkflowPayload) -> Optional[WorkflowResult]:
+    log(f"--> Processing: {str(value.data)}")
+    return None
 
 
 def compose_output_file_name(entry: str, config: Dict):
@@ -101,18 +114,18 @@ def compose_output_file_name(entry: str, config: Dict):
     )
 
 
-def write_output_step(value: LazyWorkflowResult) -> LazyWorkflowResult:
-    for entry_data in value.payload:
+def write_output_step(value: WorkflowPayload) -> Optional[WorkflowResult]:
+    for entry_data in value.data:
         output_file_name = compose_output_file_name(entry_data, value.config)
         write_output(entry_data, output_file_name)
 
-    return LazyWorkflowResult()
+    return None
 
 
 if __name__ == "__main__":
 
     main = (
-        LazyWorkflowResult[WorkflowData, Dict]().unit(None)
+        WorkflowResult.unit(None)
         >> read_config_step
         >> read_source_step
         >> write_output_step
