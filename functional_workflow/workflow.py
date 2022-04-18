@@ -13,10 +13,10 @@ from functional_workflow.writer import write_output
 @dataclass
 class WorkflowData:
     config: Optional[Dict] = None
-    entries: Optional[Generator[str]] = None
+    payload: Optional[Generator[str]] = None
 
     def __repr__(self) -> str:
-        return f"{self.config}\n" f"{self.entries}\n"
+        return f"{self.config}\n" f"{self.payload}\n"
 
     @staticmethod
     def merge(
@@ -30,7 +30,7 @@ class WorkflowData:
 
         return WorkflowData(
             config=previous.config if previous and previous.config else new.config,
-            entries=previous.entries if previous and previous.entries else new.entries,
+            payload=previous.payload if previous and previous.payload else new.payload,
         )
 
 
@@ -113,7 +113,7 @@ def read_config_step(_: Any) -> WorkflowResult:
 
 def read_source_step(value: WorkflowData) -> WorkflowResult:
     file_name = value.config["input_file"]
-    return WorkflowResult(value=WorkflowData(entries=read_input(file_name)))
+    return WorkflowResult(value=WorkflowData(payload=read_input(file_name)))
 
 
 def log_file_being_processed_step(value: WorkflowData) -> WorkflowResult:
@@ -129,7 +129,7 @@ def compose_output_file_name(entry: str, config: Dict):
 
 
 def write_output_step(value: WorkflowData) -> WorkflowResult:
-    for entry_data in value.entries:
+    for entry_data in value.payload:
         output_file_name = compose_output_file_name(entry_data, value.config)
         write_output(entry_data, output_file_name)
 
@@ -146,11 +146,4 @@ if __name__ == "__main__":
 
     print(main)
 
-    main = (
-        WorkflowResult().unit(None)
-        | read_config_step
-        | read_source_step
-        | write_output_step
-    )
-
-    print(main)
+ 
