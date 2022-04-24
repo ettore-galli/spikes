@@ -2,7 +2,7 @@ from __future__ import annotations
 from distutils.command.config import config
 
 import os
-from typing import Optional, Any, Callable, Dict, TypeVar, Generic, Union, Generator
+from typing import List, Optional, Any, Callable, Dict, TypeVar, Generic, Union, Generator
 
 from attr import dataclass
 
@@ -32,7 +32,7 @@ def read_config_action() -> IO:
 
 
 def read_input_action(input_file_name: str) -> IO:
-    return IO(data=read_input(input_file_name))
+    return IO(data=list(read_input(input_file_name)))
 
 
 def print_config_action(config: Dict) -> IO:
@@ -40,7 +40,7 @@ def print_config_action(config: Dict) -> IO:
     return IO()
 
 
-def print_input_action(input: Generator) -> IO:
+def print_input_action(input: List) -> IO:
     for item in input:
         print(item)
     return IO()
@@ -53,10 +53,10 @@ def compose_output_file_name(entry: str, config: Dict):
     )
 
 
-def write_output_action(cfg: Dict, input: Generator) -> IO:
+def write_output_action(cfg: Dict, input: List) -> IO:
     for entry_data in input:
         output_file_name = compose_output_file_name(entry_data, cfg)
-        print("output_file_name")
+        print(f"Writing {output_file_name}")
         write_output(entry_data, output_file_name)
 
     return IO()
