@@ -2,7 +2,17 @@ from __future__ import annotations
 from distutils.command.config import config
 
 import os
-from typing import List, Optional, Any, Callable, Dict, TypeVar, Generic, Union, Generator
+from typing import (
+    List,
+    Optional,
+    Any,
+    Callable,
+    Dict,
+    TypeVar,
+    Generic,
+    Union,
+    Generator,
+)
 
 from attr import dataclass
 
@@ -72,24 +82,6 @@ def workflow() -> IO:
             )
         )
     )
-
-
-# def read_source_step(value: WorkflowPayload) -> Optional[WorkflowResult]:
-#     file_name = value.config["input_file"]
-#     return WorkflowResult(payload=value.with_attributes(data=read_input(file_name)))
-
-
-# def log_current_step(value: WorkflowPayload) -> Optional[WorkflowResult]:
-#     log(f"--> Processing: {str(value.data)}")
-#     return None
-
-
-# def write_output_step(value: WorkflowPayload) -> Optional[WorkflowResult]:
-#     for entry_data in value.data:
-#         output_file_name = compose_output_file_name(entry_data, value.config)
-#         write_output(entry_data, output_file_name)
-
-#     return None
 
 
 if __name__ == "__main__":
