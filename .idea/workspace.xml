@@ -2,8 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2ad0ed95-a5f9-4d59-8495-dbb57e40c17d" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/functional_workflow/workflow.py" beforeDir="false" afterPath="$PROJECT_DIR$/functional_workflow/workflow.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/functional_workflow/writer.py" beforeDir="false" afterPath="$PROJECT_DIR$/functional_workflow/writer.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sideefects/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sideefects/cfg/config.ini" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sideefects/config.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sideefects/input/list.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sideefects/logger.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sideefects/output/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sideefects/reader.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sideefects/workflow.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sideefects/writer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/operators/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/iterators/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/operators/ope.py" beforeDir="false" afterPath="$PROJECT_DIR$/iterators/iter.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,8 +62,8 @@
       <recent name="$PROJECT_DIR$/qrr" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.workflow">
-    <configuration name="chain" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Python.workflow (1)">
+    <configuration name="iter" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="spikes" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -61,53 +71,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/chain" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/iterators" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/chain/chain.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="logscale" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="spikes" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/logscale" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/logscale/logscale.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="ope" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="spikes" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/operators" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/operators/ope.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/iterators/iter.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -137,7 +105,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="sp" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="workflow (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="spikes" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -145,11 +113,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/serial" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/sideefects" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/serial/sp.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/sideefects/workflow.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -179,13 +147,55 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="workflow_generator" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="spikes" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/functional_workflow" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/functional_workflow/workflow_generator.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="workflow_old" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="spikes" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/functional_workflow" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/functional_workflow/workflow_old.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.workflow (1)" />
         <item itemvalue="Python.workflow" />
-        <item itemvalue="Python.ope" />
-        <item itemvalue="Python.chain" />
-        <item itemvalue="Python.sp" />
-        <item itemvalue="Python.logscale" />
+        <item itemvalue="Python.iter" />
+        <item itemvalue="Python.workflow_generator" />
+        <item itemvalue="Python.workflow_old" />
       </list>
     </recent_temporary>
   </component>
@@ -215,10 +225,10 @@
       <screen x="0" y="25" width="1280" height="775" />
     </state>
     <state x="484" y="307" key="#com.jetbrains.python.refactoring.move.PyMoveModuleMembersDialog/0.25.1280.775@0.25.1280.775" timestamp="1648376059090" />
-    <state x="403" y="98" key="#xdebugger.evaluate" timestamp="1650140063292">
+    <state x="0" y="0" width="1280" height="800" key="#xdebugger.evaluate" timestamp="1650313681577">
       <screen x="0" y="0" width="1280" height="800" />
     </state>
-    <state x="403" y="98" key="#xdebugger.evaluate/0.0.1280.800@0.0.1280.800" timestamp="1650140063292" />
+    <state x="0" y="0" width="1280" height="800" key="#xdebugger.evaluate/0.0.1280.800@0.0.1280.800" timestamp="1650313681577" />
     <state x="403" y="120" key="#xdebugger.evaluate/0.25.1280.775@0.25.1280.775" timestamp="1648377984255" />
     <state x="224" y="25" key="CommitChangelistDialog2" timestamp="1648623045516">
       <screen x="0" y="25" width="1280" height="775" />
@@ -228,45 +238,50 @@
       <screen x="0" y="0" width="1280" height="800" />
     </state>
     <state width="494" height="466" key="DebuggerActiveHint/0.0.1280.800@0.0.1280.800" timestamp="1650122471565" />
-    <state width="1259" height="148" key="GridCell.Tab.0.bottom" timestamp="1650140444570">
+    <state x="100" y="100" width="1080" height="600" key="DiffContextDialog" timestamp="1650283417610">
+      <screen x="0" y="25" width="1280" height="775" />
+    </state>
+    <state x="100" y="100" width="1080" height="600" key="DiffContextDialog/0.0.1280.800@0.0.1280.800" timestamp="1650276747110" />
+    <state x="100" y="100" width="1080" height="600" key="DiffContextDialog/0.25.1280.775@0.25.1280.775" timestamp="1650283417610" />
+    <state width="1259" height="294" key="GridCell.Tab.0.bottom" timestamp="1650711968179">
       <screen x="0" y="0" width="1280" height="800" />
     </state>
-    <state width="1259" height="148" key="GridCell.Tab.0.bottom/0.0.1280.800@0.0.1280.800" timestamp="1650140444570" />
+    <state width="1259" height="294" key="GridCell.Tab.0.bottom/0.0.1280.800@0.0.1280.800" timestamp="1650711968179" />
     <state width="1259" height="176" key="GridCell.Tab.0.bottom/0.25.1280.775@0.25.1280.775" timestamp="1650008801720" />
-    <state width="1259" height="148" key="GridCell.Tab.0.center" timestamp="1650140444567">
+    <state width="1259" height="294" key="GridCell.Tab.0.center" timestamp="1650711968178">
       <screen x="0" y="0" width="1280" height="800" />
     </state>
-    <state width="1259" height="148" key="GridCell.Tab.0.center/0.0.1280.800@0.0.1280.800" timestamp="1650140444567" />
+    <state width="1259" height="294" key="GridCell.Tab.0.center/0.0.1280.800@0.0.1280.800" timestamp="1650711968178" />
     <state width="1259" height="176" key="GridCell.Tab.0.center/0.25.1280.775@0.25.1280.775" timestamp="1650008801718" />
-    <state width="1259" height="148" key="GridCell.Tab.0.left" timestamp="1650140444564">
+    <state width="1259" height="294" key="GridCell.Tab.0.left" timestamp="1650711968176">
       <screen x="0" y="0" width="1280" height="800" />
     </state>
-    <state width="1259" height="148" key="GridCell.Tab.0.left/0.0.1280.800@0.0.1280.800" timestamp="1650140444564" />
+    <state width="1259" height="294" key="GridCell.Tab.0.left/0.0.1280.800@0.0.1280.800" timestamp="1650711968176" />
     <state width="1259" height="176" key="GridCell.Tab.0.left/0.25.1280.775@0.25.1280.775" timestamp="1650008801717" />
-    <state width="1259" height="148" key="GridCell.Tab.0.right" timestamp="1650140444569">
+    <state width="1259" height="294" key="GridCell.Tab.0.right" timestamp="1650711968178">
       <screen x="0" y="0" width="1280" height="800" />
     </state>
-    <state width="1259" height="148" key="GridCell.Tab.0.right/0.0.1280.800@0.0.1280.800" timestamp="1650140444569" />
+    <state width="1259" height="294" key="GridCell.Tab.0.right/0.0.1280.800@0.0.1280.800" timestamp="1650711968178" />
     <state width="1259" height="176" key="GridCell.Tab.0.right/0.25.1280.775@0.25.1280.775" timestamp="1650008801719" />
-    <state width="1259" height="87" key="GridCell.Tab.1.bottom" timestamp="1650140099632">
+    <state width="1259" height="244" key="GridCell.Tab.1.bottom" timestamp="1650711921071">
       <screen x="0" y="0" width="1280" height="800" />
     </state>
-    <state width="1259" height="87" key="GridCell.Tab.1.bottom/0.0.1280.800@0.0.1280.800" timestamp="1650140099632" />
+    <state width="1259" height="244" key="GridCell.Tab.1.bottom/0.0.1280.800@0.0.1280.800" timestamp="1650711921071" />
     <state width="1259" height="232" key="GridCell.Tab.1.bottom/0.25.1280.775@0.25.1280.775" timestamp="1648378028285" />
-    <state width="1259" height="87" key="GridCell.Tab.1.center" timestamp="1650140099631">
+    <state width="1259" height="244" key="GridCell.Tab.1.center" timestamp="1650711921069">
       <screen x="0" y="0" width="1280" height="800" />
     </state>
-    <state width="1259" height="87" key="GridCell.Tab.1.center/0.0.1280.800@0.0.1280.800" timestamp="1650140099631" />
+    <state width="1259" height="244" key="GridCell.Tab.1.center/0.0.1280.800@0.0.1280.800" timestamp="1650711921069" />
     <state width="1259" height="232" key="GridCell.Tab.1.center/0.25.1280.775@0.25.1280.775" timestamp="1648378028285" />
-    <state width="1259" height="87" key="GridCell.Tab.1.left" timestamp="1650140099630">
+    <state width="1259" height="244" key="GridCell.Tab.1.left" timestamp="1650711921069">
       <screen x="0" y="0" width="1280" height="800" />
     </state>
-    <state width="1259" height="87" key="GridCell.Tab.1.left/0.0.1280.800@0.0.1280.800" timestamp="1650140099630" />
+    <state width="1259" height="244" key="GridCell.Tab.1.left/0.0.1280.800@0.0.1280.800" timestamp="1650711921069" />
     <state width="1259" height="232" key="GridCell.Tab.1.left/0.25.1280.775@0.25.1280.775" timestamp="1648378028284" />
-    <state width="1259" height="87" key="GridCell.Tab.1.right" timestamp="1650140099631">
+    <state width="1259" height="244" key="GridCell.Tab.1.right" timestamp="1650711921070">
       <screen x="0" y="0" width="1280" height="800" />
     </state>
-    <state width="1259" height="87" key="GridCell.Tab.1.right/0.0.1280.800@0.0.1280.800" timestamp="1650140099631" />
+    <state width="1259" height="244" key="GridCell.Tab.1.right/0.0.1280.800@0.0.1280.800" timestamp="1650711921070" />
     <state width="1259" height="232" key="GridCell.Tab.1.right/0.25.1280.775@0.25.1280.775" timestamp="1648378028285" />
     <state x="128" y="66" key="MergeDialog" timestamp="1650123461361">
       <screen x="0" y="0" width="1280" height="800" />
@@ -276,6 +291,10 @@
       <screen x="0" y="0" width="1280" height="800" />
     </state>
     <state x="278" y="165" key="MultipleFileMergeDialog/0.0.1280.800@0.0.1280.800" timestamp="1650123461408" />
+    <state x="411" y="106" key="RollbackChangesDialog" timestamp="1650312114489">
+      <screen x="0" y="0" width="1280" height="800" />
+    </state>
+    <state x="411" y="106" key="RollbackChangesDialog/0.0.1280.800@0.0.1280.800" timestamp="1650312114489" />
     <state x="149" y="36" key="SettingsEditor" timestamp="1642867138325">
       <screen x="0" y="0" width="1280" height="800" />
     </state>
@@ -288,14 +307,18 @@
       <screen x="0" y="25" width="1280" height="775" />
     </state>
     <state x="100" y="100" width="1080" height="600" key="dock-window-1/0.25.1280.775@0.25.1280.775" timestamp="1650104274324" />
-    <state x="341" y="155" width="597" height="490" key="find.popup" timestamp="1650103958846">
+    <state x="341" y="155" width="597" height="490" key="find.popup" timestamp="1650273895524">
       <screen x="0" y="0" width="1280" height="800" />
     </state>
-    <state x="341" y="155" width="597" height="490" key="find.popup/0.0.1280.800@0.0.1280.800" timestamp="1650103958846" />
+    <state x="341" y="155" width="597" height="490" key="find.popup/0.0.1280.800@0.0.1280.800" timestamp="1650273895524" />
     <state width="600" height="428" key="javadoc.popup" timestamp="1643839655481">
       <screen x="0" y="0" width="1280" height="800" />
     </state>
     <state width="600" height="428" key="javadoc.popup/0.0.1280.800@0.0.1280.800" timestamp="1643839655481" />
+    <state x="305" y="124" width="670" height="676" key="search.everywhere.popup" timestamp="1650312727879">
+      <screen x="0" y="0" width="1280" height="800" />
+    </state>
+    <state x="305" y="124" width="670" height="676" key="search.everywhere.popup/0.0.1280.800@0.0.1280.800" timestamp="1650312727879" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -304,6 +327,16 @@
           <url>file://$PROJECT_DIR$/serial/sp.py</url>
           <line>8</line>
           <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/functional_workflow/workflow_generator.py</url>
+          <line>121</line>
+          <option name="timeStamp" value="31" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/functional_workflow/workflow.py</url>
+          <line>118</line>
+          <option name="timeStamp" value="35" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
