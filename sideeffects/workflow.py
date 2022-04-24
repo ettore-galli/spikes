@@ -1,0 +1,104 @@
+from __future__ import annotations
+from distutils.command.config import config
+
+import os
+from typing import Optional, Any, Callable, Dict, TypeVar, Generic, Union, Generator
+
+from attr import dataclass
+
+from config import read_config
+from logger import log
+from reader import read_input
+from writer import write_output
+
+
+class IO:
+    def __init__(self, data: Optional[Any] = None):
+        self.__data: Optional[Any] = data
+
+    @classmethod
+    def unit(cls, data: Any):
+        return IO(data)
+
+    def bind(self, f: Callable[[Any], IO]):
+        return f(self.__data)
+
+    def __rshift__(self, other):
+        return self.bind(other)
+
+
+def read_config_action() -> IO:
+    return IO(data=read_config("./cfg/config.ini"))
+
+
+def read_input_action(input_file_name: str) -> IO:
+    return IO(data=read_input(input_file_name))
+
+
+def print_config_action(config: Dict) -> IO:
+    print(config)
+    return IO()
+
+
+def print_input_action(input: Generator) -> IO:
+    for item in input:
+        print(item)
+    return IO()
+
+
+def compose_output_file_name(entry: str, config: Dict):
+    return os.path.join(
+        config["output_directory"],
+        f'{config["output_file_prefix"]}_{entry[:10].strip()}.txt',
+    )
+
+
+def write_output_action(cfg: Dict, input: Generator) -> IO:
+    for entry_data in input:
+        output_file_name = compose_output_file_name(entry_data, cfg)
+        print("output_file_name")
+        write_output(entry_data, output_file_name)
+
+    return IO()
+
+
+def workflow() -> IO:
+    read_config_action().bind(
+        lambda c: read_input_action(c["input_file"]).bind(
+            lambda input: print_config_action(c).bind(
+                lambda _: print_input_action(input).bind(
+                    lambda _: write_output_action(c, input)
+                )
+            )
+        )
+    )
+
+
+# def read_source_step(value: WorkflowPayload) -> Optional[WorkflowResult]:
+#     file_name = value.config["input_file"]
+#     return WorkflowResult(payload=value.with_attributes(data=read_input(file_name)))
+
+
+# def log_current_step(value: WorkflowPayload) -> Optional[WorkflowResult]:
+#     log(f"--> Processing: {str(value.data)}")
+#     return None
+
+
+# def write_output_step(value: WorkflowPayload) -> Optional[WorkflowResult]:
+#     for entry_data in value.data:
+#         output_file_name = compose_output_file_name(entry_data, value.config)
+#         write_output(entry_data, output_file_name)
+
+#     return None
+
+
+if __name__ == "__main__":
+    print(os.path.abspath("."))
+    # main = (
+    #     WorkflowResult.unit(None)
+    #     >> read_config_step
+    #     >> read_source_step
+    #     >> write_output_step
+    # )
+
+    workflow()
