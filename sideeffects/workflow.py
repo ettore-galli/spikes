@@ -1,20 +1,7 @@
 from __future__ import annotations
-from distutils.command.config import config
 
 import os
-from typing import (
-    List,
-    Optional,
-    Any,
-    Callable,
-    Dict,
-    TypeVar,
-    Generic,
-    Union,
-    Generator,
-)
-
-from attr import dataclass
+from typing import List, Optional, Any, Callable, Dict
 
 from config import read_config
 from logger import log
@@ -86,11 +73,4 @@ def workflow() -> IO:
 
 if __name__ == "__main__":
     print(os.path.abspath("."))
-    # main = (
-    #     WorkflowResult.unit(None)
-    #     >> read_config_step
-    #     >> read_source_step
-    #     >> write_output_step
-    # )
-
     workflow()
