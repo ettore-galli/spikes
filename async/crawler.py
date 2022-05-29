@@ -24,73 +24,38 @@ async def http_get(session: aiohttp.ClientSession, url: str) -> Coroutine:
         return resp
 
 
-async def process_sites(_) -> Iterator[Future[Coroutine]]:
-    http_session = await get_session()
-    async with http_session as session:
-        jobs = asyncio.as_completed(
-            [http_get(session=session, url=url) for url in WEBSITES]
-        )
-        return jobs
-
-
-async def store_results(result) -> Workflow:
+async def store_results(result):
     print("*" * 78)
     print(result[:78])
     print("*" * 78)
 
 
-async def process_one(session, url):
-    # result = await http_get(session, url)
-    # await store_results(result)
+async def process_single(session, url):
+    async def fetch_data(url) -> str:
+        return await http_get(session, url)
 
-    async def fetch_data(url) -> Workflow:
-        return Workflow(result=await http_get(session, url))
+    async def save_data(data) -> None:
+        return await store_results(data)
 
-    async def save_data(data) -> Workflow:
-        await store_results(data)
-        return Workflow(success=True)
-
-    await (await Workflow.unit(result=url).bind(fetch_data)).bind(save_data)
-
-
-async def process():
-    step1 = await process_sites(None)
-    print(type(step1))
+    chain = [url, fetch_data, save_data]
+    chain.reverse()
+    r = await bind_async(*chain)
+    return r
 
 
 async def process_all():
     http_session = await get_session()
     async with http_session as session:
-        await process_one(session, WEBSITES[0])
+        await process_single(session, WEBSITES[0])
+
+
+async def bind_async(*args: Callable[[Any], Any]):
+    print(args)
+    return await args[0](await bind_async(*args[1:])) if len(args) > 1 else args[0]
 
 
 def workflow():
-    # asyncio.run(AsyncFlow.unit().bind(process_sites).bind(store_results))
     asyncio.run(process_all())
-
-
-class Workflow:
-    def __init__(
-        self,
-        result: Optional[Any] = None,
-        success: Optional[bool] = None,
-        message: Optional[str] = None,
-    ) -> None:
-        self.result = result
-        self.success = success
-        self.message = message
-
-    @classmethod
-    def unit(
-        cls,
-        result: Optional[Any] = None,
-        success: Optional[bool] = None,
-        message: Optional[str] = None,
-    ):
-        return Workflow(result=result, success=success, message=message)
-
-    async def bind(self, f: Callable[[Any], Workflow]):
-        return await f(copy.deepcopy(self.result))
 
 
 if __name__ == "__main__":
