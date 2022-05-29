@@ -29,6 +29,7 @@ async def store_results(result):
     print(result[:78])
     print("*" * 78)
 
+
 class Workflow:
     def __init__(
         self,
@@ -50,9 +51,8 @@ class Workflow:
         return Workflow(result=result, success=success, message=message)
 
     async def bind(self, f: Callable[[Any], Workflow]):
-        return await f(await self.result) 
+        return await f(await self.result)
 
- 
 
 async def process_single(session, url):
     async def fetch_data(url) -> str:
@@ -64,6 +64,7 @@ async def process_single(session, url):
     chain = [url, fetch_data, save_data]
     r = await bind_async(*chain[::-1])
     return r
+
 
 async def process_one(session, url):
     async def fetch_data(url) -> Workflow:
@@ -80,7 +81,6 @@ async def process_all():
     async with http_session as session:
         await process_single(session, WEBSITES[0])
         # await process_one(session, WEBSITES[0])
-
 
 
 async def bind_async(*args: Callable[[Any], Any]):
