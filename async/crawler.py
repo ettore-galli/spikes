@@ -2,8 +2,10 @@
 # http://zderadicka.eu/functional-fun-with-asyncio-and-monads/
 
 from __future__ import annotations
+from concurrent.futures import Future
+from sre_constants import SUCCESS
 
-from typing import Any, Callable, Coroutine, List, Optional
+from typing import Any, Callable, Coroutine, Iterator, List, Optional
 import aiohttp
 import asyncio
 import copy
@@ -22,21 +24,52 @@ async def http_get(session: aiohttp.ClientSession, url: str) -> Coroutine:
         return resp
 
 
-async def crawl_sites():
+async def process_sites(_) -> Iterator[Future[Coroutine]]:
     http_session = await get_session()
     async with http_session as session:
-        for job in asyncio.as_completed(
+        jobs = asyncio.as_completed(
             [http_get(session=session, url=url) for url in WEBSITES]
-        ):
-            data = await job
-            print(job, data[:50])
+        )
+        return jobs
+
+
+async def store_results(result) -> Workflow:
+    print("*" * 78)
+    print(result[:78])
+    print("*" * 78)
+
+
+async def process_one(session, url):
+    # result = await http_get(session, url)
+    # await store_results(result)
+
+    async def fetch_data(url) -> Workflow:
+        return Workflow(result=await http_get(session, url))
+
+    async def save_data(data) -> Workflow:
+        await store_results(data)
+        return Workflow(success=True)
+
+    await (await Workflow.unit(result=url).bind(fetch_data)).bind(save_data)
+
+
+async def process():
+    step1 = await process_sites(None)
+    print(type(step1))
+
+
+async def process_all():
+    http_session = await get_session()
+    async with http_session as session:
+        await process_one(session, WEBSITES[0])
 
 
 def workflow():
-    asyncio.run(crawl_sites())
+    # asyncio.run(AsyncFlow.unit().bind(process_sites).bind(store_results))
+    asyncio.run(process_all())
 
 
-class AsyncFlow:
+class Workflow:
     def __init__(
         self,
         result: Optional[Any] = None,
@@ -45,6 +78,7 @@ class AsyncFlow:
     ) -> None:
         self.result = result
         self.success = success
+        self.message = message
 
     @classmethod
     def unit(
@@ -53,12 +87,12 @@ class AsyncFlow:
         success: Optional[bool] = None,
         message: Optional[str] = None,
     ):
-        return AsyncFlow(result=result, success=success, message=message)
+        return Workflow(result=result, success=success, message=message)
 
-    def bind(self, f: Callable[[Any], AsyncFlow]):
-        return f(copy.deepcopy(self.result))
+    async def bind(self, f: Callable[[Any], Workflow]):
+        return await f(copy.deepcopy(self.result))
 
 
 if __name__ == "__main__":
     r = workflow()
-    print(r)
+    # print(r)
