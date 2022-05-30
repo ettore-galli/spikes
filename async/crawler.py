@@ -53,11 +53,16 @@ class Workflow:
     ):
         return Workflow(result=result, success=success, message=message)
 
-    async def bind(self, f: Callable[[Any], Workflow]):
-        async def _step(f: Callable[[Any], Workflow]):
-            return f(await self.result)
+    def bind(self, f: Callable[[Any], Workflow]):
+        async def _bind():
+            result = await f(
+                await self.result()
+                if isinstance(self.result, Callable)
+                else self.result
+            ) 
+            return result.result
 
-        return Workflow(result=_step(f))
+        return Workflow(result=_bind)
 
 
 async def process_one(session, url):
@@ -67,7 +72,7 @@ async def process_one(session, url):
     async def save_data(data) -> Workflow:
         return Workflow(result=await store_results(data))
 
-    return await Workflow.unit(url).bind(fetch_data).bind(save_data)
+    return await Workflow.unit(url).bind(fetch_data).bind(save_data).result()
 
 
 # --------------------------------------------------------------------------------
