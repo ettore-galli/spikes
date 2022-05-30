@@ -55,11 +55,11 @@ class Workflow:
 
     def bind(self, f: Callable[[Any], Workflow]):
         async def _bind():
-            result = await f(
+            result: Workflow = await f(
                 await self.result()
                 if isinstance(self.result, Callable)
                 else self.result
-            ) 
+            )
             return result.result
 
         return Workflow(result=_bind)
