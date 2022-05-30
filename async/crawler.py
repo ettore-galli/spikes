@@ -51,7 +51,23 @@ class Workflow:
         return Workflow(result=result, success=success, message=message)
 
     async def bind(self, f: Callable[[Any], Workflow]):
-        return await f(await self.result)
+        async def _step(f: Callable[[Any], Workflow]):
+            return f(await self.result)
+
+        return Workflow(result=_step(f))
+
+
+async def process_one(session, url):
+    async def fetch_data(url) -> Workflow:
+        return Workflow(result=await http_get(session, url))
+
+    async def save_data(data) -> Workflow:
+        return Workflow(result=await store_results(data))
+
+    return await Workflow.unit(url).bind(fetch_data).bind(save_data)
+
+
+# --------------------------------------------------------------------------------
 
 
 async def process_single(session, url):
@@ -66,25 +82,18 @@ async def process_single(session, url):
     return r
 
 
-async def process_one(session, url):
-    async def fetch_data(url) -> Workflow:
-        return Workflow(result=await http_get(session, url))
+async def bind_async(*args: Callable[[Any], Any]):
+    return await args[0](await bind_async(*args[1:])) if len(args) > 1 else args[0]
 
-    async def save_data(data) -> Workflow:
-        return Workflow(result=await store_results(data))
 
-    return Workflow.unit(url).bind(fetch_data).bind(save_data)
+# --------------------------------------------------------------------------------
 
 
 async def process_all():
     http_session = await get_session()
     async with http_session as session:
-        await process_single(session, WEBSITES[0])
-        # await process_one(session, WEBSITES[0])
-
-
-async def bind_async(*args: Callable[[Any], Any]):
-    return await args[0](await bind_async(*args[1:])) if len(args) > 1 else args[0]
+        # await process_single(session, WEBSITES[0])
+        await process_one(session, WEBSITES[0])
 
 
 def workflow():
