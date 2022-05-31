@@ -69,10 +69,20 @@ async def process_one(session, url):
     async def fetch_data(url) -> Workflow:
         return Workflow(result=await http_get(session, url))
 
+    async def log_data(data) -> Workflow:
+        print(f"Logging data {str(data)[:30]}")
+        return Workflow(result=data)
+
     async def save_data(data) -> Workflow:
         return Workflow(result=await store_results(data))
 
-    return await Workflow.unit(url).bind(fetch_data).bind(save_data).result()
+    return (
+        await Workflow.unit(url)
+        .bind(fetch_data)
+        .bind(log_data)
+        .bind(save_data)
+        .result()
+    )
 
 
 # --------------------------------------------------------------------------------
