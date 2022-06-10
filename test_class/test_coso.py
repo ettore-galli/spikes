@@ -3,11 +3,6 @@ import pytest
 from test_class.coso import CosoBase, CosoSpecifico
 
 
-class CosoFinto(CosoBase):
-    def descrivi(self):
-        return f"sono finto"
-
-
 def myinit(self, *_):
     [self.a, self.b, self.c, self.qwerty] = [1, 1, 1, 42]
 
