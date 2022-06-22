@@ -1,0 +1,15 @@
+{
+  "dependencies": {
+    "lodash": "^4.17.21"
+  },
+  "name": "noeexamples",
+  "version": "1.0.0",
+  "description": "Esempi node a caso",
+  "main": "amodule.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test spesifaid\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
