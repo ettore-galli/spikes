@@ -6,6 +6,8 @@ const ENDPOINTS = {
     "message": "http://localhost:3000/message"
 }
 
+const socket=io();
+
 function getOwnIdentity() {
     return "myself";
 }
