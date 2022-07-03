@@ -10,17 +10,26 @@
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
-            "justMyCode": true,
-            "cwd": "${fileDirname}"
+            "justMyCode": true
         },
         {
-            "name": "Python: workflow",
+            "name": "Python: Current File",
             "type": "python",
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
             "justMyCode": true,
             "cwd": "${fileDirname}"
+        },
+        {
+            "name": "CSV Pretty print",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "cwd": "${fileDirname}",
+            "args": ["./example-data/cities.csv"]
         }
     ]
 }
