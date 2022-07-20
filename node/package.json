@@ -6,9 +6,12 @@
   "version": "1.0.0",
   "description": "Esempi node a caso",
   "main": "amodule.js",
-  "devDependencies": {},
+  "devDependencies": {
+    "jasmine": "^4.2.1"
+  },
   "scripts": {
-    "test": "echo \"Error: no test spesifaid\" && exit 1"
+    "start-nuclear-war": "echo Boooooom!",
+    "test": "jasmine"
   },
   "author": "",
   "license": "ISC"
