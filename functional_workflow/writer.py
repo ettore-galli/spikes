@@ -9,4 +9,3 @@ def write_output(entry_data: str, output_file_name) -> None:
         output_file.write(line)
         output_file.write(entry_data)
         output_file.write(line)
-

@@ -9,9 +9,7 @@ async def print_delayed(message: str, delay: int = 1):
 
 async def amain():
     tasks = [asyncio.create_task(print_delayed(f"task-{i}", 4)) for i in range(4)]
-    print(
-        await asyncio.gather(*tasks, return_exceptions=True)
-    )
+    print(await asyncio.gather(*tasks, return_exceptions=True))
 
 
 if __name__ == "__main__":

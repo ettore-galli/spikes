@@ -9,6 +9,7 @@ DATA = [
 
 # https://medium.com/analytics-vidhya/building-a-data-pipeline-with-python-generators-a80a4d19019e
 
+
 def add_color(data):
     for d in data:
         yield item_add_color(d)
@@ -34,25 +35,15 @@ def pipeline(data, processors):
     return pipe
 
 
-if __name__ == '__main__':
-    print(
-        list(
-            add_shape(add_color(DATA))
-        )
-    )
+if __name__ == "__main__":
+    print(list(add_shape(add_color(DATA))))
 
     print("-" * 80)
 
     colored = add_color(DATA)
     shaped = add_shape(colored)
-    print(
-        list(shaped)
-    )
+    print(list(shaped))
 
     print("-" * 80)
 
-    print(
-        list(
-            pipeline(DATA, [add_color, add_shape])
-        )
-    )
+    print(list(pipeline(DATA, [add_color, add_shape])))

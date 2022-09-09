@@ -7,6 +7,4 @@ def read_config(config_file: str) -> Dict:
     config.read(config_file)
 
     default = config["DEFAULT"]
-    return {
-        k: default[k] for k in default
-    }
+    return {k: default[k] for k in default}

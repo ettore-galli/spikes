@@ -4,15 +4,14 @@ from floop.floop import floop
 
 
 def make_consumer(expected_data_windows: List[any]):
-
-    class ConsumerBase():
+    class ConsumerBase:
         def __init__(self, expected_data_windows):
             self.index = 0
             self.expected_data_windows = expected_data_windows
 
         def __call__(self, data_window):
             assert data_window == expected_data_windows[self.index]
-            self.index +=1
+            self.index += 1
 
     return ConsumerBase(expected_data_windows)
 
