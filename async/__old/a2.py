@@ -5,8 +5,10 @@ from typing import Callable, Coroutine, List
 import aiohttp
 import asyncio
 
+
 async def get_session():
     return aiohttp.ClientSession(connector=aiohttp.TCPConnector(verify_ssl=False))
+
 
 async def http_get(session: aiohttp.ClientSession, url: str) -> Coroutine:
     """Execute an GET http call async"""
@@ -24,7 +26,9 @@ async def http_post(session: aiohttp.ClientSession, url: str) -> Coroutine:
 
 async def fetch_all(urls: List, inner: Callable):
     """Gather many HTTP call made async"""
-    async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(verify_ssl=False)) as session:
+    async with aiohttp.ClientSession(
+        connector=aiohttp.TCPConnector(verify_ssl=False)
+    ) as session:
         tasks = []
         for url in urls:
             tasks.append(inner(session, url))

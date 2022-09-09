@@ -1,9 +1,8 @@
-
 def do():
-    print("aopsiasopdiisais");
+    print("aopsiasopdiisais")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     do()
 
 

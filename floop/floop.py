@@ -23,6 +23,3 @@ def floop(
             else [element]
         )
         consumer(data_window)
-
-
-

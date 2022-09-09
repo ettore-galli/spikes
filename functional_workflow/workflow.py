@@ -1,58 +1,41 @@
 from __future__ import annotations
 
 import os
-from typing import Optional, Any, Callable, Dict, TypeVar, Generic, Union, Generator
+from typing import (
+    List,
+    Optional,
+    Any,
+    Callable,
+    Dict,
+    TypeVar,
+    Generic,
+    Union,
+    Generator,
+)
 
-from attr import dataclass
+from dataclasses import dataclass
 
 from functional_workflow.config import read_config
 from functional_workflow.logger import log
 from functional_workflow.reader import read_input
 from functional_workflow.writer import write_output
 
-P = TypeVar("P")
-C = TypeVar("C")
+
+@dataclass
+class WorkflowDataTray:
+    config: Dict
+    data: List[Any]
 
 
-class WorkflowPayload:
-    data: Optional[Any] = None
-    config: Optional[Dict] = None
-
-    def __init__(self, data=None, config=None):
-        self.data = data
-        self.config = config
-
-    def with_attributes(self, data=None, config=None):
-        return WorkflowPayload(
-            data=data if data else self.data, config=config if config else self.config
-        )
-
-    def with_data(self, data):
-        return WorkflowPayload(data=data, config=self.config)
-
-
-class WorkflowResult(Generic[P, C]):
-    def __init__(
-        self,
-        payload: Optional[WorkflowPayload] = None,
-        success: bool = True,
-        message: Optional[str] = None,
-    ):
-        self.payload = payload
-        self.success = success
-        self.message = message
+@dataclass
+class WorkflowResult:
+    payload: Optional[Any] = None
+    success: bool = True
+    message: Optional[str] = None
 
     @staticmethod
     def unit(value):
         return WorkflowResult(payload=value)
-
-    @staticmethod
-    def merge(previous: WorkflowResult, new: WorkflowResult):
-        return WorkflowResult(
-            payload=new.payload or previous.payload,
-            success=new.success and previous.success,
-            message=new.message or "",
-        )
 
     def bind(
         self,
@@ -80,31 +63,22 @@ class WorkflowResult(Generic[P, C]):
     def __rshift__(self, other):
         return self.bind(other)
 
-    def __and__(self, other):
-        return self.bind(other)
 
-    def __or__(self, other):
-        return self.bind(other)
-
-    def __gt__(self, other):
-        return self.bind(other)
+StepFunction = Callable[[Any], Optional[WorkflowResult]]
 
 
-StepFunction = Callable[[WorkflowPayload], Optional[WorkflowResult]]
+def read_config_step() -> WorkflowResult:
+    return WorkflowResult(payload=read_config("cfg/config.ini"))
 
 
-def read_config_step(_: Any) -> WorkflowResult:
-    return WorkflowResult(payload=WorkflowPayload(config=read_config("cfg/config.ini")))
+def read_source_step(config: Dict) -> Optional[WorkflowResult]:
+    file_name = config["input_file"]
+    return WorkflowResult(payload=read_input(file_name))
 
 
-def read_source_step(value: WorkflowPayload) -> Optional[WorkflowResult]:
-    file_name = value.config["input_file"]
-    return WorkflowResult(payload=value.with_attributes(data=read_input(file_name)))
-
-
-def log_current_step(value: WorkflowPayload) -> Optional[WorkflowResult]:
-    log(f"--> Processing: {str(value.data)}")
-    return None
+def log_current_step(value: Any) -> Optional[WorkflowResult]:
+    log(f"--> Processing: {str(value)}")
+    return WorkflowResult()
 
 
 def compose_output_file_name(entry: str, config: Dict):
@@ -114,9 +88,9 @@ def compose_output_file_name(entry: str, config: Dict):
     )
 
 
-def write_output_step(value: WorkflowPayload) -> Optional[WorkflowResult]:
-    for entry_data in value.data:
-        output_file_name = compose_output_file_name(entry_data, value.config)
+def write_output_step(config: Dict, data: Any) -> Optional[WorkflowResult]:
+    for entry_data in data:
+        output_file_name = compose_output_file_name(entry_data, config)
         write_output(entry_data, output_file_name)
 
     return None
