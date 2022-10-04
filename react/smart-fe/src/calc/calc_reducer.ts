@@ -1,21 +1,6 @@
+import { performOnStack } from './calc_logic';
+
 export const calcReducerInitialState = { stack: [1, 2, 3], inputItem: "" };
-
-type StackFunction = ((a: any, b: any) => any) | ((a: any) => any);
-const performOnStack = (stack: any[], performer: StackFunction): any[] => {
-
-    if (stack.length > 1) {
-        try {
-            const sliced = stack.slice(-2);
-            const [a, b] = sliced;
-            return [...sliced, performer(a, b)]
-        } catch (e) {
-            return [...stack, String(e)]
-        }
-
-    }
-
-    return stack;
-}
 
 export function calcReducer(state: any, action: { type: string, payload: any }) {
     switch (action.type) {

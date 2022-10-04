@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { doCalcEnter, doCalcDrop, doSetInputItem, doCalcSum, doCalcSub, doCalcMul, doCalcDiv } from './calc_reducer';
 
 interface Props {
