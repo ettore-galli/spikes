@@ -3,7 +3,7 @@
         "cstdio": "cpp",
         "fstream": "cpp"
     },
-    "python.formatting.provider": "black",
+    "python.formatting.provider": "autopep8",
     "python.testing.pytestArgs": [
         "test_class"
     ],

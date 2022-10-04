@@ -1,17 +1,13 @@
-import React, { useReducer } from 'react';
-
 import './App.css';
-import Calc from './calc/calc';
-import { calcReducer, calcReducerInitialState } from './calc/logic/reducer';
+import CalcMain from './calc/calc-main';
 
 function App() {
 
-  const [state, dispatch] = useReducer(calcReducer, calcReducerInitialState);
 
   return (
     <div className="App">
       <header className="App-header">
-        <Calc state={state} dispatch={dispatch} />
+        <CalcMain />
       </header>
     </div>
   );
