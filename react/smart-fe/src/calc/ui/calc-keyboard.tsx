@@ -1,4 +1,4 @@
-import { createCalcEvents } from './logic/events';
+import { createCalcEvents } from '../logic/events';
 
 interface Props {
     state: any,
