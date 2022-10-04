@@ -6,7 +6,7 @@ export const performOnStack = (stack: any[], performer: StackFunction): any[] =>
         try {
             const sliced = stack.slice(-2);
             const [a, b] = sliced;
-            return [...sliced, performer(a, b)]
+            return [...sliced, performer(parseFloat(a), parseFloat(b))]
         } catch (e) {
             return [...stack, String(e)]
         }
