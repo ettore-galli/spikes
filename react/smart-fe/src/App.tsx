@@ -2,7 +2,7 @@ import React, { useReducer } from 'react';
 
 import './App.css';
 import Calc from './calc/calc';
-import { calcReducer, calcReducerInitialState } from './calc/calc_reducer';
+import { calcReducer, calcReducerInitialState } from './calc/logic/reducer';
 
 function App() {
 

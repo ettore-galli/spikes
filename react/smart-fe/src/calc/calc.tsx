@@ -1,39 +1,14 @@
-import { doCalcEnter, doCalcDrop, doSetInputItem, doCalcSum, doCalcSub, doCalcMul, doCalcDiv } from './calc_reducer';
+import { createCalcEvents } from './logic/events';
 
 interface Props {
     state: any,
     dispatch: any
+
 }
 
 function Calc(props: Props) {
 
-    const setNewValue = (e: any) => {
-        props.dispatch(doSetInputItem(e.target.value))
-    }
-
-    const enter = () => {
-        props.dispatch(doCalcEnter())
-    }
-
-    const drop = () => {
-        props.dispatch(doCalcDrop())
-    }
-
-    const stackSum = () => {
-        props.dispatch(doCalcSum())
-    }
-
-    const stackSub = () => {
-        props.dispatch(doCalcSub())
-    }
-
-    const stackMul = () => {
-        props.dispatch(doCalcMul())
-    }
-
-    const stackDiv = () => {
-        props.dispatch(doCalcDiv())
-    }
+    const calcEvents = createCalcEvents(props.dispatch);
 
     return (
         <>
@@ -43,14 +18,14 @@ function Calc(props: Props) {
                 })
             }
             <hr />
-            <input key={"new"} value={props.state.inputItem} onChange={setNewValue} />
+            <input key={"new"} value={props.state.inputItem} onChange={calcEvents.setNewValue} />
             <hr />
-            <input type="button" value="ENTER" onClick={enter} />
-            <input type="button" value="DROP" onClick={drop} />
-            <input type="button" value="[+]" onClick={stackSum} />
-            <input type="button" value="[-]" onClick={stackSub} />
-            <input type="button" value="[*]" onClick={stackMul} />
-            <input type="button" value="[/]" onClick={stackDiv} />
+            <input type="button" value="ENTER" onClick={calcEvents.enter} />
+            <input type="button" value="DROP" onClick={calcEvents.drop} />
+            <input type="button" value="[+]" onClick={calcEvents.stackSum} />
+            <input type="button" value="[-]" onClick={calcEvents.stackSub} />
+            <input type="button" value="[*]" onClick={calcEvents.stackMul} />
+            <input type="button" value="[/]" onClick={calcEvents.stackDiv} />
         </>
 
     );
