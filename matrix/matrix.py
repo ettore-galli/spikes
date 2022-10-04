@@ -35,9 +35,13 @@ def create_matrix(rows: int, cols: int, fill: Any = 0) -> List[List[Any]]:
 if __name__ == "__main__":
     stars66 = create_matrix(6, 6, "*")
     render_matrix(stars66)
-    
+
+    print(" * ")
+
     plus23 = create_matrix(2, 3, "+")
     render_matrix(plus23)
-    
+
+    print(" = ")
+
     replaced = replace_in_matrix(stars66, 1, 2, plus23)
     render_matrix(replaced)
