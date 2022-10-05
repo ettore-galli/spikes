@@ -1,11 +1,9 @@
 
-interface Props {
+interface CalcDisplayProps {
     state: any,
-    dispatch: any
-
 }
 
-function CalcDisplay(props: Props) {
+function CalcDisplay(props: CalcDisplayProps) {
     return (
         <>
             {
