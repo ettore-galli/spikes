@@ -1,6 +1,6 @@
 interface CalcInputProps {
     state: any,
-    calcEvents: any // TODO: Evoid any
+    calcEvents: any // TODO: Avoid any
 
 }
 
