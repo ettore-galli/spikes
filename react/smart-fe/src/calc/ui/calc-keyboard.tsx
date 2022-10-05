@@ -1,14 +1,11 @@
-import { createCalcEvents } from '../logic/events';
-
-interface Props {
-    state: any,
-    dispatch: any
-
+interface KeyboardProps {
+    calcEvents: any // TODO: Evoid any
 }
 
-function Calc(props: Props) {
+function CalcKeyboard(props: KeyboardProps) {
 
-    const calcEvents = createCalcEvents(props.dispatch);
+
+    const { calcEvents } = props;
 
     return (
         <>
@@ -19,8 +16,7 @@ function Calc(props: Props) {
             <input type="button" value="[*]" onClick={calcEvents.stackMul} />
             <input type="button" value="[/]" onClick={calcEvents.stackDiv} />
         </>
-
     );
 }
 
-export default Calc;
+export default CalcKeyboard;

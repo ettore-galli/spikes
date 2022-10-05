@@ -3,6 +3,7 @@ import { createCalcEvents } from '../logic/events';
 import CalcDisplay from './calc-display';
 import CalcInput from './calc-input';
 import CalcKeyboard from './calc-keyboard';
+
 interface Props {
     state: any,
     dispatch: any
@@ -14,11 +15,12 @@ function Calc(props: Props) {
 
     return (
         <>
-            <CalcDisplay {...props} />
+            {/* <CalcDisplay {...props} /> */}
+            <CalcDisplay state={props.state} />
             <hr />
-            <CalcInput {...props} />
+            <CalcInput calcEvents={calcEvents} state={props.state} />
             <hr />
-            <CalcKeyboard {...props} />
+            <CalcKeyboard calcEvents={calcEvents} />
         </>
     );
 }

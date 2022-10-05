@@ -1,14 +1,16 @@
-import { createCalcEvents } from '../logic/events';
+// import { createCalcEvents } from '../logic/events';
 
-interface Props {
+interface CalcInputProps {
     state: any,
-    dispatch: any
+    calcEvents: any // TODO: Evoid any
 
 }
 
-function CalcInput(props: Props) {
+function CalcInput(props: CalcInputProps) {
 
-    const calcEvents = createCalcEvents(props.dispatch);
+    // const calcEvents = createCalcEvents(props.dispatch);
+
+    const {calcEvents} = props;
 
     return (
         <>
