@@ -1,5 +1,3 @@
-// import { createCalcEvents } from '../logic/events';
-
 interface CalcInputProps {
     state: any,
     calcEvents: any // TODO: Evoid any
@@ -8,9 +6,8 @@ interface CalcInputProps {
 
 function CalcInput(props: CalcInputProps) {
 
-    // const calcEvents = createCalcEvents(props.dispatch);
 
-    const {calcEvents} = props;
+    const { calcEvents } = props;
 
     return (
         <>
