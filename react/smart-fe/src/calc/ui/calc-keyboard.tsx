@@ -1,5 +1,5 @@
 interface KeyboardProps {
-    calcEvents: any // TODO: Evoid any
+    calcEvents: any // TODO: Avoid any
 }
 
 function CalcKeyboard(props: KeyboardProps) {
