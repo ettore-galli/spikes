@@ -1,4 +1,4 @@
-import { createCalcEvents } from '../logic/events';
+import { createCalcEvents } from '../rpn-logic/events';
 
 import CalcDisplay from './calc-display';
 import CalcInput from './calc-input';

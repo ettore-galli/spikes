@@ -1,7 +1,8 @@
 import { useReducer } from 'react';
 
 import Calc from './ui/calc';
-import { calcReducer, calcReducerInitialState } from './logic/reducer';
+
+import { calcReducer, calcReducerInitialState } from './rpn-logic/reducer';
 
 function CalcMain() {
 
