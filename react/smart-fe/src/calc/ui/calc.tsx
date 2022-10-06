@@ -1,26 +1,28 @@
+import { useEffect } from 'react';
+
 import CalcDisplay from './calc-display';
 import CalcInput from './calc-input';
 import CalcKeyboard from './calc-keyboard';
 
-import * as rpnActioncreators from '../rpn-logic/action-creators';
-import { bindActionCreators } from '../reducer-utils/reducer-utils';
-
 interface Props {
     state: any,
     dispatch: any
+    calcEvents: any
 }
 
 function Calc(props: Props) {
 
-    const calcEvents = bindActionCreators(rpnActioncreators, props.dispatch);
+    useEffect(() => {
+        document.title = 'Esempio applicazione React';
+    });
 
     return (
         <>
             <CalcDisplay state={props.state} />
             <hr />
-            <CalcInput calcEvents={calcEvents} state={props.state} />
+            <CalcInput calcEvents={props.calcEvents} state={props.state} />
             <hr />
-            <CalcKeyboard calcEvents={calcEvents} />
+            <CalcKeyboard calcEvents={props.calcEvents} />
         </>
     );
 }
