@@ -1,4 +1,4 @@
-import { performOnStack } from './utils';
+import { performOnStack } from './rpn-logic-utils';
 
 const BLANK: string = "";
 export const calcReducerInitialState = { stack: [], inputItem: BLANK };
