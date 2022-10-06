@@ -1,5 +1,3 @@
-
-
 export const bindActionCreators = (actionCreators: { [key: string]: ((...args: any) => Object) }, dispatch: ((action: any) => void)) => {
     return Object.keys(actionCreators).reduce((prv, cur) => {
         return {
