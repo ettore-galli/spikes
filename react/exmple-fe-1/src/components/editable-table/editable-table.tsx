@@ -2,13 +2,14 @@
 import { Form, Input, InputNumber, Popconfirm, Table, Typography } from 'antd';
 import React, { useEffect, useState } from 'react';
 
-import { getTableData } from './data-provider';
+import { getTableData } from '../editable-table-page/data-provider';
+
+const NO_EDITING_KEY = '';
 
 interface TableRowItem {
     key: string
     [field: string]: any
 }
-
 
 interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
     editing: boolean;
@@ -55,7 +56,6 @@ const EditableCell: React.FC<EditableCellProps> = ({
     );
 };
 
-
 interface EditableTableProps {
     columns: { [field: string]: any }[]
 }
@@ -63,16 +63,17 @@ interface EditableTableProps {
 const EditableTable: React.FC<EditableTableProps> = (props: EditableTableProps) => {
 
     const initialData: TableRowItem[] = [];
+
     const [form] = Form.useForm();
     const [data, setData] = useState(initialData);
-    const [editingKey, setEditingKey] = useState('');
+    const [editingKey, setEditingKey] = useState(NO_EDITING_KEY);
+
+    const blankEditingRecord = props.columns.reduce((prv, cur) => ({ ...prv, [cur.dataIndex]: '' }), {});
 
     useEffect(
         () => {
-            console.log("Try load data")
             getTableData().then(
                 (data: TableRowItem[]) => {
-                    console.log(data);
                     setData(data)
                 }
             )
@@ -81,34 +82,35 @@ const EditableTable: React.FC<EditableTableProps> = (props: EditableTableProps) 
 
     const isEditing = (record: TableRowItem) => record.key === editingKey;
 
-    const blankEditingRecord = props.columns.reduce((prv, cur) => ({ ...prv, [cur.dataIndex]: '' }), {});
-
     const edit = (record: Partial<TableRowItem> & { key: React.Key }) => {
         form.setFieldsValue({ ...blankEditingRecord, ...record });
         setEditingKey(record.key);
     };
 
     const cancel = () => {
-        setEditingKey('');
+        setEditingKey(NO_EDITING_KEY);
     };
 
     const save = async (key: React.Key) => {
         try {
+
             const row = (await form.validateFields()) as TableRowItem;
             const newData = [...data];
             const index = newData.findIndex(item => key === item.key);
+
             if (index > -1) {
                 const item = newData[index];
                 newData.splice(index, 1, {
                     ...item,
                     ...row,
                 });
+                console.log("New data post edit: ", row)
                 setData(newData);
-                setEditingKey('');
+                setEditingKey(NO_EDITING_KEY);
             } else {
                 newData.push(row);
                 setData(newData);
-                setEditingKey('');
+                setEditingKey(NO_EDITING_KEY);
             }
         } catch (errInfo) {
             console.log('Validate Failed:', errInfo);
@@ -118,8 +120,8 @@ const EditableTable: React.FC<EditableTableProps> = (props: EditableTableProps) 
 
     const operationColumn = [
         {
-            title: 'operation',
-            dataIndex: 'operation',
+            title: '',
+            dataIndex: '',
             render: (_: any, record: TableRowItem) => {
                 const editable = isEditing(record);
                 return editable ? (
@@ -128,11 +130,11 @@ const EditableTable: React.FC<EditableTableProps> = (props: EditableTableProps) 
                             Save
                         </Typography.Link>
                         <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
-                            <a>Cancel</a>
+                            <a href="/#">Cancel</a>
                         </Popconfirm>
                     </span>
                 ) : (
-                    <Typography.Link disabled={editingKey !== ''} onClick={() => edit(record)}>
+                    <Typography.Link disabled={editingKey !== NO_EDITING_KEY} onClick={() => edit(record)}>
                         Edit
                     </Typography.Link>
                 );
