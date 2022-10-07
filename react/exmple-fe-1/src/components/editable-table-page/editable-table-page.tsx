@@ -1,26 +1,26 @@
 
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import EditableTable from '../editable-table/editable-table';
 
 const EditableTablePage: React.FC = () => {
 
     const columns: { [field: string]: any }[] = [
         {
-            title: 'name',
+            title: 'Name',
             dataIndex: 'name',
             width: '25%',
             editable: true,
             inputType: 'text'
         },
         {
-            title: 'age',
+            title: 'Age',
             dataIndex: 'age',
             width: '15%',
             editable: true,
             inputType: 'number'
         },
         {
-            title: 'address',
+            title: 'Address',
             dataIndex: 'address',
             width: '40%',
             editable: true,

@@ -1,5 +1,11 @@
 import { testData } from "./test-data";
-import { Item } from './common';
+
+export interface Item {
+    key: string;
+    name: string;
+    age: number;
+    address: string;
+}
 
 export const getTableData = () => {
     return new Promise<Item[]>(
