@@ -10,7 +10,7 @@ interface Props {
     calcEvents: any
 }
 
-function Calc(props: Props) {
+const Calc: React.FC<Props> = (props: Props) => {
 
     useEffect(() => {
         document.title = 'Esempio applicazione React';

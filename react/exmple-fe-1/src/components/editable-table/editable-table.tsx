@@ -2,8 +2,12 @@
 import { Form, Input, InputNumber, Popconfirm, Table, Typography } from 'antd';
 import React, { useEffect, useState } from 'react';
 
-import { Item } from './common';
 import { getTableData } from './data-provider';
+
+interface TableRowItem {
+    key: string
+    [field: string]: any
+}
 
 
 interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
@@ -11,7 +15,7 @@ interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
     dataIndex: string;
     title: any;
     inputType: 'number' | 'text';
-    record: Item;
+    record: TableRowItem;
     index: number;
     children: React.ReactNode;
 }
@@ -26,6 +30,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
     children,
     ...restProps
 }) => {
+
     const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
 
     return (
@@ -50,8 +55,14 @@ const EditableCell: React.FC<EditableCellProps> = ({
     );
 };
 
-const EditableTable: React.FC = () => {
-    const initialData: Item[] = [];
+
+interface EditableTableProps {
+    columns: { [field: string]: any }[]
+}
+
+const EditableTable: React.FC<EditableTableProps> = (props: EditableTableProps) => {
+
+    const initialData: TableRowItem[] = [];
     const [form] = Form.useForm();
     const [data, setData] = useState(initialData);
     const [editingKey, setEditingKey] = useState('');
@@ -60,7 +71,7 @@ const EditableTable: React.FC = () => {
         () => {
             console.log("Try load data")
             getTableData().then(
-                (data: Item[]) => {
+                (data: TableRowItem[]) => {
                     console.log(data);
                     setData(data)
                 }
@@ -68,10 +79,12 @@ const EditableTable: React.FC = () => {
         }
     )
 
-    const isEditing = (record: Item) => record.key === editingKey;
+    const isEditing = (record: TableRowItem) => record.key === editingKey;
 
-    const edit = (record: Partial<Item> & { key: React.Key }) => {
-        form.setFieldsValue({ name: '', age: '', address: '', ...record });
+    const blankEditingRecord = props.columns.reduce((prv, cur) => ({ ...prv, [cur.dataIndex]: '' }), {});
+
+    const edit = (record: Partial<TableRowItem> & { key: React.Key }) => {
+        form.setFieldsValue({ ...blankEditingRecord, ...record });
         setEditingKey(record.key);
     };
 
@@ -81,8 +94,7 @@ const EditableTable: React.FC = () => {
 
     const save = async (key: React.Key) => {
         try {
-            const row = (await form.validateFields()) as Item;
-
+            const row = (await form.validateFields()) as TableRowItem;
             const newData = [...data];
             const index = newData.findIndex(item => key === item.key);
             if (index > -1) {
@@ -103,29 +115,12 @@ const EditableTable: React.FC = () => {
         }
     };
 
-    const columns = [
-        {
-            title: 'name',
-            dataIndex: 'name',
-            width: '25%',
-            editable: true,
-        },
-        {
-            title: 'age',
-            dataIndex: 'age',
-            width: '15%',
-            editable: true,
-        },
-        {
-            title: 'address',
-            dataIndex: 'address',
-            width: '40%',
-            editable: true,
-        },
+
+    const operationColumn = [
         {
             title: 'operation',
             dataIndex: 'operation',
-            render: (_: any, record: Item) => {
+            render: (_: any, record: TableRowItem) => {
                 const editable = isEditing(record);
                 return editable ? (
                     <span>
@@ -145,15 +140,17 @@ const EditableTable: React.FC = () => {
         },
     ];
 
+    const columns = [...props.columns, ...operationColumn];
+
     const mergedColumns = columns.map(col => {
         if (!col.editable) {
             return col;
         }
         return {
             ...col,
-            onCell: (record: Item) => ({
+            onCell: (record: TableRowItem) => ({
                 record,
-                inputType: col.dataIndex === 'age' ? 'number' : 'text',
+                inputType: col.inputType,
                 dataIndex: col.dataIndex,
                 title: col.title,
                 editing: isEditing(record),
