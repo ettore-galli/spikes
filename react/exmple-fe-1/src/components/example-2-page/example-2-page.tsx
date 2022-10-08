@@ -1,6 +1,8 @@
 import React from 'react';
-import EditableTable from '../editable-table/editable-table';
-import { RowSaveResult, TableRowItem } from '../editable-table/editable-table-component';
+
+import { OperationResult } from '../common/common';
+
+import EditableTable, { TableRowItem } from '../editable-table';
 
 import { getTableData } from './example-2-data-provider';
 
@@ -23,7 +25,7 @@ const Example2Page: React.FC = () => {
         },
     ];
 
-    const saveTableData = (_: TableRowItem[]): Promise<RowSaveResult> => {
+    const saveTableData = (_: TableRowItem[]): Promise<OperationResult> => {
         return new Promise(
             (resolve, _) => { resolve({ success: true, message: "" }) }
         )
