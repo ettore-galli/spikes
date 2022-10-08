@@ -1,12 +1,22 @@
 
 import { Form, Input, InputNumber, Popconfirm, Table, Typography } from 'antd';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
-import { getTableData } from '../editable-table-page/data-provider';
 
 const NO_EDITING_KEY = '';
 
-interface TableRowItem {
+interface EditableTableProps {
+    columns: { [field: string]: any }[]
+    setDataCallback: ((data: TableRowItem[]) => RowSaveResult)
+    data: TableRowItem[]
+}
+
+export interface RowSaveResult {
+    success: boolean
+    message: string
+}
+
+export interface TableRowItem {
     key: string
     [field: string]: any
 }
@@ -56,29 +66,12 @@ const EditableCell: React.FC<EditableCellProps> = ({
     );
 };
 
-interface EditableTableProps {
-    columns: { [field: string]: any }[]
-}
-
 const EditableTable: React.FC<EditableTableProps> = (props: EditableTableProps) => {
 
-    const initialData: TableRowItem[] = [];
-
     const [form] = Form.useForm();
-    const [data, setData] = useState(initialData);
     const [editingKey, setEditingKey] = useState(NO_EDITING_KEY);
 
     const blankEditingRecord = props.columns.reduce((prv, cur) => ({ ...prv, [cur.dataIndex]: '' }), {});
-
-    useEffect(
-        () => {
-            getTableData().then(
-                (data: TableRowItem[]) => {
-                    setData(data)
-                }
-            )
-        }
-    )
 
     const isEditing = (record: TableRowItem) => record.key === editingKey;
 
@@ -95,7 +88,7 @@ const EditableTable: React.FC<EditableTableProps> = (props: EditableTableProps) 
         try {
 
             const row = (await form.validateFields()) as TableRowItem;
-            const newData = [...data];
+            const newData = [...props.data];
             const index = newData.findIndex(item => key === item.key);
 
             if (index > -1) {
@@ -105,18 +98,17 @@ const EditableTable: React.FC<EditableTableProps> = (props: EditableTableProps) 
                     ...row,
                 });
                 console.log("New data post edit: ", row)
-                setData(newData);
+                !!props.setDataCallback && props.setDataCallback(newData);
                 setEditingKey(NO_EDITING_KEY);
             } else {
                 newData.push(row);
-                setData(newData);
+                !!props.setDataCallback && props.setDataCallback(newData);
                 setEditingKey(NO_EDITING_KEY);
             }
         } catch (errInfo) {
             console.log('Validate Failed:', errInfo);
         }
     };
-
 
     const operationColumn = [
         {
@@ -169,7 +161,7 @@ const EditableTable: React.FC<EditableTableProps> = (props: EditableTableProps) 
                     },
                 }}
                 bordered
-                dataSource={data}
+                dataSource={props.data}
                 columns={mergedColumns}
                 rowClassName="editable-row"
                 pagination={{
