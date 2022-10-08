@@ -1,10 +1,9 @@
-import { testData } from "./example-1-test-data";
+import { testData } from "./example-2-test-data";
 
 export interface Item {
     key: string;
     name: string;
-    age: number;
-    address: string;
+    phone: string;
 }
 
 export const getTableData = () => {
