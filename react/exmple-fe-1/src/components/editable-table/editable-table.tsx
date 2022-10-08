@@ -1,15 +1,15 @@
-
 import React, { useState, useEffect } from 'react';
 
 import { Button } from 'antd';
 
-import EditableTableComponent, { TableRowItem, RowSaveResult } from './editable-table-component';
+import EditableTableComponent, { TableRowItem } from './parts/editable-table-component';
+import { OperationResult } from '../common/common';
 
 
 interface EditableTableProps {
     columns: { [field: string]: any }[]
     loadDataCallback: () => Promise<TableRowItem[]>
-    saveDataCallback: ((data: TableRowItem[]) => Promise<RowSaveResult>)
+    saveDataCallback: ((data: TableRowItem[]) => Promise<OperationResult>)
 }
 
 const initialData: TableRowItem[] = [];
@@ -24,7 +24,6 @@ const EditableTable: React.FC<EditableTableProps> = (props: EditableTableProps) 
             if (reloadData) {
                 props.loadDataCallback().then(
                     (data) => {
-                        console.log("Refreshing data...")
                         setData(data)
                         setReloadData(false)
                     }
@@ -33,8 +32,7 @@ const EditableTable: React.FC<EditableTableProps> = (props: EditableTableProps) 
         }
     )
 
-    const setDataCallback = (data: TableRowItem[]): RowSaveResult => {
-        console.log("Saving data...")
+    const setDataCallback = (data: TableRowItem[]): OperationResult => {
         setData(data)
         return { success: true, message: "OK" }
     }

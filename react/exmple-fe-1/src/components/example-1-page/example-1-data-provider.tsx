@@ -15,7 +15,7 @@ export const getTableData = (): Promise<Item[]> => {
     );
 }
 
-// const saveTableData = (_: Item[]): Promise<RowSaveResult> => {
+// const saveTableData = (_: Item[]): Promise<OperationResult> => {
 //     return new Promise(
 //         (resolve, _) => { resolve({ success: true, message: "" }) }
 //     )
