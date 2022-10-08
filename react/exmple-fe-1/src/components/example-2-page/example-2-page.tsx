@@ -1,13 +1,13 @@
 
 import React, { useState, useEffect } from 'react';
 import EditableTable, { TableRowItem, RowSaveResult } from '../editable-table/editable-table';
-import { Item } from './example-1-data-provider';
+import { Item } from './example-2-data-provider';
 
-import { getTableData } from './example-1-data-provider';
+import { getTableData } from './example-2-data-provider';
 
 const initialData: Item[] = [];
 
-const Example1Page: React.FC = () => {
+const Example2Page: React.FC = () => {
 
     const [data, setData] = useState(initialData);
 
@@ -15,20 +15,13 @@ const Example1Page: React.FC = () => {
         {
             title: 'Name',
             dataIndex: 'name',
-            width: '25%',
+            width: '60%',
             editable: true,
             inputType: 'text'
         },
         {
-            title: 'Age',
-            dataIndex: 'age',
-            width: '15%',
-            editable: true,
-            inputType: 'number'
-        },
-        {
-            title: 'Address',
-            dataIndex: 'address',
+            title: 'Phone',
+            dataIndex: 'phone',
             width: '40%',
             editable: true,
             inputType: 'text'
@@ -52,10 +45,10 @@ const Example1Page: React.FC = () => {
 
     return (
         <>
-            <div><h1>Editable Table esempio 1</h1></div>
+            <div><h1>Editable Table Esempio 2</h1></div>
             <div><EditableTable columns={columns} setDataCallback={setDataCallback} data={data} /></div>
         </>
     );
 };
 
-export default Example1Page;
+export default Example2Page;
