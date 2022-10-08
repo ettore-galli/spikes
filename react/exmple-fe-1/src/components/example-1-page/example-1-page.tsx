@@ -1,15 +1,10 @@
-
-import React, { useState, useEffect } from 'react';
-import EditableTable, { TableRowItem, RowSaveResult } from '../editable-table/editable-table';
-import { Item } from './example-1-data-provider';
+import React from 'react';
+import EditableTable from '../editable-table/editable-table';
+import { RowSaveResult, TableRowItem } from '../editable-table/editable-table-component';
 
 import { getTableData } from './example-1-data-provider';
 
-const initialData: Item[] = [];
-
 const Example1Page: React.FC = () => {
-
-    const [data, setData] = useState(initialData);
 
     const columns: { [field: string]: any }[] = [
         {
@@ -35,25 +30,20 @@ const Example1Page: React.FC = () => {
         },
     ];
 
-    useEffect(
-        () => {
-            getTableData().then(
-                (data) => {
-                    setData(data)
-                }
-            )
-        }
-    )
-
-    const setDataCallback = (data: TableRowItem[]): RowSaveResult => {
-        console.log("Saving data...")
-        return { success: true, message: "OK" }
+    const saveTableData = (_: TableRowItem[]): Promise<RowSaveResult> => {
+        return new Promise(
+            (resolve, _) => { resolve({ success: true, message: "" }) }
+        )
     }
 
     return (
         <>
             <div><h1>Editable Table esempio 1</h1></div>
-            <div><EditableTable columns={columns} setDataCallback={setDataCallback} data={data} /></div>
+            <div><EditableTable
+                columns={columns}
+                loadDataCallback={getTableData}
+                saveDataCallback={saveTableData}
+            /></div>
         </>
     );
 };

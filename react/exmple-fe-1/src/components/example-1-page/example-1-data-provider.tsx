@@ -7,10 +7,16 @@ export interface Item {
     address: string;
 }
 
-export const getTableData = () => {
+export const getTableData = (): Promise<Item[]> => {
     return new Promise<Item[]>(
         (resolve, _) => {
             setTimeout(() => resolve(testData), 1000);
         }
     );
 }
+
+// const saveTableData = (_: Item[]): Promise<RowSaveResult> => {
+//     return new Promise(
+//         (resolve, _) => { resolve({ success: true, message: "" }) }
+//     )
+// }
