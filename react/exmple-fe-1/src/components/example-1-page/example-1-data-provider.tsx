@@ -16,14 +16,17 @@ export const getTableData = (): Promise<Item[]> => {
 }
 
 export const saveTableData = (data: Item[]): Promise<OperationResult> => {
-    const url = `${SERVER}/items`;
+    const url = `${SERVER}/items/bulk`;
+
+    const postData = data.map((record: any) => ({ id: record.key, name: record.name, age: record.age, address: record.address }));
 
     return fetch(url, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
         },
-        body: JSON.stringify(data.map((record: any) => ({ id: record.key, name: record.name, age: record.age, address: record.address })))
+        body: JSON.stringify(postData)
     }).then(() => ({ success: true, message: "OK" }));
 
 }
