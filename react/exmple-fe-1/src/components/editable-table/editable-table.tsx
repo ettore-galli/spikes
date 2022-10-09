@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { Button } from 'antd';
 
-import EditableTableComponent, { TableRowItem } from './parts/editable-table-component';
+import EditableTableComponent, { TableRowItem } from './elements/editable-table-component';
 import { OperationResult } from '../common/common';
 
 
