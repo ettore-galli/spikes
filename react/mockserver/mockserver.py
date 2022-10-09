@@ -1,6 +1,8 @@
 from typing import Dict, List, Union
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
 from pydantic import BaseModel
 
 
@@ -15,6 +17,18 @@ class Item(BaseModel):
 
 
 app = FastAPI()
+
+origins = [
+    "*",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 DATAFILE = "./data.txt"
 SEPARATOR = "|"
@@ -55,6 +69,29 @@ def set_item(item: Item) -> None:
             data_file.write(item.to_csv())
 
 
+def set_items_bulk(items: List[Item]) -> None:
+
+    current_items: List[Item] = get_db_items()
+
+    with open(DATAFILE, 'w', encoding='utf-8') as data_file:
+        for record in current_items:
+
+            found_for_update: bool = False
+
+            for item in items:
+                if record.id == item.id:
+                    data_file.write(item.to_csv())
+                    found_for_update = True
+                    break
+
+            if not found_for_update:
+                data_file.write(record.to_csv())
+
+        for item in items:
+            if item.id not in [record.id for record in current_items]:
+                data_file.write(item.to_csv())
+
+
 @app.get("/items/")
 async def get_items():
     print("get_items...")
@@ -65,6 +102,16 @@ async def get_items():
 async def create_item(item: Item):
     try:
         set_item(item)
+        return {"success": True, "message": "OK"}
+    except Exception as e:
+        return {"success": False, "message": str(e)}
+
+
+@app.post("/items/bulk/")
+async def create_items_bulk(items: List[Item]):
+    print(items)
+    try:
+        set_items_bulk(items)
         return {"success": True, "message": "OK"}
     except Exception as e:
         return {"success": False, "message": str(e)}

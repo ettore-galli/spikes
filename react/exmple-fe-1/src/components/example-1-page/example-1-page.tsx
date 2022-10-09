@@ -2,7 +2,7 @@ import React from 'react';
 import { OperationResult } from '../common/common';
 import EditableTable, { TableRowItem } from '../editable-table';
 
-import { getTableData } from './example-1-data-provider';
+import { getTableData, saveTableData } from './example-1-data-provider';
 
 const Example1Page: React.FC = () => {
 
@@ -30,10 +30,8 @@ const Example1Page: React.FC = () => {
         },
     ];
 
-    const saveTableData = (_: TableRowItem[]): Promise<OperationResult> => {
-        return new Promise(
-            (resolve, _) => { resolve({ success: true, message: "" }) }
-        )
+    const save = (data: TableRowItem[]): Promise<OperationResult> => {
+        return saveTableData(data.map(item => ({ key: item.key, name: item.name, age: item.age, address: item.address })));
     }
 
     return (
@@ -42,7 +40,7 @@ const Example1Page: React.FC = () => {
             <div><EditableTable
                 columns={columns}
                 loadDataCallback={getTableData}
-                saveDataCallback={saveTableData}
+                saveDataCallback={save}
             /></div>
         </>
     );
