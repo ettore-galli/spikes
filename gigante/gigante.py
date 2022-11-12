@@ -1,5 +1,14 @@
 # [(f"Art. {i+1}", round(4*random.random(), 2)) for i in range(20)]
 
+from decimal import Decimal
+from typing import List, Tuple, Union
+
+
+Value = Union[float, int, Decimal]
+Item = Tuple[str, Value]
+Combination = List[Item]
+ValuedCombination = Tuple[Combination, Value]
+
 ITEMS = [
     ("Art. 1", 2.84),
     ("Art. 2", 1.26),
@@ -24,7 +33,7 @@ ITEMS = [
 ]
 
 
-def combinations(source, number):
+def combinations(source: List[Item], number: int):
     if number > 0:
         return [
             [current] + combi
@@ -38,7 +47,26 @@ def combinations(source, number):
         return [[]]
 
 
+def value_combination(combination: Combination) -> ValuedCombination:
+    return combination, sum(item[1] for item in combination)
+
+
+def value_combinations(combinations: List[Combination]) -> List[ValuedCombination]:
+    return [value_combination(combi) for combi in combinations]
+
+
+def select_combinations(
+    valued_combinations: List[ValuedCombination], threshold: Value
+) -> List[ValuedCombination]:
+    return [
+        combi for combi in valued_combinations if threshold < combi[1] < threshold * 1.2
+    ]
+
+
 if __name__ == "__main__":
-    for combi in combinations(ITEMS[:5], 2):
-        print("---")
-        print(combi)
+    for n in range(2, len(ITEMS)):
+        for combi in select_combinations(
+            value_combinations(combinations(ITEMS, n)), 15
+        ):
+            print("---")
+            print(combi)
