@@ -17,7 +17,7 @@ def prodcons(target):
     consumers_queue = Queue(QSIZE)
     thread_work: Dict[int, Thread] = {}
 
-    def one_is_alive() -> bool:
+    def at_least_one_is_alive() -> bool:
         return any(thread.is_alive() for thread in thread_work.values())
 
     def producer(top: int):
@@ -57,7 +57,7 @@ def prodcons(target):
                 consumers_queue.task_done()
             except Empty:
                 # if "Ho finito"...
-                if not one_is_alive():
+                if not at_least_one_is_alive() and consumers_queue.empty():
                     break
 
     return consumer
