@@ -5,7 +5,7 @@ import time
 from typing import Dict
 
 
-def prodcons():
+def prodcons(target):
     QSIZE = 8
     WORKERS = 5
 
@@ -16,9 +16,6 @@ def prodcons():
         for item in range(top):
             producers_queue.put(item)
             time.sleep(0.1)
-
-    def target(input: float) -> float:
-        return (input, float(input) ** 0.5)
 
     def worker():
         while True:
@@ -48,16 +45,13 @@ def prodcons():
                 if producers_queue.qsize() == 0 and consumers_queue.qsize() == 0:
                     break
 
-    # thread_cons = Thread(name="consumer", target=consumer)
-    # thread_cons.setDaemon(True)
-    # thread_cons.start()
-
-    # producers_queue.join()
-    # consumers_queue.join()
-
     return consumer
 
 
+def example_target(input: float) -> float:
+    return (input, float(input) ** 0.5)
+
+
 if __name__ == "__main__":
-    for item in prodcons()():
+    for item in prodcons(target=example_target)():
         print(f"***{item}***")
