@@ -5,11 +5,11 @@ import time
 from typing import Dict
 
 
-class PoisonPill:
+class WorkerPoisonPill:
     pass
 
 
-def prodcons():
+def prodcons(target):
     QSIZE = 8
     WORKERS = 5
 
@@ -17,23 +17,23 @@ def prodcons():
     consumers_queue = Queue(QSIZE)
     thread_work: Dict[int, Thread] = {}
 
+    def one_is_alive() -> bool:
+        return any(thread.is_alive() for thread in thread_work.values())
+
     def producer(top: int):
         for item in range(top):
             producers_queue.put(item)
             time.sleep(0.1)
 
-        while any(thread.is_alive() for thread in thread_work.values()):
+        while True:
             print("poisoning...")
-            producers_queue.put(PoisonPill())
-
-    def target(input: float) -> float:
-        return (input, float(input) ** 0.5)
+            producers_queue.put(WorkerPoisonPill())
 
     def worker():
         while True:
             item = producers_queue.get()
-            if isinstance(item, PoisonPill):
-                print("Questo thread è un gelato al veleno...")
+            if isinstance(item, WorkerPoisonPill):
+                print("poisoned...")
                 break
             time.sleep(1)
             result = target(item)
@@ -42,7 +42,7 @@ def prodcons():
 
     for nwork in range(WORKERS):
         thread_work[nwork] = Thread(name="worker", target=worker)
-        # thread_work[nwork].setDaemon(True)
+        # *NO* thread_work[nwork].setDaemon(True)
         thread_work[nwork].start()
 
     thread_prod = Thread(name="producer", target=producer, args=(30,))
@@ -52,23 +52,21 @@ def prodcons():
     def consumer():
         while True:
             try:
-                item = consumers_queue.get(timeout=2)
+                item = consumers_queue.get(block=False)
                 yield item
                 consumers_queue.task_done()
             except Empty:
-                if producers_queue.qsize() == 0 and consumers_queue.qsize() == 0:
+                # if "Ho finito"...
+                if not one_is_alive():
                     break
-
-    # thread_cons = Thread(name="consumer", target=consumer)
-    # thread_cons.setDaemon(True)
-    # thread_cons.start()
-
-    # producers_queue.join()
-    # consumers_queue.join()
 
     return consumer
 
 
+def example_target(input: float) -> float:
+    return (input, float(input) ** 0.5)
+
+
 if __name__ == "__main__":
-    for item in prodcons()():
+    for item in prodcons(target=example_target)():
         print(f"***{item}***")
