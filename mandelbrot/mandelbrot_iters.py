@@ -1,4 +1,3 @@
-from functools import partial
 from typing import Tuple
 
 
@@ -24,31 +23,15 @@ def iterations(cx: float, cy: float, max_iters: int, bailout: float) -> int:
     return max_iters
 
 
-def render_num_iters(max_iters: int, iterations: int) -> str:
-    return str(int(9 * iterations / max_iters))
-
-
-def render_on_off(max_iters: int, iterations: int) -> str:
-    return "*" if iterations / max_iters > 0.9 else " "
-
-
-def render_scale(max_iters: int, iterations: int) -> str:
-    grayscale = "@%#*+=."
-    scale_grade = int((len(grayscale) - 1) * iterations / max_iters)
-    return grayscale[::-1][scale_grade]
-
-
-max_iters: int = 500
-bailout: float = 6
-
-render_pixel = partial(render_scale, max_iters)
+max_iters: int = 200
+bailout: float = 1.3
 
 mandelbrot = [
     [iterations(0.04 * x, 0.04 * y, max_iters, bailout) for x in range(-50, 30)]
     for y in range(-30, 30)
 ]
 
-rendered = [[render_pixel(value) for value in line] for line in mandelbrot]
+rendered = [[str(int(9 * value / max_iters)) for value in line] for line in mandelbrot]
 
 for line in rendered:
     print("".join(line))
