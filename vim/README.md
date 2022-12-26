@@ -65,6 +65,9 @@ git submodule add [repo git plugin] [cartella di destinazione]
   Da vim:
   :helptags ~/.vim/pack/plugins/start/vim-fugitive/doc	
 
+# The Nerd Tree
+
+  git submodule add https://github.com/preservim/nerdtree
 
 ```
 
