@@ -38,14 +38,19 @@ def render_scale(max_iters: int, iterations: int) -> str:
     return grayscale[::-1][scale_grade]
 
 
-max_iters: int = 500
-bailout: float = 6
+min_x = -60
+max_x = 30
+min_y = -30
+max_y = 30
+
+max_iters: int = 1000
+bailout: float = 7
 
 render_pixel = partial(render_scale, max_iters)
 
 mandelbrot = [
-    [iterations(0.04 * x, 0.04 * y, max_iters, bailout) for x in range(-50, 30)]
-    for y in range(-30, 30)
+    [iterations(0.04 * x, 0.04 * y, max_iters, bailout) for x in range(min_x, max_x)]
+    for y in range(min_y, max_y)
 ]
 
 rendered = [[render_pixel(value) for value in line] for line in mandelbrot]
