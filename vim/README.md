@@ -67,7 +67,9 @@ git submodule add [repo git plugin] [cartella di destinazione]
 
 # The Nerd Tree
 
-  git submodule add https://github.com/preservim/nerdtree
+  git submodule add https://github.com/preservim/nerdtree plugins/start/nerdtree	
+
+  
 
 ```
 
