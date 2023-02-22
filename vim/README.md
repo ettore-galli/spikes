@@ -23,6 +23,9 @@ Sistema di plugin vim 8+
 https://medium.com/@paulodiovani/installing-vim-8-plugins-with-the-native-pack-system-39b71c351fea
 https://github.com/paulodiovani/dot-files/tree/main/home/user
 
+
+https://thevaluable.dev/vim-commands-beginner/
+
 ### Procedura setup plugin
 
 ````bash
