@@ -1,3 +1,4 @@
+from datetime import datetime
 from random import random
 import math
 import statistics
@@ -43,32 +44,35 @@ def runsTest(l, l_median):
 
 
 class RandomProcess:
-    NOISE_MOD = 31
+    MOD = 1000000
+    POWER_MOD = 7
 
     def __init__(self) -> None:
         self.rand: NumericType = 0
-        self.noise: int = 0
+        self.power = 1
+        self.is_used: bool = False
 
-    def rand_worker(self, current_random_setter: Callable[[NumericType], None]):
+    def set_next_number(self):
+        rnd_root = datetime.now().microsecond ** (2 + self.power)
+        pow_root = rnd_root
+        self.current_random_setter(rnd_root % self.MOD, pow_root % self.POWER_MOD)
+
+    def rand_worker(self):
         while True:
-            self.set_noise()
-            current_random_setter(random())
+            self.set_next_number()
 
-    def set_noise(self):
-        self.noise = (self.noise + self.rand) % self.NOISE_MOD
-
-    def current_random_setter(self, rnd: NumericType):
-        self.rand = rnd
-        self.set_noise()
+    def current_random_setter(self, rand: NumericType, power: int):
+        self.rand = rand
+        self.power = power
 
     def start_random_thread(self):
-        r_thread = Thread(
-            target=self.rand_worker, args=[self.current_random_setter], daemon=True
-        )
+        r_thread = Thread(target=self.rand_worker, daemon=True)
         r_thread.start()
 
     def get_current_random(self) -> NumericType:
-        return self.rand * (self.noise + 1) / self.NOISE_MOD
+        if not self.is_used:
+            self.set_next_number()
+        return self.rand
 
 
 N = 1024
