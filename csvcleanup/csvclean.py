@@ -1,5 +1,6 @@
 import csv
 from decimal import Decimal
+import functools
 from typing import Dict, List, Tuple, Union, Any, Generator, Iterable
 
 NumericType = Union[int, float, Decimal]
@@ -18,12 +19,20 @@ def read_csv_data(input_file: str) -> Generator[Dict, None, None]:
 
 def find_minimum_distance_versus_data(
     sample: Tuple, current_data: List[Tuple]
-) -> float:
-    return (
-        min([tuple_distance(sample, item) for item in current_data])
-        if len(current_data) > 0
-        else 0
-    )
+) -> Tuple[float, Tuple]:
+    if len(current_data) == 0:
+        return (0, ())
+
+    def reducer(acc, cur):
+
+        distance = tuple_distance(sample, cur)
+
+        if len(acc) == 0 or distance < acc[0]:
+            return (distance, cur)
+
+        return acc
+
+    return functools.reduce(reducer, current_data, ())
 
 
 def restrict_data_set(
@@ -40,8 +49,17 @@ def restrict_data_set(
 
         if relevant_data_key not in restricted_data_map:
 
-            distance: float = find_minimum_distance_versus_data(
+            distance: float
+            similar: Tuple
+            distance, similar = find_minimum_distance_versus_data(
                 relevant_data_key, list(restricted_data_map.keys())
+            )
+            print(
+                record,
+                "*" if distance > distance_threshold else "-",
+                distance,
+                relevant_data_key,
+                similar,
             )
 
             if len(restricted_data_map) == 0 or (distance > distance_threshold):
@@ -70,22 +88,28 @@ def is_numeric_couple(couple: Tuple[Any, Any]) -> bool:
 
 
 def tuple_distance(candidate: Tuple, reference: Tuple) -> float:
-    return sum(
-        number_distance(*couple)
-        if is_numeric_couple(couple)
-        else string_distance(*couple)
-        for couple in zip(candidate, reference)
+    return (
+        sum(
+            (
+                number_distance(*couple)
+                if is_numeric_couple(couple)
+                else string_distance(*couple)
+            )
+            ** 2
+            for couple in zip(candidate, reference)
+        )
+        ** 0.5
     )
 
 
 if __name__ == "__main__":
 
-    print(
-        list(
-            restrict_data_set(
-                data_stream=read_csv_data(input_file="./data/example1.csv"),
-                relevant_data_fields=["a", "b", "c"],
-                distance_threshold=2,
-            )
+    restricted = list(
+        restrict_data_set(
+            data_stream=read_csv_data(input_file="./data/example1.csv"),
+            relevant_data_fields=["a", "b", "c", "d"],
+            distance_threshold=3,
         )
     )
+    for item in restricted:
+        print(item)
