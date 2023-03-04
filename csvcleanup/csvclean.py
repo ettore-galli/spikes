@@ -1,12 +1,12 @@
 import csv
 from decimal import Decimal
-from typing import Dict, List, Tuple, Union, Any, Generator
+from typing import Dict, List, Tuple, Union, Any, Generator, Iterable
 
 NumericType = Union[int, float, Decimal]
 
 
-def build_data_dict(record: Dict, key_fields: List[str]) -> Tuple:
-    return tuple(str(record.get(key, "")) for key in key_fields)
+def build_data_tuple(record: Dict, fields: List[str]) -> Tuple:
+    return tuple(str(record.get(key, "")) for key in fields)
 
 
 def read_csv_data(input_file: str) -> Generator[Dict, None, None]:
@@ -16,13 +16,37 @@ def read_csv_data(input_file: str) -> Generator[Dict, None, None]:
             yield row
 
 
+def find_minimum_distance_versus_data(
+    sample: Tuple, current_data: List[Tuple]
+) -> float:
+    return (
+        min([tuple_distance(sample, item) for item in current_data])
+        if len(current_data) > 0
+        else 0
+    )
+
+
 def restrict_data_set(
     data_stream: Generator[Dict, None, None],
-    key_fields: List[str],
     relevant_data_fields: List[str],
+    distance_threshold: float,
 ) -> Generator[Dict, None, None]:
+
+    restricted_data_map = {}
+
     for record in data_stream:
-        print(record)
+
+        relevant_data_key = build_data_tuple(record=record, fields=relevant_data_fields)
+
+        if relevant_data_key not in restricted_data_map:
+
+            distance: float = find_minimum_distance_versus_data(
+                relevant_data_key, list(restricted_data_map.keys())
+            )
+
+            if len(restricted_data_map) == 0 or (distance > distance_threshold):
+                restricted_data_map[relevant_data_key] = record
+                yield record
 
 
 def string_distance(candidate: str, reference: str) -> float:
@@ -55,8 +79,13 @@ def tuple_distance(candidate: Tuple, reference: Tuple) -> float:
 
 
 if __name__ == "__main__":
-    restrict_data_set(
-        data_stream=read_csv_data(input_file="./data/example1.csv"),
-        key_fields=["id"],
-        relevant_data_fields=["a", "b", "c"],
+
+    print(
+        list(
+            restrict_data_set(
+                data_stream=read_csv_data(input_file="./data/example1.csv"),
+                relevant_data_fields=["a", "b", "c"],
+                distance_threshold=2,
+            )
+        )
     )
