@@ -1,6 +1,7 @@
 from __future__ import annotations
+from dataclasses import dataclass
 
-from typing import Any, Callable, Union
+from typing import Any, Callable, List, Union
 
 
 def get_user_input(prompt: str) -> str:
@@ -14,32 +15,35 @@ def calculate(command: str) -> str:
 def output_feedback(result: str) -> None:
     print(result)
 
+
+RawFunction = Callable[[Any], Any]
+
 StepFunction = Callable[[Any], Any]
 
-class Step:
-    def __init__(self, step_function: StepFunction, data: Any = None) -> None:
-        self.step_function = step_function
-        self.data = data
 
-    def concat(self, next_step: Union[Step, StepFunction] = lambda x: x) -> Step:
-        if isinstance(next_step, Step):
-            return Step(next_step.step_function, self.step_function(self.data))  
-        return Step(next_step, self.step_function(self.data))  
+@dataclass(frozen=True)
+class StepResult:
+    success: bool
+    payload: Any
 
 
-def main_loop():
-    Step(step_function=get_user_input).concat(calculate).concat(
-        output_feedback
-    ).concat()
-    
-    input = Step(step_function=get_user_input)
+def step(raw_function: RawFunction, arg: Any) -> StepFunction:
+    try:
+        return StepResult(success=True, payload=raw_function(arg))
+    except:
+        return StepResult(success=False, payload=arg)
 
-    processed = input.concat(calculate)
 
-    feedback = processed.concat(output_feedback)
+def chain_steps(steps: List[StepFunction], input: Any) -> Any:
+    return (
+        steps[-1](chain_steps(steps[:-1], input)) if len(steps) > 1 else steps[0](input)
+    )
 
-    feedback.concat(input)
+
+def repl_loop():
+    while True:
+        chain_steps([get_user_input, calculate, output_feedback], "")
 
 
 if __name__ == "__main__":
-    main_loop()
+    repl_loop()
