@@ -12,7 +12,6 @@ def join(
     join_key_a: Callable[[Any], Any],
     join_key_b: Callable[[Any], Any],
     combiner: Callable[[Any, Optional[Any]], Any] = dict_combiner,
-    null_b: Any = {},
 ) -> List[Any]:
     iterable_b_map: Dict[Any, Any] = reduce(
         lambda acc, cur: {
@@ -26,7 +25,7 @@ def join(
     return [
         combiner(item_a, item_b)
         for item_a in finite_iterable_a
-        for item_b in iterable_b_map.get(join_key_a(item_a), [null_b])
+        for item_b in iterable_b_map.get(join_key_a(item_a), [None])
     ]
 
 
