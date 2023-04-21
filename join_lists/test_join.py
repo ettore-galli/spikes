@@ -54,7 +54,9 @@ def test_join_classes():
     ]
     finite_iterable_b: Iterable[Any] = [
         BClass(1, "qqqqqq"),
-        BClass(3, "wwwwww"),
+        BClass(3, "wwwwww-a"),
+        BClass(3, "wwwwww-b"),
+        BClass(3, "wwwwww-c"),
         BClass(4, "eeeeee"),
     ]
     join_key_a: Callable[[Any], Any] = lambda item: item.a
@@ -70,7 +72,9 @@ def test_join_classes():
     expected_join: Iterable[Any] = [
         JoinedClass(1, "aaa", "qqqqqq"),
         JoinedClass(2, "bbb", None),
-        JoinedClass(3, "ccc", "wwwwww"),
+        JoinedClass(3, "ccc", "wwwwww-a"),
+        JoinedClass(3, "ccc", "wwwwww-b"),
+        JoinedClass(3, "ccc", "wwwwww-c"),
     ]
 
     assert (
