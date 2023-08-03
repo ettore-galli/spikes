@@ -5,8 +5,12 @@ def printer():
 
 
 def echoer():
+
+    echo = None
+
     while True:
-        text = yield f": {text} #"
+        text = yield echo
+        echo = f": {text} #"
 
 
 if __name__ == "__main__":
@@ -17,6 +21,12 @@ if __name__ == "__main__":
     # prt.send("zxczxczzx")
 
     echo = echoer()
+    print(dir(echo))
     next(echo)
-    for text in ["aaa", "bbb", "ccc"]:
+
+    for text in ["aaa", "bbb", "ccc", "💥💥💥"]:
         print(echo.send(text))
+
+    for _ in text in echo:
+        for text in ["aaa", "bbb", "ccc", "💥💥💥"]:
+            print(echo.send(text))
