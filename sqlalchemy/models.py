@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
 
-from connection import Base
+from base import Base
 
 
 class Department(Base):
@@ -19,5 +19,5 @@ class Employee(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String)
     department_id = Column(Integer, ForeignKey("departments.id"))
-    
+
     department = relationship("Department", back_populates="employees")
