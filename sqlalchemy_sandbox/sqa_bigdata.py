@@ -29,27 +29,31 @@ def update_data(session):
     ]
 
     for data in newdata:
-        r = session.execute(
-            select(Employee)
-            .select_from(Employee)
-            .filter(Employee.name == f"Emp_{data[0] }")
+        name = f"Emp_{data[0] }"
+
+        rows = session.execute(
+            select(Employee).select_from(Employee).filter(Employee.name == name)
         )
 
-        if r.one_or_none():
+        department_id = 1 + data[0] % 2
+
+        row = rows.one_or_none()
+
+        if row is not None:
+            print("update", row[0].id, "dep=", department_id)
             session.execute(
                 Update(
                     Employee,
-                    whereclause=Employee.id == data[0],
-                    values=dict(name=data[1], department_id=1 + data[0] % 2),
+                    whereclause=Employee.name == name,
+                    values=dict(name=data[1], department_id=department_id),
                 )
             )
         else:
+            print("insert dep=", department_id)
             session.execute(
                 Insert(
                     Employee,
-                    values=dict(
-                        id=data[0], name=data[1], department_id=1 + data[0] % 2
-                    ),
+                    values=dict(id=data[0], name=data[1], department_id=department_id),
                 )
             )
     session.commit()
@@ -59,7 +63,6 @@ def main():
     with create_db_session() as session:
         from datetime import datetime
 
-        
         t0 = datetime.now()
         clear_data(session=session)
         insert_data(session=session)
