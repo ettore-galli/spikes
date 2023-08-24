@@ -22,8 +22,10 @@ Sistema di plugin vim 8+
 <https://medium.com/@paulodiovani/installing-vim-8-plugins-with-the-native-pack-system-39b71c351fea>
 <https://github.com/paulodiovani/dot-files/tree/main/home/user>
 
-<https://thevaluable.dev/vim-commands-beginner/>
+## Tutorial
 
+<https://thevaluable.dev/vim-commands-beginner/>
+<https://thevaluable.dev/vim-intermediate/>
 
 ## Tutorial freecodecamp
 
@@ -38,8 +40,12 @@ touch ~/.vimrc
 ```
 
 ## Tutorial vimscripting
+
 <https://learnvimscriptthehardway.stevelosh.com/chapters/17.html>
 
 ## Colori
 
-https://medium.com/code-art/vim-color-control-guide-all-in-one-f30188a161c5
+<https://medium.com/code-art/vim-color-control-guide-all-in-one-f30188a161c5>
+<https://jdhao.github.io/2019/11/03/vim_custom_statusline/>
+
+#
