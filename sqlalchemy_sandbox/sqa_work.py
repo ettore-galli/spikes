@@ -1,5 +1,5 @@
-from connection import create_db_session
-from models import Employee, Department
+from sqlalchemy_sandbox.connection import create_db_session
+from sqlalchemy_sandbox.models import Employee, Department
 
 
 def insert_data(session):
