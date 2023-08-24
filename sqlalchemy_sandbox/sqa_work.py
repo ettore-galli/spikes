@@ -1,5 +1,12 @@
 from sqlalchemy_sandbox.connection import create_db_session
 from sqlalchemy_sandbox.models import Employee, Department
+from sqlalchemy import update, delete
+
+
+def clear_data(session):
+    session.execute(delete(Employee))
+    session.execute(delete(Department))
+    session.commit()
 
 
 def insert_data(session):
@@ -22,6 +29,7 @@ def query_data(session):
 
 def main():
     with create_db_session() as session:
+        clear_data(session=session)
         insert_data(session=session)
         query_data(session=session)
 
