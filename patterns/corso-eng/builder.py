@@ -31,6 +31,9 @@ class Arrow:
     arrow_from: EntityRectangle
     arrow_to: EntityRectangle
 
+    def __str__(self) -> str:
+        return f"--- {self.arrow_from.name} {self.arrow_to.name} -->"
+
 
 class TextDiagram(Diagram):
     def __init__(self) -> None:
@@ -63,7 +66,7 @@ class GraphicDiagram(Diagram):
         self.association = Arrow(self.class_a, self.class_b)
 
     def __str__(self) -> str:
-        return f"[{self.class_a}] -------> [{self.class_b}]"
+        return f"[{self.class_a}] {str(self.association)} [{self.class_b}]"
 
 
 class DiagramBuilder(ABC):
