@@ -11,13 +11,9 @@ class Lettura:
         return f"{self.consumo} {self.unita}"
 
 
-@dataclass
-class DatiLettura:
-    consumo: float
-    unita: str
-
-
 class Reader(ABC):
+    um = None
+
     @abstractmethod
     def has_next_lettura(self) -> bool:
         ...
@@ -34,31 +30,48 @@ class ReaderCreator(ABC):
 
 
 class GasLettureReader(Reader):
+    um = "smc"
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.consumo = 8
+        # self.underlying_reader = reader
+
     def has_next_lettura(self) -> bool:
         return True
 
     def get_next_lettura(self) -> Lettura:
-        return Lettura(consumo=13, unita="smc")
+        return Lettura(consumo=self.consumo, unita=self.um)
 
 
 class H20LettureReader(Reader):
-    # def __init__(self) -> None:
-    #     super().__init__()
-    #     self.underlying_reader = reader
+    um = "litri"
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.consumo = 7
+        # self.underlying_reader = reader
 
     def has_next_lettura(self) -> bool:
         return True
 
     def get_next_lettura(self) -> Lettura:
-        return Lettura(consumo=7, unita="litri")
+        return Lettura(consumo=self.consumo, unita=self.um)
 
 
 class ElLettureReader(Reader):
+    um = "KWh"
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.consumo = 11
+        # self.underlying_reader = reader
+
     def has_next_lettura(self) -> bool:
         return True
 
     def get_next_lettura(self) -> Lettura:
-        return Lettura(consumo=7, unita="Kwh")
+        return Lettura(consumo=self.consumo, unita=self.um)
 
 
 class GasLettureReaderCreator(ReaderCreator):
@@ -78,21 +91,28 @@ class ElLettureReaderCreator(ReaderCreator):
 
 class GeneralFileReader(ABC):
     @abstractmethod
-    def read(self) -> DatiLettura:
+    def consumo(self) -> float:
         ...
 
 
+# TBD
 class PlainTextReader(GeneralFileReader):
-    def read(self, file) -> DatiLettura:
-        return DatiLettura(consumo=7, unita="Kwh")
+    def consumo(self) -> float:
+        return 8
 
 
+# TBD
 class XmlReader(GeneralFileReader):
-    def read(self, file) -> DatiLettura:
-        return DatiLettura(consumo=17, unita="Kwh")
+    def consumo(self) -> float:
+        return 7
 
 
 if __name__ == "__main__":
+    config = [
+        (GasLettureReaderCreator, PlainTextReader),
+        (GasLettureReaderCreator, XmlReader),
+    ]
+
     readers = [
         GasLettureReaderCreator().create_reader(),
         H2OLettureReaderCreator().create_reader(),
