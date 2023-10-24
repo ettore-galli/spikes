@@ -17,22 +17,32 @@ class Bandiera(ABC):
 
 class BandieraItaliana(Bandiera):
     def get_icon(self) -> str:
-        return "tricolore.jpg"
+        return "[|||]"
 
 
 class BandieraTedesca(Bandiera):
     def get_icon(self) -> str:
-        return "<tedesca>.jpg"
+        return "[oOo]"
+
+
+class BandieraInglese(Bandiera):
+    def get_icon(self) -> str:
+        return "[xXx]"
 
 
 class SalutoItaliano(Saluto):
     def get_text(self) -> str:
-        return "ciao"
+        return "Benvenuto"
 
 
 class SalutoTedesco(Saluto):
     def get_text(self) -> str:
-        return "hallo"
+        return "Welcome"
+
+
+class SalutoInglese(Saluto):
+    def get_text(self) -> str:
+        return "Wilkommen"
 
 
 class PaginaFactory(ABC):
@@ -53,7 +63,7 @@ class PaginaItalianaFactory(ABC):
         return SalutoItaliano()
 
 
-class PaginaItalianaTedesca(ABC):
+class PaginaTedescaFactory(ABC):
     def get_bandiera(self) -> Bandiera:
         return BandieraTedesca()
 
@@ -61,10 +71,20 @@ class PaginaItalianaTedesca(ABC):
         return SalutoTedesco()
 
 
-if __name__ == "__main__":
-    crea_pagina_italiana = PaginaItalianaFactory()
-    crea_pagina_tedesca = PaginaItalianaTedesca()
+class PaginaIngleseFactory(ABC):
+    def get_bandiera(self) -> Bandiera:
+        return BandieraInglese()
 
-    creator: List[PaginaFactory]
-    for creator in [crea_pagina_italiana, crea_pagina_tedesca]:
+    def get_saluto(self) -> Saluto:
+        return SalutoInglese()
+
+
+if __name__ == "__main__":
+    creators: List[PaginaFactory] = [
+        PaginaItalianaFactory(),
+        PaginaTedescaFactory(),
+        PaginaIngleseFactory(),
+    ]
+
+    for creator in creators:
         print(creator.get_bandiera().get_icon(), creator.get_saluto().get_text())
