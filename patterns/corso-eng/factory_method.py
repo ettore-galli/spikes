@@ -61,11 +61,15 @@ class ReaderCreator(ABC):
         ...
 
 
+def get_reader_from_file(file) -> GeneralFileReader:
+    return XmlReader(file) if "X" in file else PlainTextReader(file)
+
+
 class GasLettureReader(Reader):
     def __init__(self, file) -> None:
         super().__init__()
         self.um = "smc"
-        self.underlying_reader = PlainTextReader(file)
+        self.underlying_reader = get_reader_from_file(file)
 
     def has_next_lettura(self) -> bool:
         return True
@@ -78,7 +82,7 @@ class H20LettureReader(Reader):
     def __init__(self, file) -> None:
         super().__init__()
         self.um = "litri"
-        self.underlying_reader = PlainTextReader(file)
+        self.underlying_reader = get_reader_from_file(file)
 
     def has_next_lettura(self) -> bool:
         return True
@@ -91,7 +95,7 @@ class ElLettureReader(Reader):
     def __init__(self, file) -> None:
         super().__init__()
         self.um = "KWh"
-        self.underlying_reader = PlainTextReader(file)
+        self.underlying_reader = get_reader_from_file(file)
 
     def has_next_lettura(self) -> bool:
         return True
@@ -125,6 +129,7 @@ if __name__ == "__main__":
         GasLettureReaderCreator().create_reader("data/GAS.txt"),
         H2OLettureReaderCreator().create_reader("data/H2O.txt"),
         ElLettureReaderCreator().create_reader("data/ELE.txt"),
+        ElLettureReaderCreator().create_reader("data/ELE-X.txt"),
     ]
 
     for reader in readers:
