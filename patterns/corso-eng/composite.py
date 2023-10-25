@@ -34,6 +34,6 @@ if __name__ == "__main__":
     parenti = Gruppo(contatti=[Nominativo("3333333"), Nominativo("4444444")])
     tutti = Gruppo(contatti=[amici, parenti, Nominativo("123123")])
     universo = Gruppo(contatti=[tutti, Nominativo("999999999999")])
-    print(tutti.get_numeri())
 
+    print(tutti.get_numeri())
     print(universo.get_numeri())
