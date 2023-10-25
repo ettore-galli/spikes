@@ -57,7 +57,7 @@ class Reader(ABC):
 
 class ReaderCreator(ABC):
     @abstractmethod
-    def create_reader(self) -> Reader:
+    def create_reader(self, data_file) -> Reader:
         ...
 
 
@@ -105,18 +105,18 @@ class ElLettureReader(Reader):
 
 
 class GasLettureReaderCreator(ReaderCreator):
-    def create_reader(self, file) -> Reader:
-        return GasLettureReader(file)
+    def create_reader(self, data_file) -> Reader:
+        return GasLettureReader(data_file)
 
 
 class H2OLettureReaderCreator(ReaderCreator):
-    def create_reader(self, file) -> Reader:
-        return H20LettureReader(file)
+    def create_reader(self, data_file) -> Reader:
+        return H20LettureReader(data_file)
 
 
 class ElLettureReaderCreator(ReaderCreator):
-    def create_reader(self, file) -> Reader:
-        return ElLettureReader(file)
+    def create_reader(self, data_file) -> Reader:
+        return ElLettureReader(data_file)
 
 
 if __name__ == "__main__":
