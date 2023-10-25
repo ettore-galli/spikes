@@ -3,6 +3,9 @@ from dataclasses import dataclass
 
 
 class GeneralFileReader(ABC):
+    def __init__(self, file) -> None:
+        self.file = file
+
     @abstractmethod
     def consumo(self) -> float:
         ...
@@ -10,21 +13,24 @@ class GeneralFileReader(ABC):
 
 class BaseReader(GeneralFileReader):
     def consumo(self) -> float:
-        from datetime import datetime
-
-        return 100 + datetime.now().second
+        return -1
 
 
 # TBD
 class PlainTextReader(GeneralFileReader):
     def consumo(self) -> float:
-        return 8
+        with open(self.file) as data_file:
+            consumo = float(data_file.read())
+            return consumo  # Antipattern "fiducia"
 
 
 # TBD
 class XmlReader(GeneralFileReader):
     def consumo(self) -> float:
-        return 7
+        with open(self.file) as data_file:
+            raw_data = str(data_file.read())
+            consumo = float(raw_data[1:-1])
+            return consumo  # Antipattern "fiducia"
 
 
 @dataclass
@@ -38,7 +44,7 @@ class Lettura:
 
 class Reader(ABC):
     def __init__(self) -> None:
-        self.underlying_reader = BaseReader()
+        self.underlying_reader = BaseReader("data/empty.txt")
 
     @abstractmethod
     def has_next_lettura(self) -> bool:
@@ -56,9 +62,10 @@ class ReaderCreator(ABC):
 
 
 class GasLettureReader(Reader):
-    def __init__(self) -> None:
+    def __init__(self, file) -> None:
         super().__init__()
         self.um = "smc"
+        self.underlying_reader = PlainTextReader(file)
 
     def has_next_lettura(self) -> bool:
         return True
@@ -68,9 +75,10 @@ class GasLettureReader(Reader):
 
 
 class H20LettureReader(Reader):
-    def __init__(self) -> None:
+    def __init__(self, file) -> None:
         super().__init__()
         self.um = "litri"
+        self.underlying_reader = PlainTextReader(file)
 
     def has_next_lettura(self) -> bool:
         return True
@@ -80,9 +88,10 @@ class H20LettureReader(Reader):
 
 
 class ElLettureReader(Reader):
-    def __init__(self) -> None:
+    def __init__(self, file) -> None:
         super().__init__()
         self.um = "KWh"
+        self.underlying_reader = PlainTextReader(file)
 
     def has_next_lettura(self) -> bool:
         return True
@@ -92,18 +101,18 @@ class ElLettureReader(Reader):
 
 
 class GasLettureReaderCreator(ReaderCreator):
-    def create_reader(self) -> Reader:
-        return GasLettureReader()
+    def create_reader(self, file) -> Reader:
+        return GasLettureReader(file)
 
 
 class H2OLettureReaderCreator(ReaderCreator):
-    def create_reader(self) -> Reader:
-        return H20LettureReader()
+    def create_reader(self, file) -> Reader:
+        return H20LettureReader(file)
 
 
 class ElLettureReaderCreator(ReaderCreator):
-    def create_reader(self) -> Reader:
-        return ElLettureReader()
+    def create_reader(self, file) -> Reader:
+        return ElLettureReader(file)
 
 
 if __name__ == "__main__":
@@ -113,9 +122,9 @@ if __name__ == "__main__":
     ]
 
     readers = [
-        GasLettureReaderCreator().create_reader(),
-        H2OLettureReaderCreator().create_reader(),
-        ElLettureReaderCreator().create_reader(),
+        GasLettureReaderCreator().create_reader("data/GAS.txt"),
+        H2OLettureReaderCreator().create_reader("data/H2O.txt"),
+        ElLettureReaderCreator().create_reader("data/ELE.txt"),
     ]
 
     for reader in readers:
