@@ -32,3 +32,4 @@ coupling -> accopppiamento classi
 Disaccoppiamento tramite interfacce
 Utile per l'inversion Of Control
 
+# 
