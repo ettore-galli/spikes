@@ -6,13 +6,14 @@ from typing import List, Optional
 
 
 class Personaggio(ABC):
-    def __init__(self, nome) -> None:
+    def __init__(self, nome, genere="M") -> None:
         self.nome = nome
+        self.genere = genere
 
     def combatti(
         self, opponente: Personaggio
     ) -> int:  # 1 = ho vinto; 0=Pari; -1 = Ho perso
-        print(f"{self.nome}: Combattendo contro {opponente}")
+        print(f"{self.nome} ({self.genere}): Combattendo contro {opponente}")
         return -1
 
     def __str__(self) -> str:
@@ -33,7 +34,7 @@ class Nano(Personaggio):
         return 0
 
 
-class Uomo(Personaggio):
+class Umano(Personaggio):
     def combatti(self, opponente: Personaggio) -> int:
         super().combatti(opponente=opponente)
         _ = Personaggio
@@ -41,8 +42,8 @@ class Uomo(Personaggio):
 
 
 class PersonaggioEsperto(Personaggio):
-    def __init__(self, nome, personaggio_base) -> None:
-        super().__init__(nome=nome)
+    def __init__(self, personaggio_base) -> None:
+        super().__init__(nome=personaggio_base.nome)
         self.personaggio_base = personaggio_base
 
     def combatti(self, opponente: Personaggio) -> int:
@@ -61,21 +62,21 @@ class Sacerdote(PersonaggioEsperto):
 
 class Stregone(PersonaggioEsperto):
     def fai_magia(self) -> str:
-        return "abracadabra."
+        print(f"{self.nome} ({self.genere}): Facendo una magia")
 
 
 if __name__ == "__main__":
-    uomo = Uomo(nome="A")
-    altro_uomo = Uomo("B")
+    uomo = Umano(nome="A")
+    altro_uomo = Umano("B")
 
-    mago = Stregone(nome="Il Mago", personaggio_base=uomo)
+    mago = Stregone(personaggio_base=uomo)
 
-    sacerdote = Sacerdote(nome="Gran Sacerdote", personaggio_base=altro_uomo)
+    sacerdote = Sacerdote(personaggio_base=altro_uomo)
 
-    terzo_uomo = Uomo("C")
+    terzo_uomo = Umano("C")
+    strega = Stregone(Umano("Giovannina", genere="F"))
     tuttologo = Sacerdote(
-        nome="Tuttofare",
-        personaggio_base=Stregone(nome=".", personaggio_base=terzo_uomo),
+        personaggio_base=Stregone(personaggio_base=terzo_uomo),
     )
 
     print(mago.combatti(terzo_uomo))
@@ -83,3 +84,4 @@ if __name__ == "__main__":
     print(tuttologo.combatti(altro_uomo))
     print(mago.fai_magia())
     print(sacerdote.intercedi(Divinita()))
+    print(strega.fai_magia())
