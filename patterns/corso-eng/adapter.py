@@ -56,15 +56,16 @@ class Lavoratore(ABC):
 
 
 class DipendenteLavoratoreAdapter(Lavoratore):
-    def __init__(self, dipendente: Dipendente) -> None:
+    def __init__(self, dipendente: Dipendente, current_date: datetime) -> None:
         super().__init__()
         self.dipendente: Dipendente = dipendente
+        self.current_date = current_date
 
     def get_nominativo(self) -> str:
         return f"{self.dipendente.get_cognome()} {self.dipendente.get_nome()}"
 
     def get_eta(self) -> int:
-        return (datetime.now() - self.dipendente.get_data_nascita()).days / 365
+        return (self.current_date - self.dipendente.get_data_nascita()).days / 365
 
     def get_stipendio_giornaliero(self) -> float:
         return self.dipendente.get_stipendio_annuale() / 365
@@ -72,7 +73,9 @@ class DipendenteLavoratoreAdapter(Lavoratore):
 
 if __name__ == "__main__":
     ettore: Impiegato = Impiegato("Ettore", "Galli", datetime(1972, 11, 2), 366)
-    ettore_lavoratore = DipendenteLavoratoreAdapter(dipendente=ettore)
+    ettore_lavoratore = DipendenteLavoratoreAdapter(
+        dipendente=ettore, current_date=datetime.now()
+    )
     print(
         ettore_lavoratore.get_nominativo(),
         ettore_lavoratore.get_eta(),

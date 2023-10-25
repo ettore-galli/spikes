@@ -6,6 +6,10 @@ Docente Romina Fiorenza
 ## Materiale
 https://drive.google.com/drive/folders/1HvN8YRqNBSa7g6JC-KEnE6qKDLUb73YZ?usp=share_link
 
+
+## Tool diagrammi
+https://teams.microsoft.com/l/message/19:meeting_MTU0ZmIyZDgtOGQ3Mi00MTkxLThkZDctMGJhNDY5YTE2Yjdl@thread.v2/1698221811800?context=%7B%22contextType%22%3A%22chat%22%7D
+
 ## Intro
 Non ci sono metriche "esattte"
 I designer sono "artisti"
