@@ -1,8 +1,10 @@
 from abc import ABC, abstractmethod
 from typing import List
 
+class Edificio(ABC):
+    ...
 
-class Abitazione:
+class Abitazione(Edificio):
     def __init__(self, locali: int, bagni: int, giardino: bool) -> None:
         self.locali = locali
         self.bagni = bagni
