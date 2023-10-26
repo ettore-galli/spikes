@@ -7,10 +7,6 @@ class Modo(ABC):
         self.context: Orologio = context
 
     @abstractmethod
-    def successivo(self):
-        ...
-
-    @abstractmethod
     def pulsante_modo(self):
         ...
 
