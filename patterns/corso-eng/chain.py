@@ -32,7 +32,10 @@ class CommandLineConfiguration(BaseConfiguration):
 
 class FileConfiguration(BaseConfiguration):
     def get_configuration(self) -> str:
-        data = "from file"  # set to blank to try next processor
+        data = ""
+        with open("data/config.txt") as cfg:
+            data = cfg.read()
+
         if len(data) == 0:
             return self.next_processor.get_configuration()
         return data
