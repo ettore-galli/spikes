@@ -1,11 +1,8 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
-from random import randint, random
-from typing import List
-from threading import Thread
 
 
-class Modo:
+class Modo(ABC):
     def __init__(self, context: Orologio) -> None:
         self.context: Orologio = context
 
