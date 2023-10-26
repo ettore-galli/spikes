@@ -21,12 +21,15 @@ class BaseConfiguration(Configuration):
     def set_next_processor(self, next_processor: Configuration):
         self.next_processor = next_processor
 
+    def delegate(self):
+        return self.next_processor.get_configuration()
+
 
 class CommandLineConfiguration(BaseConfiguration):
     def get_configuration(self) -> str:
         data = input()
         if len(data) == 0:
-            return self.next_processor.get_configuration()
+            return self.delegate()
         return data
 
 
@@ -37,7 +40,7 @@ class FileConfiguration(BaseConfiguration):
             data = cfg.read()
 
         if len(data) == 0:
-            return self.next_processor.get_configuration()
+            return self.delegate()
         return data
 
 
@@ -45,7 +48,7 @@ class DefaultConfiguration(BaseConfiguration):
     def get_configuration(self) -> str:
         data = "Default"
         if len(data) == 0:
-            return self.next_processor.get_configuration()
+            return self.delegate()
         return data
 
 
