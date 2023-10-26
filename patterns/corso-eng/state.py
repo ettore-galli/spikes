@@ -1,76 +1,109 @@
+from __future__ import annotations
 from abc import ABC, abstractmethod
 from random import randint, random
 from typing import List
 from threading import Thread
 
 
-class Avvisabile:
+class Modo:
+    def __init__(self, context: Orologio) -> None:
+        self.context: Orologio = context
+
     @abstractmethod
-    def tempo_scaduto(self):
+    def successivo(self):
+        ...
+
+    @abstractmethod
+    def pulsante_modo(self):
+        ...
+
+    @abstractmethod
+    def pulsante_change(self):
         ...
 
 
-def annuncia(nome, n_risposte):
-    print(f"Sono {nome} e ho dato {n_risposte} risposte")
+class ModoNormale(Modo):
+    descr = "NORM"
+
+    def pulsante_modo(self):
+        self.context.set_modo(ModoModificaOre(self.context))
+
+    def pulsante_change(self):
+        self.context.set_luce()
 
 
-class Allievo(Avvisabile):
-    def __init__(self, nome) -> None:
-        super().__init__()
-        self.nome = nome
-        self.risposte = 0
-        self.lavoro = None
-        self.stop = False
+class ModoModificaOre(Modo):
+    descr = "CHG H"
 
-    def tempo_scaduto(self):
-        self.stop = True
+    def pulsante_modo(self):
+        self.context.set_modo(ModoModificaMinuti(self.context))
 
-    def lavora(self):
-        import time
-
-        def work():
-            while True:
-                if self.stop:
-                    break
-                time.sleep(random() / 10)
-                self.risposte += 1
-                # print(self.nome, self.risposte)
-
-            annuncia(self.nome, self.risposte)
-
-        self.lavoro = Thread(target=work)
-        self.lavoro.start()
+    def pulsante_change(self):
+        self.context.inc_ore()
 
 
-class Timer:
+class ModoModificaMinuti(Modo):
+    descr = "CHG M"
+
+    def pulsante_modo(self):
+        self.context.set_modo(ModoNormale(self.context))
+
+    def pulsante_change(self):
+        self.context.inc_minuti()
+
+
+class Orologio:
     def __init__(self) -> None:
-        self.da_avvisare: List[Avvisabile] = []
+        self.modo: Modo = ModoNormale(self)
+        self.luce: bool = False
+        self.ore: int = 0
+        self.minuti: int = 0
 
-    def add_da_avvisare(self, avv: Avvisabile):
-        self.da_avvisare.append(avv)
+    def set_modo(self, modo: Modo):
+        self.modo = modo
 
-    def avvisa_tutti(self):
-        for avv in self.da_avvisare:
-            avv.tempo_scaduto()
+    def set_luce(self):
+        self.luce = not self.luce
 
-    def start(self):
-        import time
+    def inc_ore(self):
+        self.ore = (self.ore + 1) % 60
 
-        def wait_task():
-            time.sleep(2)
-            self.avvisa_tutti()
+    def inc_minuti(self):
+        self.minuti = (self.minuti + 1) % 60
 
-        Thread(target=wait_task).start()
+    def pulsante_modo(self):
+        self.modo.pulsante_modo()
+
+    def pulsante_change(self):
+        self.modo.pulsante_change()
+
+    def __str__(self) -> str:
+        return f"{self.ore} : {self.minuti} {self.modo.descr} {'>>> <<<' if self.luce else ''}"
 
 
 if __name__ == "__main__":
-    allievi = [Allievo("Ettore"), Allievo("Pierino"), Allievo("Luigino")]
+    orologio = Orologio()
+    print(orologio)
 
-    timer = Timer()
+    orologio.pulsante_change()
+    print(orologio)
 
-    for allievo in allievi:
-        timer.add_da_avvisare(allievo)
+    orologio.pulsante_change()
+    print(orologio)
 
-    timer.start()
-    for allievo in allievi:
-        allievo.lavora()
+    orologio.pulsante_modo()
+    print(orologio)
+
+    for i in range(7):
+        orologio.pulsante_change()
+    print(orologio)
+
+    orologio.pulsante_modo()
+    print(orologio)
+
+    for i in range(21):
+        orologio.pulsante_change()
+    print(orologio)
+
+    orologio.pulsante_modo()
+    print(orologio)
