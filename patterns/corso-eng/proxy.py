@@ -55,38 +55,47 @@ class Impiegato(ImpiegatoBase):
 class ImpiegatoProxy(ImpiegatoBase):
     def __init__(self) -> None:
         self.impiegato = Impiegato()
-        self.footprint = []
+        self.footprint = ""
 
     def get_data(self) -> str:
         return self.impiegato.get_data()
 
+    def _do_load(self):
+        self.impiegato.load()
+        self.footprint = self._footprint(
+            self.impiegato.nome,
+            self.impiegato.reparto,
+            self.impiegato.stipendio,
+        )
+
     def load(self):
         if not self.impiegato.nome:
-            self.impiegato.load()
-            self.footprint = [
-                self.impiegato.nome,
-                self.impiegato.reparto,
-                self.impiegato.stipendio,
-            ]
+            self._do_load()
 
     def update_data(self, nome, reparto, stipendio):
         self.impiegato.update_data(nome, reparto, stipendio)
 
+    @staticmethod
+    def _footprint(nome, reparto, stipendio) -> str:
+        return nome.strip() + reparto.strip() + stipendio.strip()
+
     def _has_changed(self) -> bool:
-        return [
+        current_footprint = self._footprint(
             self.impiegato.nome,
             self.impiegato.reparto,
             self.impiegato.stipendio,
-        ] != self.footprint
+        )
+
+        return current_footprint != self.footprint
 
     def store(self):
         if self._has_changed():
             print("DATA CHANGED")
             self.impiegato.store()
-            self.impiegato.load()
+            self._do_load()
 
 
-def get_impiegato_proxy()->ImpiegatoBase:
+def get_impiegato_proxy() -> ImpiegatoBase:
     return ImpiegatoProxy()
 
 
