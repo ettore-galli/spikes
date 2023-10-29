@@ -122,11 +122,20 @@ A richiesta in "Puntate" successive...
 
 ---
 
+## Leitmotiv
+
+Nei pattern (creazionali in primis, ma tutti) si notano
+due fondamentali linee guida:
+
+* Chiamate polimorfiche di metodi
+* Utilizzo degli oggetti attraverso le loro interfacce
+
+---
+
 ## Factory / struttura
 
-Si vuole creare un'interfaccia per la creazione di oggetti
-in una superclasse, ma permettere alle sottoclassi di
-alterare il tipo di oggetti creati
+Si vuole creare un'interfaccia per la creazione di oggetti il
+cui tipo non è noto a priori, ma la sua interfaccia lo è.
 
 <style scoped>
 img {
@@ -139,7 +148,7 @@ img {
 
 ---
 
-## Factory / esempio
+## Factory / Esempio
 
 Un convertitore di gradi Celsius Fahrenheit può prendere
 l'input o da file, o da terminale
@@ -166,7 +175,7 @@ img {
 
 ---
 
-## Abstract Factory / esempio
+## Abstract Factory / Esempio
 
 Si vuole costruire gli elementi "grafici" di una
 home page multilingue, costituita da un messaggio
@@ -177,3 +186,28 @@ sia coerente
 
 Si sceglie una "dimensione" che gestirà gli artfetti dello stesso
 tipo a lei coerenti.
+
+---
+
+## Builder / Struttura
+
+Lo scopo del builder è incapsulare la costruzione di un oggetto complesso
+
+<style scoped>
+img {
+    display: block;
+    margin: 0 auto;
+}
+</style>
+
+![height:350px](./images/builder-struttura.png)
+
+---
+
+## Builder / Esempio
+
+Costruire una classe Logger composta di un formatter e di
+uno "scrittore" di output.
+
+Secondo il formatter o il tipo do output scelto, si hanno diversi tipi
+di logger, che vanno costruiti a step.
