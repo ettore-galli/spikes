@@ -146,3 +146,34 @@ l'input o da file, o da terminale
 
 Si vuole razionalizzare l'istanziazione della classe che preleva l'input
 
+Utile quando non si conosce a runtime la tipologia di oggetto da creare
+
+---
+
+## Abstract Factory / Struttura
+
+Abstract Factory serve per creare famiglie di
+oggetti consistenti tra loro
+
+<style scoped>
+img {
+    display: block;
+    margin: 0 auto;
+}
+</style>
+
+![height:350px](./images/factory-struttura.png)
+
+---
+
+## Abstract Factory / esempio
+
+Si vuole costruire gli elementi "grafici" di una
+home page multilingue, costituita da un messaggio
+di benvenuto ed una bandiera.
+
+Si vuole garantire che il "set" bandiera / messaggio
+sia coerente
+
+Si sceglie una "dimensione" che gestirà gli artfetti dello stesso
+tipo a lei coerenti.
