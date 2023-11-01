@@ -132,6 +132,13 @@ due fondamentali linee guida:
 
 ---
 
+## Pattern creazionali
+
+* Delega della creazione delgli oggetti
+* Disaccoppiamento
+
+---
+
 ## Factory / struttura
 
 Si vuole creare un'interfaccia per la creazione di oggetti il
@@ -211,3 +218,44 @@ uno "scrittore" di output.
 
 Secondo il formatter o il tipo do output scelto, si hanno diversi tipi
 di logger, che vanno costruiti a step.
+
+---
+
+## Bridge / Struttura
+
+Lo scopo del bridge è disaccoppiare più astrazioni
+da più implementazioni concrete.
+
+<style scoped>
+img {
+    display: block;
+    margin: 0 auto;
+}
+</style>
+
+![height:350px](./images/bridge-struttura.png)
+
+---
+
+## Bridge / Esempio
+
+<style scoped>
+img {
+    display: block;
+    margin: 0 auto;
+}
+</style>
+
+![height:350px](./images/bridge-esempio.jpg)
+
+---
+
+## Bridge / Esempio (continua)
+
+Si vuole realizzare un visualizatore di figure, che può visualizzare
+semplici figure in due modalità:
+
+* Figura semplice (una sola)
+* Figura ripetuta (tra copie)
+
+Il rendering, inoltre, deve poter avvenire sia un modo grafico che testuale
