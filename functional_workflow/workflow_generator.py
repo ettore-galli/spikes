@@ -134,7 +134,7 @@ if __name__ == "__main__":
         >> read_config_step
         >> read_source_step
         >> log_current_step
-        # >> write_output_step
+        >> write_output_step
         >> parallel_output_step
         >> log_current_step
     )
