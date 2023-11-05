@@ -226,6 +226,25 @@ di logger, che vanno costruiti a step.
 Lo scopo del bridge è disaccoppiare più astrazioni
 da più implementazioni concrete.
 
+E' utile quando negli oggetti si individuano più "dimensioni"
+
+---
+
+## Bridge / Esempio
+
+<style scoped>
+img {
+    display: inline-block;
+    margin: 50px;
+}
+</style>
+
+![w:450](./images/bridge-esempio-1.jpg) ![w:450](./images/bridge-esempio-2.png)
+
+---
+
+## Bridge / Schema standard
+
 <style scoped>
 img {
     display: block;
@@ -234,19 +253,6 @@ img {
 </style>
 
 ![height:350px](./images/bridge-struttura.png)
-
----
-
-## Bridge / Esempio
-
-<style scoped>
-img {
-    display: block;
-    margin: 0 auto;
-}
-</style>
-
-![height:350px](./images/bridge-esempio.jpg)
 
 ---
 
@@ -259,3 +265,45 @@ semplici figure in due modalità:
 * Figura ripetuta (tra copie)
 
 Il rendering, inoltre, deve poter avvenire sia un modo grafico che testuale
+
+---
+
+## Chain Of responsibility / Schema
+
+<style scoped>
+img {
+    display: block;
+    margin: 0 auto;
+}
+</style>
+
+Lo scopo del Chain of Responiibility è quello di
+fornire un serie di handler di una stessa richiesta in sequenza,
+non sapendo in anticipo quale evaderà la richiesta.
+
+![height:350px](./images/chain-struttura-1.png)
+
+---
+
+## Chain Of responsibility / Struttura
+
+<style scoped>
+img {
+    display: block;
+    margin: 0 auto;
+}
+</style>
+
+![height:350px](./images/chain-struttura-2.png)
+
+---
+
+## Chain Of responsibility / Esempio
+
+Elevamento a potenza
+
+(demo)
+
+* Per piccoli numeri e esponente intero, si procede per moltiplicazioni ripetute
+* Per numeri intermedi si usa usa math.pow 
+* Per grandi numeri si effettua un arrotondamento intero con l'operatore **
