@@ -25,12 +25,10 @@ style: |
     }
 
     th {
-        background-color: #f0fff0;
         color: #006600;
     }
 
     td {
-        background-color: #f0fff0;
         color: #006600;
     }
 
@@ -152,9 +150,18 @@ table {
     font-size: 24px;
 }
 th, td {
+    background-color: #fcfffc;
     text-align: center;
     padding: 0;
     margin:0
+}
+
+th {
+    background-color: #f0fff0;
+}
+
+td {
+    background-color: #fcfffc;
 }
 
 </style>
