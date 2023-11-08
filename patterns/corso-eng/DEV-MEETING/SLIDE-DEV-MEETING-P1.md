@@ -37,6 +37,10 @@ style: |
     p, ul, li {
         font-size: 48px;
     }
+
+    li {
+        list-style-type: "§ ";
+    }
 ---
 
 # DESIGN PATTERNS
@@ -69,7 +73,26 @@ TBD per incontro/i successivo/i
 
 ---
 
-## Introduzione / 1
+## Design principles
+
+1. DRY (Don’t Repeat Yourself)
+2. KISS (Keep it short and simple)
+3. YAGNI (You ain’t gonna need it)
+4. S.O.L.I.D. (acronimo per 5 principles)
+  
+---
+
+## Design principles - SOLID
+
+1. Single Responsibility
+2. Open Closed Principle
+3. Liskov
+4. Interface Segregation
+5. Dependency Inversion
+  
+---
+
+## Design pattern - Introduzione / 1
 
 * Soluzioni a problemi comuni e ricorrenti
 * Frutto di esperienza e processo induttivo
@@ -79,7 +102,7 @@ TBD per incontro/i successivo/i
 
 ---
 
-## Introduzione / 2
+## Design pattern - Introduzione / 2
 
 <style scoped>
 p {
@@ -94,7 +117,7 @@ Christopher Alexander (architetto)
 
 ---
 
-## Introduzione / 3
+## Design pattern - Introduzione / 3
 
 <style scoped>
 p {
@@ -138,6 +161,7 @@ th, td {
 
 | Creazionali            | Strutturali           |Comportamentali         |
 | ---                    | ---                   |---                     |
+| _(costruttore)_        | _(attributi)_         |_(metodi)_              |
 | Factory method         | Adapter               |Interpreter             |
 | Abstract Factory       | Bridge                |Template Method         |
 | Builder                | Composite             |Chain of Responsability |
@@ -200,8 +224,8 @@ img {
 E' un pattern comportamentale (_"behavioural"_)
 
 Lo scopo del Chain of Responiibility è quello di
-fornire un serie di handler di una stessa richiesta in sequenza,
-non sapendo in anticipo quale evaderà la richiesta.
+fornire un serie di handler di una stessa richiesta
+in sequenza,non sapendo in anticipo quale evaderà la richiesta.
 
 ![height:350px](./images/chain-struttura-1.png)
 
@@ -220,17 +244,9 @@ img {
 
 ---
 
-<style scoped>
-p, ul, li {
-    font-size: 36px;
-}
-</style>
-
 ## Chain Of responsibility / Esempio
 
 Elevamento a potenza
-
-(demo)
 
 * Per piccoli numeri e esponente intero, si procede per moltiplicazioni ripetute
 * Per numeri intermedi si usa usa math.pow
