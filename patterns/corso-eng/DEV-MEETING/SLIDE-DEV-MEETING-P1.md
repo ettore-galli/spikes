@@ -3,7 +3,7 @@ marp: true
 style: |
     section, pre {
         background-color: #ffffff;
-        border: 40px solid #006600;
+        border: 30px solid rgba(0, 102, 0, 0.33);
         padding: 10 20px;
     }
 
