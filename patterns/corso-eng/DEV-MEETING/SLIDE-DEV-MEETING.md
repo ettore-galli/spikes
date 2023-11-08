@@ -29,13 +29,38 @@ style: |
 
 ---
 
+## Corso ENG: DP
+
+* Design patterns GoF
+* Cenni ai design principles
+
+---
+
+## Presentazione: Oggi
+
+* Breve illustrazione della struttura del corso
+  * Cenni ai design principles
+  * Illustrazione di **un** dp esemplificativo
+
+---
+
+## Presentazione: Next step
+
+Da organizzare e definire per incontro/i successivo/i
+
+* Lab interattivo su altri DP da scegliere in
+  base a feedback e interesse
+* Varie ed eventuali a richiesta
+
+---
+
 ## Introduzione
 
 * Soluzioni a problemi comuni e ricorrenti
 * Frutto di esperienza e processo induttivo
 * Standardizzazione
 * Generalità / astrazione
-* Primo anno citato di atoria: 1977 (-> induzione + esperienza)
+* Primo anno citato di storia: 1977 (-> induzione + esperienza)
 
 ---
 
@@ -305,5 +330,5 @@ Elevamento a potenza
 (demo)
 
 * Per piccoli numeri e esponente intero, si procede per moltiplicazioni ripetute
-* Per numeri intermedi si usa usa math.pow 
+* Per numeri intermedi si usa usa math.pow
 * Per grandi numeri si effettua un arrotondamento intero con l'operatore **
