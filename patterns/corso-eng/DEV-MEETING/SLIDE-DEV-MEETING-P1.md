@@ -174,7 +174,7 @@ td {
 | Builder                | Composite             |Chain of Responsability |
 | Prototype              | Decorator             |Command                 |
 | Singleton              | Facade                |Iterator                |
-|                        | Flyweigh              |Mediator                |
+|                        | Flyweight             |Mediator                |
 |                        | Proxy                 |Memento                 |
 |                        |                       |Observer                |
 |                        |                       |State                   |
