@@ -3,6 +3,7 @@ import csv
 
 import numpy as np
 from sklearn import preprocessing
+
 import keras
 
 
@@ -47,6 +48,11 @@ def build_target_categorical(data: np.ndarray) -> np.ndarray:
     return keras.utils.to_categorical(data)
 
 
+def rescale_input(data: np.ndarray) -> np.ndarray:
+    scaler = preprocessing.StandardScaler().fit(data)
+    return scaler.transform(data)
+
+
 # To do:
 # def build_target_categorical_np(data: np.ndarray) -> np.ndarray:
 #     ...
@@ -57,4 +63,5 @@ def prepare_iris_data(iris_data_file: str):
     features, target = split_features_target(data)
     categorized_target = categorize_target_np(target)
     categotical_target = build_target_categorical(categorized_target)
-    return features, categotical_target
+    rescaled_features = rescale_input(features)
+    return rescaled_features, categotical_target
