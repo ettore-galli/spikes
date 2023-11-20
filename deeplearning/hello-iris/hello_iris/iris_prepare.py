@@ -1,10 +1,13 @@
-from typing import List, Optional, Tuple, Union
+from typing import Dict, List, Optional, Tuple, Union
+
 import csv
 
 import numpy as np
-from sklearn import preprocessing
 
 import keras
+
+from sklearn import preprocessing
+from sklearn.calibration import LabelEncoder
 
 
 def float_or_none(candidate: str) -> Optional[float]:
@@ -32,16 +35,17 @@ def split_features_target(data: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
     return features, target
 
 
-def categorize_target(data: np.ndarray) -> np.ndarray:
+def categorize_target(data: np.ndarray) -> Tuple[np.ndarray, LabelEncoder]:
     label_encoder = preprocessing.LabelEncoder()
     return label_encoder.fit_transform(data)
 
 
-def categorize_target_np(data: np.ndarray) -> np.ndarray:
+def categorize_target_np(data: np.ndarray) -> Tuple[np.ndarray, Dict]:
     categories = {category: ordinal for ordinal, category in enumerate(set(data))}
+    reverse_map = {value: key for key, value in categories.items()}
     category = np.vectorize(lambda item: categories.get(item, None))
 
-    return category(data)
+    return category(data), reverse_map
 
 
 def build_target_categorical(data: np.ndarray) -> np.ndarray:
@@ -61,7 +65,7 @@ def rescale_input(data: np.ndarray) -> np.ndarray:
 def prepare_iris_data(iris_data_file: str):
     data = load_iris_data(iris_data_file)
     features, target = split_features_target(data)
-    categorized_target = categorize_target_np(target)
+    categorized_target, reverse_map = categorize_target_np(target)
     categotical_target = build_target_categorical(categorized_target)
     rescaled_features = rescale_input(features)
-    return rescaled_features, categotical_target
+    return rescaled_features, categotical_target, reverse_map
