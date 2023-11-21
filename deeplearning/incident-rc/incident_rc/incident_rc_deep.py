@@ -4,7 +4,6 @@ from sklearn.model_selection import train_test_split
 
 from incident_rc.incident_rc_prepare import (
     prepare_incident_rc_data,
-    rescale_input,
 )
 
 
@@ -48,7 +47,7 @@ def train_model(
     # Set Batch size
     batch_size = 16
     # Set number of epochs
-    epochs = 50
+    epochs = 200
     # Set validation split. 20% of the training data will be used for validation
     # after each epoch
     validation_split = 0.2
@@ -88,10 +87,10 @@ def perform_incident_rc_deep_learning(incident_rc_data_file: str):
     print(training_history)
     print(evaluation_over_test)
 
-    prediction_input = [[0, 0, 0, 1, 0, 0, 1]]  # NETWORK_DELAY?
+    prediction_input = [[0, 0, 1, 1, 0, 1, 0]]  # NETWORK_DELAY?
 
     # Scale prediction data with the same scaling model
-    scaled_input = rescale_input(np.array(prediction_input))
+    scaled_input = prediction_input
 
     # Get raw prediction probabilities
     raw_prediction = model.predict(scaled_input)
