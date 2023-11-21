@@ -19,14 +19,14 @@ def create_model() -> keras.models.Model:
     model.add(
         keras.layers.Dense(
             128,  # Number of nodes
-            input_shape=(4,),  # Number of input variables
+            input_shape=(7,),  # Number of input variables
             name="Hidden-Layer-1",  # Logical name
             activation="relu",
         )
     )  # activation function
 
     # Add a second hidden layer
-    model.add(keras.layers.Dense(128, name="Hidden-Layer-2", activation="relu"))
+    model.add(keras.layers.Dense(512, name="Hidden-Layer-2", activation="relu"))
 
     # Add an output layer with softmax activation
     model.add(keras.layers.Dense(nb_classes, name="Output-Layer", activation="softmax"))
@@ -48,7 +48,7 @@ def train_model(
     # Set Batch size
     batch_size = 16
     # Set number of epochs
-    epochs = 10
+    epochs = 50
     # Set validation split. 20% of the training data will be used for validation
     # after each epoch
     validation_split = 0.2
@@ -76,8 +76,9 @@ def train_model(
 
 def perform_incident_rc_deep_learning(incident_rc_data_file: str):
     features, target, reverse_map = prepare_incident_rc_data(incident_rc_data_file)
+    print(features, target, reverse_map)
+
     model = create_model()
-    print(features, target)
 
     trained_model, training_history, evaluation_over_test = train_model(
         model=model, features=features, target=target
@@ -87,7 +88,7 @@ def perform_incident_rc_deep_learning(incident_rc_data_file: str):
     print(training_history)
     print(evaluation_over_test)
 
-    prediction_input = [[6.6, 3.0, 4.4, 1.4]]
+    prediction_input = [[0, 0, 0, 1, 0, 0, 1]]  # NETWORK_DELAY?
 
     # Scale prediction data with the same scaling model
     scaled_input = rescale_input(np.array(prediction_input))
