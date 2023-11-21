@@ -30,7 +30,7 @@ def load_incident_rc_data(incident_rc_data_file: str) -> np.ndarray:
 
 
 def split_features_target(data: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
-    features = data[:, :-1]
+    features = data[:, 1:-1]
     target = data[:, -1]
     return features, target
 
@@ -68,4 +68,5 @@ def prepare_incident_rc_data(incident_rc_data_file: str):
     categorized_target, reverse_map = categorize_target_np(target)
     categotical_target = build_target_categorical(categorized_target)
     rescaled_features = rescale_input(features)
+
     return rescaled_features, categotical_target, reverse_map
