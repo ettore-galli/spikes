@@ -39,14 +39,7 @@ if __name__ == "__main__":
 
     print(result)
 
-    # print(th.T, data)
-    # print(np.dot(th.T, data))
-
     print("-" * 50)
-
-    # print(np.dot(th.T, data) + th0 == labels)
-    # print(positive(data, th, th0) == labels)
-    # print((positive(data, th, th0) == labels).sum())
 
     ths = np.array(
         [

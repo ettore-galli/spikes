@@ -83,12 +83,8 @@ def rescale_input(data: np.ndarray) -> np.ndarray:
 
 
 def prepare_incident_rc_data(incident_rc_data_file: str):
-    # data = load_incident_rc_data(incident_rc_data_file)
-    # features, target = split_features_target(data)
     features, target = load_incident_rc_data_splitted(incident_rc_data_file)
     categorized_target, reverse_map = categorize_target_np(target)
     categotical_target = build_target_categorical(categorized_target)
-
-    # rescaled_features = rescale_input(features)
 
     return features, categotical_target, reverse_map
