@@ -52,18 +52,5 @@ if __name__ == "__main__":
 
     th0s = np.array([1, 2, 3, 0, 5, 1, 1, 1, 1])
 
-    # print(data, labels, ths.T, th0s)
-
-    # print("equals")
-    # print(np.sign(np.dot(ths.T, data) + th0s.T) == labels)
-    # print("scores: sum axis 1")
-    # print(np.sum(np.sign(np.dot(ths.T, data) + th0s.T) == labels, axis=1))
-    # print("scores: sum keepdims true")
-
-    # scores = np.sum(
-    #     np.sign(np.dot(ths.T, data) + th0s.T) == labels, axis=1, keepdims=True
-    # )
-    # maxscore = np.argmax(scores)
-    # print(maxscore)
     print([x.tolist() for x in best_separator(data, labels, ths, th0s)])
     print([x.tolist() for x in best_separator_2(data, labels, ths, th0s)])
