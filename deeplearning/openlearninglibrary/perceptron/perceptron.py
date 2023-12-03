@@ -7,10 +7,6 @@ Features = np.ndarray
 Labels = np.ndarray
 
 
-def linear_classifier(x, th, th0):
-    return np.sign(np.dot(x, th) + th0)
-
-
 Hypotesis = Tuple[np.ndarray, float]
 
 
@@ -20,6 +16,12 @@ def classifier(h: Hypotesis, test_x: Features) -> np.ndarray:
     labelled_results = np.sign(results)
 
     return labelled_results
+
+
+def score(h: Hypotesis, test_x: Features, test_y: Labels) -> float:
+    labelled_results = classifier(h=h, test_x=test_x)
+    matching = labelled_results == test_y
+    return np.count_nonzero(matching) / matching.size
 
 
 if __name__ == "__main__":
