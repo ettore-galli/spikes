@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List, Optional, Tuple
 import numpy as np
 
 
@@ -53,9 +53,9 @@ def perceptron_data_loop(
 
 
 def perceptron_learning_algorithm(
-    test_x: Features, test_y: Labels, tau: int
+    test_x: Features, test_y: Labels, tau: int, initial_h: Optional[Hypotesis] = None
 ) -> Tuple[Hypotesis, Errors, List[Hypotesis]]:
-    hypotesis = initial_hypotesis(test_x=test_x)
+    hypotesis = initial_hypotesis(test_x=test_x) if initial_h is None else initial_h
 
     global_errors = 0
     global_history = []
