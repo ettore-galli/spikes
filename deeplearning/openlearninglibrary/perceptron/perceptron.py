@@ -1,4 +1,4 @@
-from typing import Tuple
+from typing import List, Tuple
 import numpy as np
 
 
@@ -39,35 +39,38 @@ def update_classifier(
 
 def perceptron_data_loop(
     hypotesis: Hypotesis, test_x: Features, test_y: Labels
-) -> Tuple[Hypotesis, Errors]:
+) -> Tuple[Hypotesis, Errors, List[Hypotesis]]:
     errors = 0
+    history: List[Hypotesis] = []
     for sample, label in zip(test_x, test_y):
         result = classifier(h=hypotesis, test_x=sample)
-        print("prec", hypotesis)
+
         if label * result <= 0:
             hypotesis = update_classifier(h=hypotesis, test_x=sample, test_y=label)
             errors += 1
-        print("post", hypotesis)
-    return hypotesis, errors
+            history.append(hypotesis)
+    return hypotesis, errors, history
 
 
 def perceptron_learning_algorithm(
     test_x: Features, test_y: Labels, tau: int
-) -> Tuple[Hypotesis, Errors]:
+) -> Tuple[Hypotesis, Errors, List[Hypotesis]]:
     hypotesis = initial_hypotesis(test_x=test_x)
 
     global_errors = 0
+    global_history = []
 
     for _ in range(tau):
-        hypotesis, errors = perceptron_data_loop(
+        hypotesis, loop_errors, loop_history = perceptron_data_loop(
             hypotesis=hypotesis, test_x=test_x, test_y=test_y
         )
-        global_errors += errors
+        global_errors += loop_errors
+        global_history.extend(loop_history)
 
-        if errors == 0:
+        if loop_errors == 0:
             break
 
-    return hypotesis, global_errors
+    return hypotesis, global_errors, global_history
 
 
 if __name__ == "__main__":
