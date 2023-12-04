@@ -2,7 +2,7 @@ import numpy as np
 from pytest import approx
 
 
-from perceptron.perceptron import (
+from perceptron.perceptron_0 import (
     classifier,
     initial_hypotesis,
     perceptron_data_loop,
@@ -171,3 +171,19 @@ def test_perceptron_learning_algorithm_case_4():
 
     for got, want in zip(got_history, want_history):
         np.testing.assert_array_equal(got, want)
+
+
+def test_perceptron_learning_algorithm_case_5():
+    data = np.array([[1, -1], [0, 1], [-1.5, -1]])
+    labels = np.array([1, -1, 1])
+
+    hypotesis, errors, history = perceptron_learning_algorithm(
+        test_x=data, test_y=labels, tau=1000, initial_h=(np.array([0, -2]), 0)
+    )
+    expected = (np.array([0, -2]), 0)
+
+    assert errors == 0
+
+    got_history = [item[0] for item in history]
+    print(got_history)
+    np.testing.assert_array_equal(hypotesis[0], expected[0])
