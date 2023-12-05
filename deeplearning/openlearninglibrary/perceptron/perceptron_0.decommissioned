@@ -71,7 +71,3 @@ def perceptron_learning_algorithm(
             break
 
     return hypotesis, global_errors, global_history
-
-
-if __name__ == "__main__":
-    pass
