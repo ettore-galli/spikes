@@ -34,7 +34,7 @@ class PerceptronLearningResult:
     history: List[Hypotesis]
 
     def has_errors(self) -> bool:
-        return len(self.errors) == 0
+        return len(self.errors) != 0
 
     def add_loop_results(
         self,
@@ -110,17 +110,19 @@ def perceptron_data_loop(
 def perceptron_learning_algorithm(
     test_x: Features, test_y: Labels, tau: int, initial_h: Optional[Hypotesis] = None
 ) -> PerceptronLearningResult:
-    hypotesis = (
+    global_hypotesis = (
         make_initial_hypotesis(test_x=test_x) if initial_h is None else initial_h
     )
 
     global_perceptron_result = PerceptronLearningResult(
-        hypotesis=hypotesis, errors=[], history=[]
+        hypotesis=global_hypotesis, errors=[], history=[]
     )
 
     for _ in range(tau):
         loop_perceptron_result = perceptron_data_loop(
-            initial_hypotesis=hypotesis, test_x=test_x, test_y=test_y
+            initial_hypotesis=global_perceptron_result.hypotesis,
+            test_x=test_x,
+            test_y=test_y,
         )
         global_perceptron_result = global_perceptron_result.add_loop_results(
             loop_results=loop_perceptron_result
