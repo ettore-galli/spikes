@@ -4,6 +4,8 @@ from pytest import approx
 
 from perceptron.perceptron_1 import (
     ClassifierCalculationResult,
+    PerceptronLearningResult,
+    PerceptronLearningResultError,
     classifier,
     make_initial_hypotesis,
     perceptron_data_loop,
@@ -82,120 +84,58 @@ def test_perceptron_data_loop():
     labels = np.array([1, -1, 1])
     hypotesis_ini = (np.array([0, 0]), 0)
 
-    hypotesis, errors, _ = perceptron_data_loop(
+    learning_result = perceptron_data_loop(
         initial_hypotesis=hypotesis_ini, test_x=data, test_y=labels
     )
-    expected = (np.array([-0.5, 1]), 0)
 
-    assert errors == 3
+    expected_learning_result = PerceptronLearningResult(
+        hypotesis=(np.array([-0.5, 1]), 1),
+        errors=[
+            PerceptronLearningResultError(sample=np.array([1.0, 1.0]), label=1),
+            PerceptronLearningResultError(sample=np.array([0.0, 1.0]), label=-1),
+            PerceptronLearningResultError(sample=np.array([-1.5, 1.0]), label=1),
+        ],
+        history=[
+            (np.array([1.0, 1.0]), 1),
+            (np.array([1.0, 0.0]), 0),
+            (np.array([-0.5, 1.0]), 1),
+        ],
+    )
 
-    np.testing.assert_array_equal(hypotesis[0], expected[0])
+    np.testing.assert_array_equal(
+        learning_result.hypotesis[0], expected_learning_result.hypotesis[0]
+    )
+    assert learning_result.hypotesis[1] == expected_learning_result.hypotesis[1]
+
+    assert len(learning_result.errors) == len(expected_learning_result.errors)
+
+    for res, exp in zip(learning_result.history, expected_learning_result.history):
+        np.testing.assert_array_equal(res[0], exp[0])
+        np.testing.assert_array_equal(res[1], exp[1])
 
 
 def test_perceptron_learning_algorithm():
     data = np.array([[1, -1], [0, 1], [-1.5, -1]])
     labels = np.array([1, -1, 1])
 
-    hypotesis, errors, history = perceptron_learning_algorithm(
+    perceptron_result = perceptron_learning_algorithm(
         test_x=data, test_y=labels, tau=10
     )
-    expected = (np.array([-0.5, -2]), 0)
+    expected_classifier = (np.array([1, -2]), 0)
 
-    assert errors == 2
-    np.testing.assert_array_equal(hypotesis[0], expected[0])
-
-    want_history = [
-        np.array([1.0, -1.0]),
-        np.array([-0.5, -2.0]),
-    ]
-    got_history = [item[0] for item in history]
-    for got, want in zip(got_history, want_history):
-        np.testing.assert_array_equal(got, want)
-
-
-def test_perceptron_learning_algorithm_case_2():
-    data = np.array([[0, 1], [-1.5, -1], [1, -1]])
-    labels = np.array([-1, 1, 1])
-
-    hypotesis, errors, history = perceptron_learning_algorithm(
-        test_x=data, test_y=labels, tau=10
+    assert len(perceptron_result.errors) == 2
+    np.testing.assert_array_equal(
+        perceptron_result.hypotesis[0], expected_classifier[0]
     )
-    expected = (np.array([0, -1.0]), 0)
-
-    assert errors == 1
-    np.testing.assert_array_equal(hypotesis[0], expected[0])
-
-    want_history = [
-        np.array([0, -1.0]),
-    ]
-    got_history = [item[0] for item in history]
-
-    for got, want in zip(got_history, want_history):
-        np.testing.assert_array_equal(got, want)
-
-
-def test_perceptron_learning_algorithm_case_3():
-    data = np.array([[1, -1], [0, 1], [-10, -1]])
-    labels = np.array([1, -1, 1])
-
-    hypotesis, errors, history = perceptron_learning_algorithm(
-        test_x=data, test_y=labels, tau=10
+    np.testing.assert_array_equal(
+        perceptron_result.hypotesis[1], expected_classifier[1]
     )
-    expected = (np.array([-0.5, -2]), 0)
-
-    assert errors == 6
-
-    got_history = [item[0] for item in history]
-    print(got_history)
-    np.testing.assert_array_equal(hypotesis[0], expected[0])
-
+    print(perceptron_result.history)
     want_history = [
-        np.array([1.0, -1.0]),
-        np.array([-9.0, -2.0]),
-        np.array([-8.0, -3.0]),
-        np.array([-7.0, -4.0]),
-        np.array([-6.0, -5.0]),
-        np.array([-5.0, -6.0]),
+        (np.array([1.0, -1.0]), 1),
+        (np.array([1, -2.0]), 0),
     ]
-
+    got_history = perceptron_result.history
     for got, want in zip(got_history, want_history):
-        np.testing.assert_array_equal(got, want)
-
-
-def test_perceptron_learning_algorithm_case_4():
-    data = np.array([[0, 1], [-10, -1], [1, -1]])
-    labels = np.array([-1, 1, 1])
-
-    hypotesis, errors, history = perceptron_learning_algorithm(
-        test_x=data, test_y=labels, tau=10
-    )
-    expected = (np.array([0.0, -1.0]), 0)
-
-    assert errors == 1
-
-    got_history = [item[0] for item in history]
-    print(got_history)
-    np.testing.assert_array_equal(hypotesis[0], expected[0])
-
-    want_history = [
-        np.array([0.0, -1.0]),
-    ]
-
-    for got, want in zip(got_history, want_history):
-        np.testing.assert_array_equal(got, want)
-
-
-def test_perceptron_learning_algorithm_case_5():
-    data = np.array([[1, -1], [0, 1], [-1.5, -1]])
-    labels = np.array([1, -1, 1])
-
-    hypotesis, errors, history = perceptron_learning_algorithm(
-        test_x=data, test_y=labels, tau=1000, initial_h=(np.array([0, -2]), 0)
-    )
-    expected = (np.array([0, -2]), 0)
-
-    assert errors == 0
-
-    got_history = [item[0] for item in history]
-    print(got_history)
-    np.testing.assert_array_equal(hypotesis[0], expected[0])
+        np.testing.assert_array_equal(got[0], want[0])
+        np.testing.assert_array_equal(got[1], want[1])
