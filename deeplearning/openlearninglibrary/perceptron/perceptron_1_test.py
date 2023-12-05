@@ -164,3 +164,46 @@ def test_perceptron_3_1():
     np.testing.assert_array_equal(
         perceptron_result.hypotesis[1], expected_classifier[1]
     )
+
+
+def print_results(results: PerceptronLearningResult, label: str):
+    print(f"\n===== {label} =====")
+    print("----- errors:")
+    for error in results.errors:
+        print(error)
+    print("----- history:")
+    for step in results.history:
+        print(step)
+    print("----- classifier:")
+    print(results.hypotesis)
+
+
+def test_perceptron_and():
+    data = np.array(
+        [
+            (0, 0, 0),
+            (0, 0, 1),
+            (0, 1, 0),
+            (0, 1, 1),
+            (1, 0, 0),
+            (1, 0, 1),
+            (1, 1, 0),
+            (1, 1, 1),
+        ]
+    )
+    labels = np.array([-1, -1, -1, -1, -1, -1, -1, 1])
+
+    perceptron_result = perceptron_learning_algorithm(
+        test_x=data, test_y=labels, tau=10000
+    )
+
+    print_results(perceptron_result, "results 1")
+
+    expected_classifier = (np.array([4.0, 3.0, 2.0]), -8)
+
+    np.testing.assert_array_equal(
+        perceptron_result.hypotesis[0], expected_classifier[0]
+    )
+    np.testing.assert_array_equal(
+        perceptron_result.hypotesis[1], expected_classifier[1]
+    )

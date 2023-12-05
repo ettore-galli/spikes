@@ -98,9 +98,12 @@ def perceptron_data_loop(
         )
 
         if classifier_result.is_mistake:
+            print("\nINPUT:", sample)
+            print("\tprec", hypotesis)
             hypotesis = update_classifier(
                 hypotesis=hypotesis, sample=sample, label=label
             )
+            print("\tpost", hypotesis)
             errors.append(PerceptronLearningResultError(sample=sample, label=label))
             history.append(hypotesis)
 
