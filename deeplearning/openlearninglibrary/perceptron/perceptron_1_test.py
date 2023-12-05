@@ -139,3 +139,28 @@ def test_perceptron_learning_algorithm():
     for got, want in zip(got_history, want_history):
         np.testing.assert_array_equal(got[0], want[0])
         np.testing.assert_array_equal(got[1], want[1])
+
+
+def test_perceptron_3_1():
+    data = np.array([[-3, 2], [-1, 1], [-1, -1], [2, 2], [1, -1]])
+    labels = np.array([1, -1, -1, -1, -1])
+
+    perceptron_result = perceptron_learning_algorithm(
+        test_x=data, test_y=labels, tau=100
+    )
+
+    print("----- errors -----")
+    for error in perceptron_result.errors:
+        print(error)
+
+    print("----- classifier -----")
+    print(perceptron_result.hypotesis)
+
+    expected_classifier = (np.array([-2.0, 0.0]), -5)
+
+    np.testing.assert_array_equal(
+        perceptron_result.hypotesis[0], expected_classifier[0]
+    )
+    np.testing.assert_array_equal(
+        perceptron_result.hypotesis[1], expected_classifier[1]
+    )
