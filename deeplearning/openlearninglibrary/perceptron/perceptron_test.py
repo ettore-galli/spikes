@@ -1,4 +1,5 @@
 import numpy as np
+from pytest import approx
 
 from perceptron.perceptron import (
     perceptron,
@@ -16,16 +17,13 @@ def plot_classifier(theta: Theta, theta_0=ThetaZero):
 
 
 def test_perceptron():
-    data: Data = np.array([[1, 1, 2, 2], [-1, 1, -1, 1]])
-    labels: Labels = np.array(
-        [
-            1,
-            1,
-            -1,
-            -1,
-        ]
-    )
-    params: Params = {"T": 100000}
+    data: Data = np.array([[2, 3, 9, 12], [5, 1, 6, 5]])
+    labels: Labels = np.array([[1, -1, 1, -1]])
+    params: Params = {"T": 100}
     hook: Hook = plot_classifier
     classifier = perceptron(data=data, labels=labels, params=params, hook=hook)
-    np.array_equal(classifier[0], np.array([-3, 4, 0]))
+
+    print([x.tolist() for x in classifier])
+
+    np.array_equal(classifier[0], np.array([-9.0, 18.0]))
+    assert classifier[1] == approx(2.0)
