@@ -65,3 +65,25 @@ def averaged_perceptron(
     return (theta_avg / number_of_runs).reshape((dimension, 1)), np.array(
         [theta_0_avg / number_of_runs]
     )
+
+
+def y(x, th, th0):
+    return np.dot(np.transpose(th), x) + th0
+
+
+def positive(x, th, th0):
+    return np.sign(y(x, th, th0))
+
+
+def score(data, labels, th, th0):
+    return np.sum(positive(data, th, th0) == labels)
+
+
+def eval_classifier(
+    learner, data_train, labels_train, data_test: np.ndarray, labels_test
+):
+    theta, theta_0 = learner(
+        data=data_train, labels=labels_train, params={"T": 100}, hook=None
+    )
+
+    return score(data_test, labels_test, theta, theta_0) / data_test.shape[1]
