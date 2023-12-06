@@ -87,3 +87,21 @@ def eval_classifier(
     )
 
     return score(data_test, labels_test, theta, theta_0) / data_test.shape[1]
+
+
+def eval_learning_alg(learner, data_gen, n_train, n_test, it):
+    evaluations = []
+
+    for _ in range(it):
+        data_train, labels_train = data_gen(n_train)
+        data_test, labels_test = data_gen(n_test)
+        evaluations.append(
+            eval_classifier(
+                learner=learner,
+                data_train=data_train,
+                labels_train=labels_train,
+                data_test=data_test,
+                labels_test=labels_test,
+            )
+        )
+    return sum(evaluations) / len(evaluations) if len(evaluations) > 0 else 0
