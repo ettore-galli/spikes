@@ -15,8 +15,6 @@ Hook = Callable[[Theta, ThetaZero], None]
 def perceptron(
     data: Data, labels: Labels, params: Params, hook: Hook
 ) -> Tuple[Theta, ThetaZero]:
-    _ = labels, params, hook
-
     theta = np.zeros(data.shape[0])
     theta_0 = 0
 
