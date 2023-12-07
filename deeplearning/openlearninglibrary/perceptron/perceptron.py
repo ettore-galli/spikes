@@ -105,3 +105,19 @@ def eval_learning_alg(learner, data_gen, n_train, n_test, it):
             )
         )
     return sum(evaluations) / len(evaluations) if len(evaluations) > 0 else 0
+
+
+def d_split_j(data: np.ndarray, k: int, j: int) -> Tuple[np.ndarray, np.ndarray]:
+    length = data.shape[1]
+    part_length = length // k
+    part_start = j * part_length
+    part_end = (j + 1) * part_length
+
+    return data[:, part_start:part_end], np.concatenate(
+        (data[:, :part_start], data[:, part_end:]), axis=1
+    )
+
+
+# def xval_learning_alg(learner, data, labels, k):
+#     # cross validation of learning algorithm
+#     pass
