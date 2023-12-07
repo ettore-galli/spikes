@@ -1,4 +1,4 @@
-from typing import Callable, Tuple, Optional
+from typing import Callable, Tuple, Optional, Generator
 import numpy as np
 
 
@@ -116,6 +116,13 @@ def d_split_j(data: np.ndarray, k: int, j: int) -> Tuple[np.ndarray, np.ndarray]
     return data[:, part_start:part_end], np.concatenate(
         (data[:, :part_start], data[:, part_end:]), axis=1
     )
+
+
+def d_split_j_looper(
+    data: np.ndarray, k: int
+) -> Generator[Tuple[np.ndarray, np.ndarray], None, None]:
+    for j in range(k):
+        yield d_split_j(data, k, j)
 
 
 # def xval_learning_alg(learner, data, labels, k):
