@@ -109,9 +109,14 @@ def eval_learning_alg(learner, data_gen, n_train, n_test, it):
 
 def d_split_j(data: np.ndarray, k: int, j: int) -> Tuple[np.ndarray, np.ndarray]:
     length = data.shape[1]
-    part_length = length // k
-    part_start = j * part_length
-    part_end = (j + 1) * part_length
+    if length % k == 0:
+        part_length = length // k
+        part_start = j * part_length
+        part_end = (j + 1) * part_length
+    else:
+        part_length = length // k + 1
+        part_start = j * part_length
+        part_end = (j + 1) * part_length
 
     return data[:, part_start:part_end], np.concatenate(
         (data[:, :part_start], data[:, part_end:]), axis=1
@@ -119,12 +124,31 @@ def d_split_j(data: np.ndarray, k: int, j: int) -> Tuple[np.ndarray, np.ndarray]
 
 
 def d_split_j_looper(
-    data: np.ndarray, k: int
-) -> Generator[Tuple[np.ndarray, np.ndarray], None, None]:
+    data: np.ndarray, labels: np.ndarray, k: int
+) -> Generator[Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray], None, None]:
     for j in range(k):
-        yield d_split_j(data, k, j)
+        yield d_split_j(data, k, j) + d_split_j(labels, k, j)
 
 
-# def xval_learning_alg(learner, data, labels, k):
-#     # cross validation of learning algorithm
-#     pass
+def xval_learning_alg(learner, data, labels, k):
+    # cross validation of learning algorithm
+
+    scores = []
+
+    data_parts = np.array_split(data, k, axis=1)
+    labels_parts = np.array_split(labels, k, axis=1)
+
+    for j in range(k):
+        data_test = data_parts[j]
+        data_train = np.concatenate(
+            [d for i, d in enumerate(data_parts) if i != j], axis=1
+        )
+        labels_test = labels_parts[j]
+        labels_train = np.concatenate(
+            [d for i, d in enumerate(labels_parts) if i != j], axis=1
+        )
+
+        scores.append(
+            eval_classifier(learner, data_train, labels_train, data_test, labels_test)
+        )
+    return sum(scores) / len(scores)
