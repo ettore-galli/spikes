@@ -107,6 +107,24 @@ def eval_learning_alg(learner, data_gen, n_train, n_test, it):
     return sum(evaluations) / len(evaluations) if len(evaluations) > 0 else 0
 
 
+def eval_learning_alg_same(learner, data_gen, n_data, it):
+    evaluations = []
+
+    for _ in range(it):
+        data, labels = data_gen(n_data)
+
+        evaluations.append(
+            eval_classifier(
+                learner=learner,
+                data_train=data,
+                labels_train=labels,
+                data_test=data,
+                labels_test=labels,
+            )
+        )
+    return sum(evaluations) / len(evaluations) if len(evaluations) > 0 else 0
+
+
 def d_split_j(data: np.ndarray, k: int, j: int) -> Tuple[np.ndarray, np.ndarray]:
     length = data.shape[1]
     if length % k == 0:
