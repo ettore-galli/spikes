@@ -10,6 +10,7 @@ from perceptron.perceptron import (
     d_split_j_looper,
     eval_classifier,
     eval_learning_alg,
+    numerical_polynomial_features,
     perceptron,
     Data,
     Labels,
@@ -729,4 +730,24 @@ def test_polynomial_features():
         "bab1",
         "bbb1",
     ]
+    assert sorted(got) == sorted(want)
+
+
+def test_numerical_polynomial_features():
+    data = [1.25, 2.35]
+    got = numerical_polynomial_features(data, degree=3)
+    want = [
+        1.0,
+        1.25,
+        1.5625,
+        1.953125,
+        2.35,
+        2.9375,
+        3.671875,
+        5.522500000000001,
+        6.903125,
+        6.903125000000001,
+        12.977875000000003,
+    ]
+
     assert sorted(got) == sorted(want)
