@@ -4,6 +4,8 @@ from pytest import approx
 
 from perceptron.perceptron import (
     averaged_perceptron,
+    concat_combiner,
+    cross_product,
     d_split_j,
     d_split_j_looper,
     eval_classifier,
@@ -15,6 +17,7 @@ from perceptron.perceptron import (
     Hook,
     Theta,
     ThetaZero,
+    polynomial_features,
     xval_learning_alg,
 )
 
@@ -694,3 +697,36 @@ def test_xval_learning_alg_2():
     p = xval_learning_alg(perceptron, data=big_data, labels=big_data_labels, k=5)
 
     print(repr(p))
+
+
+def test_cross_product():
+    got = cross_product(alfa=["a", "b"], beta=["x", "y"], combiner=concat_combiner)
+    want = ["ax", "bx", "ay", "by"]
+
+    assert sorted(got) == sorted(want)
+
+
+def test_unique_cross_product():
+    got = cross_product(alfa=["a", "b", "c"], beta=["a", "b"], combiner=concat_combiner)
+    want = ["aa", "ab", "ba", "bb", "ca", "cb"]
+
+    assert sorted(got) == sorted(want)
+
+
+def test_polynomial_features():
+    data = ["a", "b"]
+    got = polynomial_features(data, degree=3, combiner=concat_combiner, one="1")
+    want = [
+        "1",
+        "a1",
+        "b1",
+        "aa1",
+        "ab1",
+        "bb1",
+        "aaa1",
+        "aab1",
+        "abb1",
+        "bab1",
+        "bbb1",
+    ]
+    assert sorted(got) == sorted(want)
