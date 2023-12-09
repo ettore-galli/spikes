@@ -216,3 +216,9 @@ def polynomial_features(
         features.extend(product)
 
     return features
+
+
+def numerical_polynomial_features(data: List, degree: int) -> List:
+    return polynomial_features(
+        data=data, degree=degree, one=1.0, combiner=lambda alfa, beta: alfa * beta
+    )
