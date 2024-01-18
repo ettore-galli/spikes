@@ -13,13 +13,15 @@
             "justMyCode": true
         },
         {
-            "name": "Python: Current File",
+            "name": "Python: iterfun",
             "type": "python",
             "request": "launch",
-            "program": "${file}",
+            "program": "iterfun/gradient_descent/graddesc.py",
             "console": "integratedTerminal",
             "justMyCode": true,
-            "cwd": "${fileDirname}"
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}"
+            }
         },
         {
             "name": "CSV Pretty print",
@@ -29,7 +31,9 @@
             "console": "integratedTerminal",
             "justMyCode": true,
             "cwd": "${fileDirname}",
-            "args": ["./example-data/cities.csv"]
+            "args": [
+                "./example-data/cities.csv"
+            ]
         }
     ]
 }
