@@ -17,7 +17,7 @@ def plot_functions(plot_environment: Axes, functions: List[Function1D]):
     x = interval(max_x=max_x, n_points=number_of_points)
 
     for fun in functions:
-        plot_environment.plot(x, [fun(value) for value in x])
+        return plot_environment.plot(x, [fun(value) for value in x])
 
 
 def init_plot_environment() -> Axes:
