@@ -1,5 +1,11 @@
-# Iterator-funcional
+# Gradient Descent with Plot
 
-Iterator functional
+## Description
 
+Gradient descent algorithm with plot callback
 
+## Linting
+
+```shell
+make lint PACKAGE=gradient_descent/
+```

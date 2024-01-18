@@ -1,0 +1,10 @@
+# run
+# pandas ?
+# tensorflow ?
+# scikit-learn ?
+matplotlib
+
+# dev
+flake8
+pylint
+mypy
