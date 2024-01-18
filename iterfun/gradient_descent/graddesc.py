@@ -25,13 +25,14 @@ def iteration_callback(plot_environment: Axes, x, dy_dx, iterations):
 
     tangent = partial(line_through_point, dy_dx, x, parabola(x))
 
-    plot_functions(plot_environment, [parabola, parabolad1, tangent])
+    plot_functions(plot_environment, [tangent])
 
     plt.pause(0.3)
 
 
 if __name__ == "__main__":
     plot_env = init_plot_environment()
+    plot_functions(plot_env, [parabola])
 
     result = gd_minimum(
         gd_minimum_input=GDMinimumInput(
