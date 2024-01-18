@@ -1,5 +1,8 @@
 from functools import partial
 
+import matplotlib.pyplot as plt
+from matplotlib.axes import Axes
+
 from iterfun.gradient_descent.gd_base import GDMinimumInput
 
 from iterfun.gradient_descent.gd_calc import (
@@ -9,9 +12,22 @@ from iterfun.gradient_descent.gd_calc import (
 )
 from iterfun.gradient_descent.gd_plot import (
     init_plot_environment,
-    iteration_callback,
     persist_plot,
+    plot_functions,
 )
+
+
+def iteration_callback(plot_environment: Axes, x, dy_dx, iterations):
+    print(x, dy_dx, iterations)
+
+    def line_through_point(m, xp, yp, x):
+        return m * (x - xp) + yp
+
+    tangent = partial(line_through_point, dy_dx, x, parabola(x))
+
+    plot_functions(plot_environment, [parabola, parabolad1, tangent])
+
+    plt.pause(0.3)
 
 
 if __name__ == "__main__":
