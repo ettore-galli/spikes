@@ -17,8 +17,12 @@ from iterfun.gradient_descent.gd_plot import (
 )
 
 
+def print_iteration_data(x, dy_dx, iterations) -> None:
+    print(f"It. {iterations}\t: x: {x:.5f}\t  dy/dx: {dy_dx:.5f}")
+
+
 def iteration_callback(plot_environment: Axes, x, dy_dx, iterations):
-    print(x, dy_dx, iterations)
+    print_iteration_data(x, dy_dx, iterations)
 
     def line_through_point(m, xp, yp, x):
         return m * (x - xp) + yp
