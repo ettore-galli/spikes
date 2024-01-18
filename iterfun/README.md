@@ -9,3 +9,9 @@ Gradient descent algorithm with plot callback
 ```shell
 make lint PACKAGE=gradient_descent/
 ```
+
+## Running
+
+```shell
+python gradient_descent/graddesc.py
+```
