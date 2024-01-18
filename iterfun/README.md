@@ -8,6 +8,8 @@ Gradient descent algorithm with plot callback
 
 ```shell
 make lint PACKAGE=gradient_descent/
+make all PACKAGE=gradient_descent/
+make test
 ```
 
 ## Running
