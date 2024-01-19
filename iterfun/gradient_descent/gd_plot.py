@@ -13,15 +13,19 @@ def interval(max_x: float, n_points: int) -> List[float]:
 class GDPlotEnvironment:
     def __init__(self) -> None:
         self.plot_environment: Axes = self.init_plot_environment()
+        self.currrent_function_plot = None
 
-    def plot_functions(self, functions: List[Function1D]):
-        number_of_points = 500
-        max_x = 5
-
-        x = interval(max_x=max_x, n_points=number_of_points)
-
+    def plot_functions(self, functions: List[Function1D], domain):
         for fun in functions:
-            return self.plot_environment.plot(x, [fun(value) for value in x])
+            return self.plot_environment.plot(domain, [fun(value) for value in domain])
+
+    def plot_replace_functions(self, functions: List[Function1D], domain):
+        if self.currrent_function_plot is not None:
+            for item in self.currrent_function_plot:
+                item.remove()
+        self.currrent_function_plot = self.plot_functions(
+            functions=functions, domain=domain
+        )
 
     def init_plot_environment(self) -> Axes:
         plt.ion()
