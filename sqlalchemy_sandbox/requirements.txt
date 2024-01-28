@@ -1,5 +1,6 @@
 # run
 sqlalchemy
+sqlalchemy2-stubs
 cryptography
 pymysql
 
