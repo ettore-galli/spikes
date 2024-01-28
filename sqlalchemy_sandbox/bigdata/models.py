@@ -1,9 +1,10 @@
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
 
-from sqlalchemy_sandbox.base import Base
+from bigdata.base import Base
 
 
+# pylint: disable=too-few-public-methods
 class Department(Base):
     __tablename__ = "departments"
 
@@ -13,6 +14,7 @@ class Department(Base):
     employees = relationship("Employee", back_populates="department")
 
 
+# pylint: disable=too-few-public-methods
 class Employee(Base):
     __tablename__ = "employees"
 

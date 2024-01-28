@@ -1,7 +1,10 @@
-from sqlalchemy_sandbox.connection import create_db_session
-from sqlalchemy_sandbox.models import Employee, Department
+from datetime import datetime
+
 from sqlalchemy import delete, select
 from sqlalchemy.sql.expression import Update, Insert
+
+from bigdata.connection import create_db_session
+from bigdata.models import Employee, Department
 
 NUMBER_OF_NAMES = 100000
 
@@ -12,6 +15,7 @@ def clear_data(session):
     session.commit()
 
 
+# pylint: disable=redefined-builtin
 def insert_data(session):
     for id, dep in [(1, "RD"), (2, "Mkt")]:
         session.add(Department(id=id, descr=dep))
@@ -41,19 +45,25 @@ def update_data(session):
 
         if row is not None:
             print("update", row[0].id, "dep=", department_id)
+            # pylint: disable=unexpected-keyword-arg, line-too-long
             session.execute(
                 Update(
                     Employee,
-                    whereclause=Employee.name == name,
-                    values=dict(name=data[1], department_id=department_id),
+                    whereclause=Employee.name == name,  # type: ignore[call-arg]
+                    values={"name": data[1], "department_id": department_id},  # type: ignore[call-arg]
                 )
             )
         else:
             print("insert dep=", department_id)
+            # pylint: disable=unexpected-keyword-arg
             session.execute(
                 Insert(
                     Employee,
-                    values=dict(id=data[0], name=data[1], department_id=department_id),
+                    values={  # type: ignore[call-arg]
+                        "id": data[0],
+                        "name": data[1],
+                        "department_id": department_id,
+                    },
                 )
             )
     session.commit()
@@ -61,8 +71,6 @@ def update_data(session):
 
 def main():
     with create_db_session() as session:
-        from datetime import datetime
-
         t0 = datetime.now()
         clear_data(session=session)
         insert_data(session=session)

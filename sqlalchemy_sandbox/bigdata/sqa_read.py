@@ -1,5 +1,5 @@
-from sqlalchemy_sandbox.connection import create_db_session
-from sqlalchemy_sandbox.models import Department
+from bigdata.connection import create_db_session
+from bigdata.models import Department
 
 
 def query_data(session):
