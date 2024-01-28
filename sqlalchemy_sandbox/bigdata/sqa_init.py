@@ -1,4 +1,4 @@
-from sqlalchemy_sandbox.connection import initialize_database
+from bigdata.connection import initialize_database
 
 
 def main():

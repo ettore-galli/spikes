@@ -1,6 +1,7 @@
-from sqlalchemy_sandbox.connection import create_db_session
-from sqlalchemy_sandbox.models import Employee, Department
-from sqlalchemy import update, delete
+from sqlalchemy import delete
+
+from bigdata.connection import create_db_session
+from bigdata.models import Employee, Department
 
 
 def clear_data(session):

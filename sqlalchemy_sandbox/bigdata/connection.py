@@ -2,13 +2,15 @@ import sqlalchemy
 from sqlalchemy import create_engine, Index
 from sqlalchemy.orm import sessionmaker
 
-from sqlalchemy_sandbox.models import Base, Employee
+from bigdata.models import Base, Employee
 
 
+# pylint: disable=too-few-public-methods
 class DBSettings:
     url = "sqlite:///./db-sqlite/database.db"
 
 
+# pylint: disable=too-few-public-methods
 class DBSettingsMySQL:
     url = "mysql+pymysql://root:password@localhost:3306/sandbox?charset=utf8mb4"
 
@@ -30,8 +32,8 @@ def initialize_database():
 
 
 def build_db_session(engine: sqlalchemy.engine.base.Engine):
-    Session = sessionmaker(engine)
-    session = Session()
+    session_constructor = sessionmaker(engine)
+    session = session_constructor()
 
     return session
 
