@@ -1,6 +1,6 @@
 # run
 sqlalchemy
-sqlalchemy2-stubs
+# sqlalchemy2-stubs Sperimentalmente meglio di no
 cryptography
 pymysql
 
