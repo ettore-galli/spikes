@@ -1,10 +1,7 @@
 from sqlalchemy import Integer, String
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column
 
-
-# pylint: disable=too-few-public-methods
-class BaseModel(DeclarativeBase):
-    ...
+from tutorial.orm_base import BaseModel
 
 
 # pylint: disable=too-few-public-methods
