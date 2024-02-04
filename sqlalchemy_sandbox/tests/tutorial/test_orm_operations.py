@@ -7,6 +7,12 @@ from tutorial.connection_base import Connections
 from tutorial.connection import create_db_engine
 
 
+def prepare_dataset(session: Session):
+    session.execute(insert(PhoneBookEntry).values(name="Ettore", phone="123123123"))
+    session.execute(insert(PhoneBookEntry).values(name="Pippo", phone="111111"))
+    session.execute(insert(PhoneBookEntry).values(name="PLuto", phone="222222"))
+
+
 def test_insert_and_select():
     """
     https://docs.sqlalchemy.org/en/20/tutorial/data_select.html#the-select-sql-expression-construct
@@ -30,11 +36,15 @@ def test_use_scalars_select():
     create_all_tables(engine)
 
     with Session(engine) as session:
-        session.execute(insert(PhoneBookEntry).values(name="Ettore", phone="123123123"))
+        prepare_dataset(session=session)
 
         result = session.scalars(select(PhoneBookEntry))
         data = [item.asdict() for item in result.all()]
-        assert data == [{"id": 1, "name": "Ettore", "phone": "123123123"}]
+        assert data == [
+            {"id": 1, "name": "Ettore", "phone": "123123123"},
+            {"id": 2, "name": "Pippo", "phone": "111111"},
+            {"id": 3, "name": "PLuto", "phone": "222222"},
+        ]
 
 
 def test_use_labels():
@@ -43,7 +53,7 @@ def test_use_labels():
     create_all_tables(engine)
 
     with Session(engine) as session:
-        session.execute(insert(PhoneBookEntry).values(name="Ettore", phone="123123123"))
+        prepare_dataset(session=session)
 
         result = session.execute(
             select(
@@ -52,8 +62,11 @@ def test_use_labels():
                 (PhoneBookEntry.name + "/" + PhoneBookEntry.phone).label("short"),
             )
         )
-        data = [item._asdict() for item in result.all()]
+        records = list(result.all())
+        data = [item._asdict() for item in records]
 
         assert data == [
-            {"name": "Ettore", "phone": "123123123", "short": "Ettore/123123123"}
+            {"name": "Ettore", "phone": "123123123", "short": "Ettore/123123123"},
+            {"name": "Pippo", "phone": "111111", "short": "Pippo/111111"},
+            {"name": "PLuto", "phone": "222222", "short": "PLuto/222222"},
         ]
