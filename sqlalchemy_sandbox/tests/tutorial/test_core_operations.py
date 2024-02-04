@@ -23,7 +23,10 @@ def test_insert_phone_book_entry():
 
         records = connection.execute(select(PhoneBookEntry)).all()
 
-        assert records == [(1, "Ettore", "123123123"), (2, "Ettore 2", "987987987")]
+        assert records == [
+            (1, "Ettore", "123123123", None),
+            (2, "Ettore 2", "987987987", None),
+        ]
 
         for item in connection.execute(select(PhoneBookEntry)):
             assert isinstance(item, Row)
