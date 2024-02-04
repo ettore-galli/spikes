@@ -1,16 +1,27 @@
 from sqlalchemy import select, insert
 from sqlalchemy.orm import Session
 
-from tutorial.orm_models import PhoneBookEntry
+from tutorial.orm_models import EntryType, PhoneBookEntry
 from tutorial.core_operations import create_all_tables
 from tutorial.connection_base import Connections
 from tutorial.connection import create_db_engine
 
 
 def prepare_dataset(session: Session):
-    session.execute(insert(PhoneBookEntry).values(name="Ettore", phone="123123123"))
-    session.execute(insert(PhoneBookEntry).values(name="Pippo", phone="111111"))
-    session.execute(insert(PhoneBookEntry).values(name="PLuto", phone="222222"))
+    session.execute(insert(EntryType).values(id=100, description="Casa"))
+    session.execute(insert(EntryType).values(id=200, description="Cell"))
+
+    session.execute(
+        insert(PhoneBookEntry).values(
+            name="Ettore", phone="123123123", entry_type_id=200
+        )
+    )
+    session.execute(
+        insert(PhoneBookEntry).values(name="Pippo", phone="111111", entry_type_id=200)
+    )
+    session.execute(
+        insert(PhoneBookEntry).values(name="PLuto", phone="222222", entry_type_id=100)
+    )
 
 
 def test_insert_and_select():
@@ -27,7 +38,12 @@ def test_insert_and_select():
 
         result = session.execute(select(PhoneBookEntry))
         record = [item.PhoneBookEntry for item in result.all()][0]
-        assert record.asdict() == {"id": 1, "name": "Ettore", "phone": "123123123"}
+        assert record.asdict() == {
+            "entry_type_id": None,
+            "id": 1,
+            "name": "Ettore",
+            "phone": "123123123",
+        }
 
 
 def test_use_scalars_select():
@@ -41,9 +57,9 @@ def test_use_scalars_select():
         result = session.scalars(select(PhoneBookEntry))
         data = [item.asdict() for item in result.all()]
         assert data == [
-            {"id": 1, "name": "Ettore", "phone": "123123123"},
-            {"id": 2, "name": "Pippo", "phone": "111111"},
-            {"id": 3, "name": "PLuto", "phone": "222222"},
+            {"id": 1, "name": "Ettore", "phone": "123123123", "entry_type_id": 200},
+            {"id": 2, "name": "Pippo", "phone": "111111", "entry_type_id": 200},
+            {"id": 3, "name": "PLuto", "phone": "222222", "entry_type_id": 100},
         ]
 
 
