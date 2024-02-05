@@ -1,5 +1,6 @@
 from sqlalchemy import select, insert
 from sqlalchemy.orm import Session
+from sqlalchemy import func
 
 from tutorial.orm_models import EntryType, PhoneBookEntry
 from tutorial.core_operations import create_all_tables
@@ -86,3 +87,85 @@ def test_use_labels():
             {"name": "Pippo", "phone": "111111", "short": "Pippo/111111"},
             {"name": "PLuto", "phone": "222222", "short": "PLuto/222222"},
         ]
+
+
+def test_join():
+    engine = create_db_engine(Connections.SQLITE_IN_MEMORY.value)
+
+    create_all_tables(engine)
+
+    with Session(engine) as session:
+        prepare_dataset(session=session)
+
+        result = session.execute(
+            select(
+                PhoneBookEntry.name,
+                PhoneBookEntry.phone,
+                EntryType.description.label("type"),
+            )
+            .select_from(PhoneBookEntry)
+            .join(EntryType, PhoneBookEntry.entry_type_id == EntryType.id)
+        )
+        records = list(result.all())
+        data = [item._asdict() for item in records]
+
+        assert data == [
+            {"name": "Ettore", "phone": "123123123", "type": "Cell"},
+            {"name": "Pippo", "phone": "111111", "type": "Cell"},
+            {"name": "PLuto", "phone": "222222", "type": "Casa"},
+        ]
+
+
+def test_groupby():
+    engine = create_db_engine(Connections.SQLITE_IN_MEMORY.value)
+
+    create_all_tables(engine)
+
+    with Session(engine) as session:
+        prepare_dataset(session=session)
+
+        # pylint: disable=not-callable
+        result = session.execute(
+            select(EntryType.description.label("type"), func.count(PhoneBookEntry.id))
+            .select_from(PhoneBookEntry)
+            .join(EntryType, PhoneBookEntry.entry_type_id == EntryType.id)
+            .group_by(EntryType.description)
+            # Please note that .group_by("type") would work as well.
+        )
+        records = list(result.all())
+        data = [item._asdict() for item in records]
+
+        assert data == [{"type": "Casa", "count": 1}, {"type": "Cell", "count": 2}]
+
+
+def test_subquery_cte():
+    engine = create_db_engine(Connections.SQLITE_IN_MEMORY.value)
+
+    create_all_tables(engine)
+
+    with Session(engine) as session:
+        prepare_dataset(session=session)
+
+        # pylint: disable=not-callable
+        count_subq_base = select(
+            PhoneBookEntry.entry_type_id,
+            func.count(PhoneBookEntry.id).label("ntypes"),
+        ).group_by(PhoneBookEntry.entry_type_id)
+
+        for count_subq in [count_subq_base.subquery(), count_subq_base.cte()]:
+            result = session.execute(
+                select(PhoneBookEntry.name, PhoneBookEntry.phone, count_subq.c.ntypes)
+                .select_from(PhoneBookEntry)
+                .join(
+                    count_subq,
+                    PhoneBookEntry.entry_type_id == count_subq.c.entry_type_id,
+                )
+            )
+            records = list(result.all())
+            data = [item._asdict() for item in records]
+
+            assert data == [
+                {"name": "Ettore", "phone": "123123123", "ntypes": 2},
+                {"name": "Pippo", "phone": "111111", "ntypes": 2},
+                {"name": "PLuto", "phone": "222222", "ntypes": 1},
+            ]
