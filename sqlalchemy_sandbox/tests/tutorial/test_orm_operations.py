@@ -1,5 +1,5 @@
 from sqlalchemy import select, insert
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, aliased
 from sqlalchemy import func
 
 from tutorial.orm_models import EntryType, PhoneBookEntry
@@ -169,3 +169,46 @@ def test_subquery_cte():
                 {"name": "Pippo", "phone": "111111", "ntypes": 2},
                 {"name": "PLuto", "phone": "222222", "ntypes": 1},
             ]
+
+
+def test_aliased_orm_subquery_cte():
+    engine = create_db_engine(Connections.SQLITE_IN_MEMORY.value)
+
+    create_all_tables(engine)
+
+    with Session(engine) as session:
+        prepare_dataset(session=session)
+
+        # pylint: disable=not-callable
+        subq = (
+            select(
+                PhoneBookEntry.entry_type_id,
+                func.count(PhoneBookEntry.id).label("id"),
+            )
+            .group_by(PhoneBookEntry.entry_type_id)
+            .subquery()
+        )
+
+        pbe_subq = aliased(
+            PhoneBookEntry,
+            alias=subq,
+        )
+
+        result = session.execute(
+            select(
+                PhoneBookEntry.name, PhoneBookEntry.phone, pbe_subq.id.label("n_per_id")
+            )
+            .select_from(PhoneBookEntry)
+            .join(
+                pbe_subq,
+                PhoneBookEntry.entry_type_id == pbe_subq.entry_type_id,
+            )
+        )
+        records = list(result.all())
+        data = [item._asdict() for item in records]
+
+        assert data == [
+            {"name": "Ettore", "phone": "123123123", "n_per_id": 1},
+            {"name": "Pippo", "phone": "111111", "n_per_id": 2},
+            {"name": "PLuto", "phone": "222222", "n_per_id": 3},
+        ]
