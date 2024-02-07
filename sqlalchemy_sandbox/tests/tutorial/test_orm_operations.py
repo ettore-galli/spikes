@@ -212,3 +212,23 @@ def test_aliased_orm_subquery_cte():
             {"name": "Pippo", "phone": "111111", "n_per_id": 2},
             {"name": "PLuto", "phone": "222222", "n_per_id": 3},
         ]
+
+
+def test_scalar_borderline_more_than_one_row():
+    engine = create_db_engine(Connections.SQLITE_IN_MEMORY.value)
+
+    create_all_tables(engine)
+
+    with Session(engine) as session:
+        prepare_dataset(session=session)
+
+        query = (
+            select(PhoneBookEntry.id)
+            .order_by(PhoneBookEntry.id.desc())
+            .scalar_subquery()
+        )
+
+        result = session.execute(select(query))
+        records = list(result.all())
+
+        assert records == [(3,)]
