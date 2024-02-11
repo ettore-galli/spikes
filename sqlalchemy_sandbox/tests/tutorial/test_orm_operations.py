@@ -1,4 +1,4 @@
-from sqlalchemy import select, insert
+from sqlalchemy import select, insert, union
 from sqlalchemy.orm import Session, aliased
 from sqlalchemy import func
 
@@ -232,3 +232,28 @@ def test_scalar_borderline_more_than_one_row():
         records = list(result.all())
 
         assert records == [(3,)]
+
+
+def test_union():
+    engine = create_db_engine(Connections.SQLITE_IN_MEMORY.value)
+
+    create_all_tables(engine)
+
+    with Session(engine) as session:
+        prepare_dataset(session=session)
+
+        query_1 = select(PhoneBookEntry).where(PhoneBookEntry.id == 1)
+        query_2 = select(PhoneBookEntry).where(PhoneBookEntry.id == 2)
+
+        union_statement = union(query_1, query_2)
+        result = session.execute(union_statement)
+
+        records = list(result.all())
+
+        assert records == [(1, "Ettore", "123123123", 200), (2, "Pippo", "111111", 200)]
+
+        orm_result = session.execute(
+            select(PhoneBookEntry).from_statement(union_statement)
+        )
+        orm_records = orm_result.all()
+        assert isinstance(orm_records[0].PhoneBookEntry, PhoneBookEntry)
