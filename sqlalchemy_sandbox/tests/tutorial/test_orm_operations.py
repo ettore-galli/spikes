@@ -1,6 +1,6 @@
 from sqlalchemy import select, insert, union
 from sqlalchemy.orm import Session, aliased
-from sqlalchemy import func
+from sqlalchemy import func, literal_column
 
 from tutorial.orm_models import EntryType, PhoneBookEntry
 from tutorial.core_operations import create_all_tables
@@ -8,7 +8,7 @@ from tutorial.connection_base import Connections
 from tutorial.connection import create_db_engine
 
 
-def prepare_dataset(session: Session):
+def prepare_simple_dataset(session: Session):
     session.execute(insert(EntryType).values(id=100, description="Casa"))
     session.execute(insert(EntryType).values(id=200, description="Cell"))
 
@@ -23,6 +23,26 @@ def prepare_dataset(session: Session):
     session.execute(
         insert(PhoneBookEntry).values(name="PLuto", phone="222222", entry_type_id=100)
     )
+
+
+def prepare_long_dataset(session: Session, number_of_entries: int):
+    session.execute(insert(EntryType).values(id=100, description="Casa"))
+    session.execute(insert(EntryType).values(id=200, description="Cellulare"))
+    session.execute(insert(EntryType).values(id=300, description="Ufficio"))
+
+    def create_entry_type_id(entry_id: int) -> int:
+        entry_type_id_fallback = 200 if entry_id % 5 == 0 else 300
+        return 100 if entry_id % 7 == 0 else entry_type_id_fallback
+
+    for entry_id in range(number_of_entries):
+        session.execute(
+            insert(PhoneBookEntry).values(
+                id=entry_id,
+                name=f"Name <{entry_id}>",
+                phone=str(1000000 + entry_id),
+                entry_type_id=create_entry_type_id(entry_id=entry_id),
+            )
+        )
 
 
 def test_insert_and_select():
@@ -53,7 +73,7 @@ def test_use_scalars_select():
     create_all_tables(engine)
 
     with Session(engine) as session:
-        prepare_dataset(session=session)
+        prepare_simple_dataset(session=session)
 
         result = session.scalars(select(PhoneBookEntry))
         data = [item.asdict() for item in result.all()]
@@ -70,7 +90,7 @@ def test_use_labels():
     create_all_tables(engine)
 
     with Session(engine) as session:
-        prepare_dataset(session=session)
+        prepare_simple_dataset(session=session)
 
         result = session.execute(
             select(
@@ -95,7 +115,7 @@ def test_join():
     create_all_tables(engine)
 
     with Session(engine) as session:
-        prepare_dataset(session=session)
+        prepare_simple_dataset(session=session)
 
         result = session.execute(
             select(
@@ -122,7 +142,7 @@ def test_groupby():
     create_all_tables(engine)
 
     with Session(engine) as session:
-        prepare_dataset(session=session)
+        prepare_simple_dataset(session=session)
 
         # pylint: disable=not-callable
         result = session.execute(
@@ -144,7 +164,7 @@ def test_subquery_cte():
     create_all_tables(engine)
 
     with Session(engine) as session:
-        prepare_dataset(session=session)
+        prepare_simple_dataset(session=session)
 
         # pylint: disable=not-callable
         count_subq_base = select(
@@ -177,7 +197,7 @@ def test_aliased_orm_subquery_cte():
     create_all_tables(engine)
 
     with Session(engine) as session:
-        prepare_dataset(session=session)
+        prepare_simple_dataset(session=session)
 
         # pylint: disable=not-callable
         subq = (
@@ -220,7 +240,7 @@ def test_scalar_borderline_more_than_one_row():
     create_all_tables(engine)
 
     with Session(engine) as session:
-        prepare_dataset(session=session)
+        prepare_simple_dataset(session=session)
 
         query = (
             select(PhoneBookEntry.id)
@@ -240,7 +260,7 @@ def test_union():
     create_all_tables(engine)
 
     with Session(engine) as session:
-        prepare_dataset(session=session)
+        prepare_simple_dataset(session=session)
 
         query_1 = select(PhoneBookEntry).where(PhoneBookEntry.id == 1)
         query_2 = select(PhoneBookEntry).where(PhoneBookEntry.id == 2)
@@ -257,3 +277,28 @@ def test_union():
         )
         orm_records = orm_result.all()
         assert isinstance(orm_records[0].PhoneBookEntry, PhoneBookEntry)
+
+
+def test_select_single_columns():
+    engine = create_db_engine(Connections.SQLITE_IN_MEMORY.value)
+
+    create_all_tables(engine)
+
+    with Session(engine) as session:
+        prepare_long_dataset(session=session, number_of_entries=100)
+
+        query = select(
+            literal_column("'a-value'").label("'a_field'"),
+            PhoneBookEntry.__table__,
+            EntryType.__table__,
+        ).where(PhoneBookEntry.entry_type_id == EntryType.id)
+
+        result = session.execute(query)
+
+        records = list(result.all())
+
+        assert records[:3] == [
+            ("a-value", 0, "Name <0>", "1000000", 100, 100, "Casa"),
+            ("a-value", 1, "Name <1>", "1000001", 300, 300, "Ufficio"),
+            ("a-value", 2, "Name <2>", "1000002", 300, 300, "Ufficio"),
+        ]
