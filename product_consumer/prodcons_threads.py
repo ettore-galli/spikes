@@ -4,7 +4,6 @@ from enum import Enum
 from queue import Queue
 from threading import Thread
 
-import time
 from typing import Any, Dict, Generator, Optional, Tuple
 
 
