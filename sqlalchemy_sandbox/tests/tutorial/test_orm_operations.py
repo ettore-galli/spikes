@@ -302,3 +302,28 @@ def test_select_single_columns():
             ("a-value", 1, "Name <1>", "1000001", 300, 300, "Ufficio"),
             ("a-value", 2, "Name <2>", "1000002", 300, 300, "Ufficio"),
         ]
+
+
+def test_select_single_columns():
+    engine = create_db_engine(Connections.SQLITE_IN_MEMORY.value)
+
+    create_all_tables(engine)
+
+    with Session(engine) as session:
+        prepare_long_dataset(session=session, number_of_entries=100)
+
+        query = select(
+            literal_column("'a-value'").label("'a_field'"),
+            PhoneBookEntry.__table__,
+            EntryType.__table__,
+        ).where(PhoneBookEntry.entry_type_id == EntryType.id)
+
+        result = session.execute(query)
+
+        records = list(result.all())
+
+        assert records[:3] == [
+            ("a-value", 0, "Name <0>", "1000000", 100, 100, "Casa"),
+            ("a-value", 1, "Name <1>", "1000001", 300, 300, "Ufficio"),
+            ("a-value", 2, "Name <2>", "1000002", 300, 300, "Ufficio"),
+        ]
