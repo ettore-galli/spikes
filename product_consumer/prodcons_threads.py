@@ -61,6 +61,8 @@ def prodcons():
                 if not threads_are_alive(workers):
                     print("Terminate consumer")
                     break
+                else:
+                    print("Workers still running")
             result = f"[CONSUMED: {data_item.payload}]"
             print(result)
             consumers_queue.task_done()
