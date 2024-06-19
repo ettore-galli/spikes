@@ -1,0 +1,5 @@
+pylibjpeg 
+pylibjpeg-libjpeg
+pydicom
+pillow
+numpy
