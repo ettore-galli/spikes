@@ -12,3 +12,6 @@ class DependencyInjectionManager:
 
     def resolve(self, interface: Type[ABC]) -> Type:
         return self.di_map[interface]
+
+
+dependency = DependencyInjectionManager()
