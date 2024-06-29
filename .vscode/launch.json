@@ -21,7 +21,10 @@
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
-            "justMyCode": true
+            "justMyCode": true,
+            "env": {
+                "PYTHONPATH": "${cwd}"
+            }
         },
         {
             "name": "Python: iterfun",
