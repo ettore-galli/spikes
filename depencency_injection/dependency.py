@@ -6,8 +6,8 @@ from depencency_injection.reader.file_reader import DataFileReader
 
 
 def make_normal_dependency():
-    dependency.add_config(BaseFileReader, DataFileReader)
+    dependency.add_config(BaseFileReader, DataFileReader())
 
 
 def make_fake_dependency():
-    dependency.add_config(BaseFileReader, FakeDataFileReader)
+    dependency.add_config(BaseFileReader, FakeDataFileReader())
