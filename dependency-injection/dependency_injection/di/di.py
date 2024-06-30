@@ -1,7 +1,7 @@
 from abc import ABC
 from dataclasses import dataclass, field
 from functools import wraps
-from typing import Callable, Dict, List, Type
+from typing import Any, Callable, Dict, List, Type
 
 
 @dataclass
@@ -44,3 +44,30 @@ class DependencyInjectionManager:
 
 
 dependency = DependencyInjectionManager()
+
+
+class perform_injection:
+    def __init__(self, injectand: Callable) -> None:
+        @wraps(injectand)
+        def injected_function(*args, **kwargs):
+            injected_parameters: Dict = {
+                parameter_name: dependency.resolve(parameter_type)
+                for parameter_name, parameter_type in dependency.retrieve_injectable_parameters(
+                    injectand=injectand
+                )
+                if dependency.can_resolve(parameter_type)
+            }
+            residual_kwargs = {
+                arg: value
+                for arg, value in kwargs.items()
+                if arg not in injected_parameters
+            }
+            residual_args = [arg for arg in args if arg not in injected_parameters]
+            return injectand(
+                *residual_args, **{**residual_kwargs, **injected_parameters}
+            )
+
+        self.injected_function = injected_function
+
+    def __call__(self, *args: Any, **kwds: Any) -> Any:
+        return self.injected_function(*args, **kwds)
