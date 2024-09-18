@@ -8,7 +8,7 @@
 
 . ../venv/bin/activate
 export PYTHONPATH=..
-python repo_demo.py
+python main.py
 
 ## read data
 
