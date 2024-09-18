@@ -27,6 +27,18 @@
             }
         },
         {
+            "name": "Python: Current Spike Filee",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "cwd": "${fileDirname}",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}"
+            }
+        },
+        {
             "name": "Python: iterfun",
             "type": "debugpy",
             "request": "launch",
