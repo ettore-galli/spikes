@@ -26,7 +26,7 @@ def worker(database_url: str, data_q: Queue, logger: SharedLogger):
             if data == POISON_PILL:
                 break
 
-            sleep(0.3)
+            # sleep(0.3)
             result = f"processing data: {data} {datetime.now().isoformat()}"
             logger.info("adding data: %s", data)
             print(f"processing {data} ...")
