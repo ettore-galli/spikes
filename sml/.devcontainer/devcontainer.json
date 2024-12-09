@@ -1,0 +1,6 @@
+{
+	"name": "smlnj",
+	"build": {
+		"dockerfile": "Dockerfile"
+	}
+}
