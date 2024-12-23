@@ -1,2 +1,0 @@
-FROM whitomtit/vscode-smlnj
-
