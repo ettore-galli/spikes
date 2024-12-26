@@ -2,6 +2,7 @@ from probability import (
     combinazioni,
     combine_powers,
     factorial_range,
+    multi_factorial_fraction,
     permutazioni,
     permutazioni_x_n,
 )
@@ -43,3 +44,7 @@ def test_combine_powers():
         3: 3,
         4: 4,
     }
+
+
+def test_multi_factorial_fraction():
+    assert multi_factorial_fraction([10], [8, 2]) == 45.0
