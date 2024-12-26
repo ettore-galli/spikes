@@ -20,8 +20,12 @@ def factorial_range(n: int) -> Dict[int, int]:
 
 
 def combine_powers(terms: List[Dict[int, int]]) -> Dict[int, int]:
-    if len(terms) < 2:
-        return terms
+    if len(terms) == 0:
+        return {}
+
+    if len(terms) == 1:
+        return terms[0]
+
     if len(terms) == 2:
         return {
             **{
@@ -35,8 +39,16 @@ def combine_powers(terms: List[Dict[int, int]]) -> Dict[int, int]:
     return combine_powers([terms[0], combine_powers(terms[1:])])
 
 
-# def multi_factorial_fraction(multiplers: List[int], dividers: List[int]) -> float:
+def multi_factorial_fraction(multiplers: List[int], dividers: List[int]) -> float:
+    multipliers_terms = combine_powers([factorial_range(n) for n in multiplers])
+    dividers_terms = combine_powers([factorial_range(n) for n in dividers])
 
-#     multipliers_terms = [factorial_range(n) for n in multiplers]
+    reversed_dividers = {base: -exp for base, exp in dividers_terms.items()}
 
-#     dividers_terms = [factorial_range(n) for n in dividers]
+    remaining_multipliers = combine_powers([multipliers_terms, reversed_dividers])
+
+    return functools.reduce(
+        lambda acc, cur: acc * (cur[0] ** cur[1]),
+        [(base, exp) for base, exp in remaining_multipliers.items()],
+        1,
+    )
