@@ -17,6 +17,7 @@ def test_combinazioni():
     assert combinazioni(12, 4) == 495
     assert combinazioni(10, 2) == 45
     assert combinazioni(5, 2) == 10
+    assert combinazioni(10, 4) == 210
 
 
 def test_factorial_range():
