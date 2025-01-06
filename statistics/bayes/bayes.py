@@ -1,3 +1,4 @@
+from functools import reduce
 from typing import List, Dict
 
 import csv
@@ -75,13 +76,27 @@ def compute_conditional_feature_frequencies(
     return reclassified_frequences
 
 
-def calculate_record_scores(
+def calculate_record_features(
     feature_frequencies: FeatureFrequencyTree, today: Dict[str, str]
+) -> Dict[str, Dict[str, float]]:
+    record_features = {
+        response: {
+            today_feature: response_frequencies[today_feature][today_value]
+            for today_feature, today_value in today.items()
+        }
+        for response, response_frequencies in feature_frequencies.items()
+    }
+    return record_features
+
+
+def calculate_response_scores(
+    record_feaures: Dict[str, Dict[str, float]]
 ) -> Dict[str, float]:
     response_scores = {
-        response: {feature: 1 for feature, x in single_feature_frequencies.items()}
-        for response, single_feature_frequencies in feature_frequencies.items()
+        response: reduce(lambda acc, cur: acc * cur, response_frequencies.values(), 1)
+        for response, response_frequencies in record_feaures.items()
     }
+    return response_scores
 
 
 if __name__ == "__main__":
@@ -104,32 +119,12 @@ if __name__ == "__main__":
         "Windy": "False",
     }
 
-    freqs = {
-        "Outlook": {
-            "Yes": {
-                "Sunny": 0.3333333333333333,
-                "Rainy": 0.2222222222222222,
-                "Overcast": 0.4444444444444444,
-            },
-            "No": {"Sunny": 0.4, "Rainy": 0.6, "Overcast": 0.0},
-        },
-        "Temperature": {
-            "Yes": {
-                "Hot": 0.2222222222222222,
-                "Mild": 0.4444444444444444,
-                "Cool": 0.3333333333333333,
-            },
-            "No": {"Hot": 0.4, "Mild": 0.4, "Cool": 0.2},
-        },
-        "Humidity": {
-            "Yes": {"Normal": 0.6666666666666666, "High": 0.3333333333333333},
-            "No": {"Normal": 0.2, "High": 0.8},
-        },
-        "Windy": {
-            "Yes": {"False": 0.6666666666666666, "True": 0.3333333333333333},
-            "No": {"False": 0.4, "True": 0.6},
-        },
-    }
-    # scores = calculate_record_scores(feature_frequencies=feature_frequencies, today=today)
+    record_features = calculate_record_features(
+        feature_frequencies=feature_frequencies, today=today
+    )
 
-    print(feature_frequencies)
+    print(record_features)
+
+    response_scores = calculate_response_scores(record_feaures=record_features)
+
+    print(response_scores)
