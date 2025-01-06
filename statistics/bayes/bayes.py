@@ -45,13 +45,20 @@ def compute_feature_count(
     return feature_counts
 
 
-def compute_conditional_feature_frequencies(
+def get_response_counts(
     feature_counts: FeatureCountTree, response_feature: str
-) -> Dict[str, Dict[str, float]]:
-    response_counts = {
+) -> Dict[str, int]:
+    return {
         feature: subcount[feature]
         for feature, subcount in feature_counts[response_feature].items()
     }
+
+
+def compute_conditional_feature_frequencies(
+    feature_counts: FeatureCountTree,
+    response_feature: str,
+    response_counts: Dict[str, int],
+) -> Dict[str, Dict[str, float]]:
 
     conditional_feature_frequencies = {
         feature: {
@@ -90,13 +97,28 @@ def calculate_record_features(
 
 
 def calculate_response_scores(
-    record_feaures: Dict[str, Dict[str, float]]
+    record_feaures: Dict[str, Dict[str, float]],
+    response_counts: Dict[str, int],
 ) -> Dict[str, float]:
     response_scores = {
-        response: reduce(lambda acc, cur: acc * cur, response_frequencies.values(), 1)
+        response: (response_counts[response] / sum(response_counts.values()))
+        * reduce(lambda acc, cur: acc * cur, response_frequencies.values(), 1)
         for response, response_frequencies in record_feaures.items()
     }
     return response_scores
+
+
+def classify_record(
+    feature_frequencies: FeatureFrequencyTree,
+    response_counts: Dict[str, int],
+    today: Dict[str, str],
+) -> Dict[str, float]:
+    return calculate_response_scores(
+        record_feaures=calculate_record_features(
+            feature_frequencies=feature_frequencies, today=today
+        ),
+        response_counts=response_counts,
+    )
 
 
 if __name__ == "__main__":
@@ -107,9 +129,10 @@ if __name__ == "__main__":
     feature_count = compute_feature_count(
         data=data, features=features, response_feature=response_feature
     )
+    response_counts = get_response_counts(feature_count, "PlayGolf")
 
     feature_frequencies = compute_conditional_feature_frequencies(
-        feature_count, "PlayGolf"
+        feature_count, "PlayGolf", response_counts
     )
 
     today = {
@@ -118,13 +141,25 @@ if __name__ == "__main__":
         "Humidity": "Normal",
         "Windy": "False",
     }
+    example2 = {
+        "Outlook": "Sunny",
+        "Temperature": "Mild",
+        "Humidity": "Normal",
+        "Windy": "False",
+    }
 
-    record_features = calculate_record_features(
-        feature_frequencies=feature_frequencies, today=today
+    classification = classify_record(
+        feature_frequencies=feature_frequencies,
+        response_counts=response_counts,
+        today=today,
     )
 
-    print(record_features)
+    print(classification)
 
-    response_scores = calculate_response_scores(record_feaures=record_features)
+    classification = classify_record(
+        feature_frequencies=feature_frequencies,
+        response_counts=response_counts,
+        today=example2,
+    )
 
-    print(response_scores)
+    print(classification)
