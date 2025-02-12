@@ -223,6 +223,25 @@ def render_splitted_lists(data_macro, threshold):
     yield splitted_list
 
 
+def split_macros(data_macro, threshold):
+    split_list = []
+    consumed_space = 0
+
+    for macro in data_macro:
+        residual_micros = macro["micro"]
+        while residual_micros:
+            append_micros = residual_micros[: (threshold - consumed_space - 1)]
+            residual_micros = residual_micros[len(append_micros) :]
+            split_list.append({**macro, "micro": append_micros})
+            consumed_space += 1 + len(append_micros)
+            if threshold - consumed_space == 0:
+                yield split_list
+                split_list = []
+                consumed_space = 0
+
+    yield split_list
+
+
 if __name__ == "__main__":
     allresult = list(
         render_splitted_lists(data_macro=data["macro"], threshold=threshold)
