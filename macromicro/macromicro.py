@@ -219,15 +219,29 @@ def render_splitted_macros(data_macro, threshold):
     yield {**current_macro, **{"micro": chunk}}
 
 
+def render_splitted_lists(data_macro, threshold):
+    splitted_list = []
+    consumed_space = 0
+
+    for macro in render_splitted_macros(data_macro, threshold):
+        consumed_space += 1 + len(macro["micro"])
+        splitted_list.append(macro)
+        if consumed_space == threshold:
+            yield splitted_list
+            splitted_list = []
+            
+    yield splitted_list
+
+
 if __name__ == "__main__":
     # allresult = list(render_flat(data_macro=data["macro"]))
     allresult = list(
-        render_splitted_macros(data_macro=data["macro"], threshold=threshold)
+        render_splitted_lists(data_macro=data["macro"], threshold=threshold)
     )
+    print(allresult)
+    # for macro in allresult:
+    #     print(macro["description"])
+    #     for item in macro["micro"]:
+    #         print(".", item["description"])
 
-    for macro in allresult:
-        print(macro["description"])
-        for item in macro["micro"]:
-            print(".", item["description"])
-
-        print("-" * 20)
+    #     print("-" * 20)
