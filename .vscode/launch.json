@@ -87,6 +87,18 @@
             "args": [
                 "./example-data/cities.csv"
             ]
-        }
+        },
+        {
+            "name": "Bayes",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "statistics/bayes/bayes.py",
+            // "cwd": "statistics/bayes",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}"
+            }
+        },
     ]
 }
