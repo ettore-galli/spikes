@@ -1,7 +1,3 @@
-from itertools import islice
-from typing import Any, Generator, Iterable
-
-
 data = {
     "macro": [
         {
@@ -229,19 +225,12 @@ def render_splitted_lists(data_macro, threshold):
         if consumed_space == threshold:
             yield splitted_list
             splitted_list = []
-            
+
     yield splitted_list
 
 
 if __name__ == "__main__":
-    # allresult = list(render_flat(data_macro=data["macro"]))
     allresult = list(
         render_splitted_lists(data_macro=data["macro"], threshold=threshold)
     )
     print(allresult)
-    # for macro in allresult:
-    #     print(macro["description"])
-    #     for item in macro["micro"]:
-    #         print(".", item["description"])
-
-    #     print("-" * 20)
