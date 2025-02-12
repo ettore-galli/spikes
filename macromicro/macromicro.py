@@ -197,7 +197,7 @@ def render_flat(data_macro):
             yield (macro, micro_item)
 
 
-def render_splitted(data_macro, threshold):
+def render_splitted_macros(data_macro, threshold):
     chunk = []
     estimated_space = 0
     current_macro = None
@@ -221,7 +221,9 @@ def render_splitted(data_macro, threshold):
 
 if __name__ == "__main__":
     # allresult = list(render_flat(data_macro=data["macro"]))
-    allresult = list(render_splitted(data_macro=data["macro"], threshold=threshold))
+    allresult = list(
+        render_splitted_macros(data_macro=data["macro"], threshold=threshold)
+    )
 
     for macro in allresult:
         print(macro["description"])
