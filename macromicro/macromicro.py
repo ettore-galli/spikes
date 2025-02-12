@@ -187,12 +187,6 @@ expected = [
 ]
 
 
-def render_flat(data_macro):
-    for macro in data_macro:
-        for micro_item in macro["micro"]:
-            yield (macro, micro_item)
-
-
 def render_splitted_macros(data_macro, threshold):
     chunk = []
     estimated_space = 0
