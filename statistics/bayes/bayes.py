@@ -101,7 +101,7 @@ def calculate_response_scores(
     response_counts: Dict[str, int],
 ) -> Dict[str, float]:
     response_scores = {
-        response: (response_counts[response] / sum(response_counts.values()))
+        response: response_counts[response]
         * reduce(lambda acc, cur: acc * cur, response_frequencies.values(), 1)
         for response, response_frequencies in record_feaures.items()
     }
@@ -162,4 +162,8 @@ if __name__ == "__main__":
         today=example2,
     )
 
-    print(classification)
+    print(classification)  # 0470223585118    letixmail@gmail.com 3385973451
+
+    # 051 19937469
+
+    
