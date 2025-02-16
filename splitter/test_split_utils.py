@@ -1,4 +1,5 @@
 from split_utils import (
+    split_by_space,
     split_macros,
 )
 
@@ -193,4 +194,9 @@ expected = [
 
 def test_split_macros():
     allresult = list(split_macros(data_macro=data["macro"], threshold=threshold))
+    assert allresult == expected
+
+
+def test_split_by_space():
+    allresult = list(split_by_space(data=data["macro"], space_threshold=threshold))
     assert allresult == expected
