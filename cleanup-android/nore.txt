@@ -1,0 +1,11 @@
+
+/sdcard
+
+HWWAS-H:/sdcard $ du -sh Download                                                                                              
+135M	Download
+
+HWWAS-H:/sdcard $ du -sh Pictures                                                                                              
+561M	Pictures
+
+HWWAS-H:/sdcard $ du -sh WhatsApp                                                                                              
+1.0G	WhatsApp

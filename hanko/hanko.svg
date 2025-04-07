@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400&amp;display=swap');
+  </style>
+
+    <!-- Sfondo bianco -->
+    <rect width="200" height="200" fill="white" />
+
+    <!-- Cornice con angoli arrotondati -->
+    <rect x="10" y="10" width="180" height="180" rx="20" ry="20" fill="none" stroke="red"
+        stroke-width="4" />
+    <rect x="15" y="15" width="170" height="170" rx="15" ry="15" fill="none" stroke="red"
+        stroke-width="4" />
+
+    <!-- Testo su due righe -->
+    <text x="50%" y="30%" dy="0px" font-family="Roboto Mono, monospace" font-size="72" 
+        fill="red" text-anchor="middle" dominant-baseline="middle" letter-spacing="0">
+        ETT
+    </text>
+    <text x="50%" y="70%" dy="0px"  font-family="Roboto Mono, monospace" font-size="72" 
+        fill="red" text-anchor="middle" dominant-baseline="middle" letter-spacing="0">
+        ORE
+    </text>
+</svg>
