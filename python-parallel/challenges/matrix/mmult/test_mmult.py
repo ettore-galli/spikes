@@ -6,7 +6,7 @@ from challenges.matrix.mmult.mmult import (
     extract_matrix_columns,
     inplace_direct_matrix_multiplication,
     multiprocessing_matrix_multiplication,
-    multiprocessing_matrix_multiplication_inplace,
+    multiprocessing_matrix_multiplication_optimized,
     perform_dot_product,
 )
 
@@ -95,5 +95,7 @@ def test_multiprocessing_matrix_multiplication(matrix_a, matrix_b, product):
 
 
 @mark.parametrize(["matrix_a", "matrix_b", "product"], MULTIPLICATION_TEST_CASES)
-def test_multiprocessing_matrix_multiplication_inplace(matrix_a, matrix_b, product):
-    assert multiprocessing_matrix_multiplication_inplace(matrix_a, matrix_b) == product
+def test_multiprocessing_matrix_multiplication_optimized(matrix_a, matrix_b, product):
+    assert (
+        multiprocessing_matrix_multiplication_optimized(matrix_a, matrix_b) == product
+    )
