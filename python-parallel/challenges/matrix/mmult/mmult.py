@@ -18,7 +18,7 @@ def extract_matrix_columns(matrix: Matrix) -> List[MatrixColumn]:
     return [[row[index] for row in matrix] for index in range(len(matrix[0]))]
 
 
-def perform_dot_product(row: MatrixRow, column: MatrixColumn):
+def perform_dot_product(row: MatrixRow, column: MatrixColumn) -> float:
     return sum(
         [
             row_element * column_element
@@ -37,7 +37,39 @@ def direct_matrix_multiplication(matrix_a: Matrix, matrix_b: Matrix) -> Matrix:
     ]
 
 
+def inplace_direct_matrix_multiplication(matrix_a: Matrix, matrix_b: Matrix) -> Matrix:
+    matrix_a_rows = len(matrix_a)
+    matrix_a_cols = len(matrix_a[0])
+    matrix_b_cols = len(matrix_b[0])
+
+    result = [[0.0] * matrix_b_cols for _ in range(matrix_a_rows)]
+
+    for a_row_id in range(matrix_a_rows):
+        for b_col_id in range(matrix_b_cols):
+            for a_col_id in range(matrix_a_cols):
+                result[a_row_id][b_col_id] += (
+                    matrix_a[a_row_id][a_col_id] * matrix_b[a_col_id][b_col_id]
+                )
+
+    return result
+
+
 def multiprocessing_matrix_multiplication(
+    matrix_a: Matrix, matrix_b: Matrix, pool_size: int = 10
+) -> Matrix:
+
+    with multiprocessing.Pool(processes=pool_size) as pool:
+
+        return [
+            pool.starmap(
+                perform_dot_product,
+                ([(row, column) for column in extract_matrix_columns(matrix_b)]),
+            )
+            for row in extract_matrix_rows(matrix_a)
+        ]
+
+
+def multiprocessing_matrix_multiplication_2(
     matrix_a: Matrix, matrix_b: Matrix, pool_size: int = 10
 ) -> Matrix:
 
