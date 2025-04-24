@@ -9,7 +9,7 @@ from challenges.matrix.mmult.mmult import (
 
 
 def perform_mult_demo():
-    BASE_SIZE = 500
+    BASE_SIZE = 200
     A_MATRIX_SIZE = (BASE_SIZE, BASE_SIZE)
     B_MATRIX_SIZE = (BASE_SIZE, BASE_SIZE)
 
@@ -47,7 +47,7 @@ def perform_mult_demo():
 
     if perform_multi_opt:
 
-        for pool_size in [10]:
+        for pool_size in [1]:
 
             tpo0 = datetime.now()
             multip = multiprocessing_matrix_multiplication_optimized(
