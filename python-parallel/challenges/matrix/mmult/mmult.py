@@ -69,7 +69,7 @@ def multiprocessing_matrix_multiplication(
         ]
 
 
-def multiprocessing_matrix_multiplication_2(
+def multiprocessing_matrix_multiplication_inplace(
     matrix_a: Matrix, matrix_b: Matrix, pool_size: int = 10
 ) -> Matrix:
 
