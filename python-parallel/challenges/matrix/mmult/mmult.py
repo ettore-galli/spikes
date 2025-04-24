@@ -79,7 +79,7 @@ def perform_multiplication_row(
 def split_into_chunks(iterable: List[Any], chunk_size: int) -> List[List[Any]]:
     return [
         iterable[k * chunk_size : (k + 1) * chunk_size]
-        for k in range(chunk_size)
+        for k in range(1 + len(iterable) // chunk_size)
         if k * chunk_size < len(iterable)
     ]
 
@@ -107,7 +107,6 @@ def direct_matrix_multiplication_to_array(
                 result_row_index + (index + 1) * result_cols
             )
         ] = result_row
-        print(result_array[:])
 
 
 def multiprocessing_matrix_multiplication_optimized(
@@ -122,30 +121,22 @@ def multiprocessing_matrix_multiplication_optimized(
 
     processes = []
 
-    for result_row_index, chunk in enumerate(split_into_chunks(matrix_a, pool_size)):
-        try:
-            processes.append(
-                multiprocessing.Process(
-                    target=direct_matrix_multiplication_to_array,
-                    args=(chunk, matrix_b, result_row_index, result_array),
-                )
+    chunk_size = 1 + len(matrix_a) // pool_size
+
+    for chunk_index, chunk in enumerate(split_into_chunks(matrix_a, chunk_size)):
+        result_row_index = chunk_index * chunk_size * result_cols
+        processes.append(
+            multiprocessing.Process(
+                target=direct_matrix_multiplication_to_array,
+                args=(chunk, matrix_b, result_row_index, result_array),
             )
-        except Exception as error:
-            print(error)
+        )
 
     for process in processes:
-        try:
-            process.start()
-            print(f"process {process.name} started")
-        except Exception as error:
-            print(error)
+        process.start()
 
     for process in processes:
-        try:
-            process.join()
-            print(f"process {process.name} joined")
-        except Exception as error:
-            print(error)
+        process.join()
 
     for r in range(0, result_rows):
         result.append(result_array[r * result_cols : (r + 1) * result_cols])
