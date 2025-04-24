@@ -4,12 +4,12 @@ from random import random
 from challenges.matrix.mmult.mmult import (
     direct_matrix_multiplication,
     inplace_direct_matrix_multiplication,
-    multiprocessing_matrix_multiplication,
+    multiprocessing_matrix_multiplication_optimized,
 )
 
 
 def perform_mult_demo():
-    BASE_SIZE = 300
+    BASE_SIZE = 500
     A_MATRIX_SIZE = (BASE_SIZE, BASE_SIZE)
     B_MATRIX_SIZE = (BASE_SIZE, BASE_SIZE)
 
@@ -21,7 +21,7 @@ def perform_mult_demo():
     if perform_direct:
         t0 = datetime.now()
 
-        _ = direct_matrix_multiplication(A, B)
+        direct = direct_matrix_multiplication(A, B)
 
         t1 = datetime.now()
 
@@ -47,10 +47,14 @@ def perform_mult_demo():
 
     if perform_multi_opt:
 
-        for pool_size in [3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 30, 40]:
+        for pool_size in [10]:
 
             tpo0 = datetime.now()
-            _ = multiprocessing_matrix_multiplication(A, B, pool_size=pool_size)
+            multip = multiprocessing_matrix_multiplication_optimized(
+                A, B, pool_size=pool_size
+            )
+
+            assert multip == direct
 
             tp01 = datetime.now()
 

@@ -169,5 +169,6 @@ def test_multiprocessing_matrix_multiplication(matrix_a, matrix_b, product):
 @mark.parametrize(["matrix_a", "matrix_b", "product"], MULTIPLICATION_TEST_CASES)
 def test_multiprocessing_matrix_multiplication_optimized(matrix_a, matrix_b, product):
     assert (
-        multiprocessing_matrix_multiplication_optimized(matrix_a, matrix_b) == product
+        multiprocessing_matrix_multiplication_optimized(matrix_a, matrix_b, 3)
+        == product
     )
