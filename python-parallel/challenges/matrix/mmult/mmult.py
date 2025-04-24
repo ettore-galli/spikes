@@ -69,16 +69,21 @@ def multiprocessing_matrix_multiplication(
         ]
 
 
-def multiprocessing_matrix_multiplication_inplace(
+def perform_multiplication_row(
+    row: MatrixRow, columns: List[MatrixColumn]
+) -> MatrixRow:
+    return [perform_dot_product(row, column) for column in columns]
+
+
+def multiprocessing_matrix_multiplication_optimized(
     matrix_a: Matrix, matrix_b: Matrix, pool_size: int = 10
 ) -> Matrix:
 
     with multiprocessing.Pool(processes=pool_size) as pool:
 
-        return [
-            pool.starmap(
-                perform_dot_product,
-                ([(row, column) for column in extract_matrix_columns(matrix_b)]),
-            )
-            for row in extract_matrix_rows(matrix_a)
-        ]
+        b_columns = extract_matrix_columns(matrix_b)
+
+        return pool.starmap(
+            perform_multiplication_row,
+            [(row, b_columns) for row in extract_matrix_rows(matrix_a)],
+        )
