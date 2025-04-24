@@ -1,3 +1,4 @@
+from ctypes import c_double
 import multiprocessing
 from typing import Any, List
 
@@ -89,26 +90,64 @@ def direct_matrix_multiplication_to_queue(
     result_queue.put(direct_matrix_multiplication(matrix_a, matrix_b))
 
 
+def direct_matrix_multiplication_to_array(
+    matrix_a: Matrix,
+    matrix_b: Matrix,
+    result_row_index: int,
+    result_array,
+) -> None:
+
+    result_cols = len(matrix_b[0])
+
+    intermediate = direct_matrix_multiplication(matrix_a, matrix_b)
+
+    for index, result_row in enumerate(intermediate):
+        result_array[
+            (result_row_index + index * result_cols) : (
+                result_row_index + (index + 1) * result_cols
+            )
+        ] = result_row
+        print(result_array[:])
+
+
 def multiprocessing_matrix_multiplication_optimized(
     matrix_a: Matrix, matrix_b: Matrix, pool_size: int = 10
 ) -> Matrix:
 
     result = []
-    result_queue: multiprocessing.Queue = multiprocessing.Queue()
+    result_rows = len(matrix_a)
+    result_cols = len(matrix_b[0])
 
-    processes = [
-        multiprocessing.Process(
-            target=direct_matrix_multiplication_to_queue,
-            args=(chunk, matrix_b, result_queue),
-        )
-        for chunk in split_into_chunks(matrix_a, pool_size)
-    ]
-    for process in processes:
-        process.start()
-    for process in processes:
-        process.join()
+    result_array = multiprocessing.RawArray(c_double, result_rows * result_cols)
 
-    while not result_queue.empty():
-        result.extend(result_queue.get())
+    processes = []
+
+    for result_row_index, chunk in enumerate(split_into_chunks(matrix_a, pool_size)):
+        try:
+            processes.append(
+                multiprocessing.Process(
+                    target=direct_matrix_multiplication_to_array,
+                    args=(chunk, matrix_b, result_row_index, result_array),
+                )
+            )
+        except Exception as error:
+            print(error)
+
+    for process in processes:
+        try:
+            process.start()
+            print(f"process {process.name} started")
+        except Exception as error:
+            print(error)
+
+    for process in processes:
+        try:
+            process.join()
+            print(f"process {process.name} joined")
+        except Exception as error:
+            print(error)
+
+    for r in range(0, result_rows):
+        result.append(result_array[r * result_cols : (r + 1) * result_cols])
 
     return result
