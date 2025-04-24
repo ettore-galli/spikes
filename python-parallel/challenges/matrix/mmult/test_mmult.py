@@ -4,7 +4,9 @@ from challenges.matrix.mmult.mmult import (
     direct_matrix_multiplication,
     extract_matrix_rows,
     extract_matrix_columns,
+    inplace_direct_matrix_multiplication,
     multiprocessing_matrix_multiplication,
+    multiprocessing_matrix_multiplication_2,
     perform_dot_product,
 )
 
@@ -57,7 +59,11 @@ MULTIPLICATION_TEST_CASES = [
         ],
     ),
     (
-        [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]],
+        [
+            [1, 2, 3, 4],
+            [5, 6, 7, 8],
+            [9, 10, 11, 12],
+        ],
         [
             [10, 20, 30, 40, 50],
             [60, 70, 80, 90, 100],
@@ -79,5 +85,15 @@ def test_direct_matrix_multiplication(matrix_a, matrix_b, product):
 
 
 @mark.parametrize(["matrix_a", "matrix_b", "product"], MULTIPLICATION_TEST_CASES)
+def test_inplace_direct_matrix_multiplication(matrix_a, matrix_b, product):
+    assert inplace_direct_matrix_multiplication(matrix_a, matrix_b) == product
+
+
+@mark.parametrize(["matrix_a", "matrix_b", "product"], MULTIPLICATION_TEST_CASES)
 def test_multiprocessing_matrix_multiplication(matrix_a, matrix_b, product):
     assert multiprocessing_matrix_multiplication(matrix_a, matrix_b) == product
+
+
+@mark.parametrize(["matrix_a", "matrix_b", "product"], MULTIPLICATION_TEST_CASES)
+def test_multiprocessing_matrix_multiplication_2(matrix_a, matrix_b, product):
+    assert multiprocessing_matrix_multiplication_2(matrix_a, matrix_b) == product
