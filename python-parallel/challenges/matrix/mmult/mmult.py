@@ -1,5 +1,5 @@
 import multiprocessing
-from typing import List
+from typing import Any, List
 
 
 MatrixRow = List[float]
@@ -75,15 +75,40 @@ def perform_multiplication_row(
     return [perform_dot_product(row, column) for column in columns]
 
 
+def split_into_chunks(iterable: List[Any], chunk_size: int) -> List[List[Any]]:
+    return [
+        iterable[k * chunk_size : (k + 1) * chunk_size]
+        for k in range(chunk_size)
+        if k * chunk_size < len(iterable)
+    ]
+
+
+def direct_matrix_multiplication_to_queue(
+    matrix_a: Matrix, matrix_b: Matrix, result_queue: multiprocessing.Queue
+) -> None:
+    result_queue.put(direct_matrix_multiplication(matrix_a, matrix_b))
+
+
 def multiprocessing_matrix_multiplication_optimized(
     matrix_a: Matrix, matrix_b: Matrix, pool_size: int = 10
 ) -> Matrix:
 
-    with multiprocessing.Pool(processes=pool_size) as pool:
+    result = []
+    result_queue: multiprocessing.Queue = multiprocessing.Queue()
 
-        b_columns = extract_matrix_columns(matrix_b)
-
-        return pool.starmap(
-            perform_multiplication_row,
-            [(row, b_columns) for row in extract_matrix_rows(matrix_a)],
+    processes = [
+        multiprocessing.Process(
+            target=direct_matrix_multiplication_to_queue,
+            args=(chunk, matrix_b, result_queue),
         )
+        for chunk in split_into_chunks(matrix_a, pool_size)
+    ]
+    for process in processes:
+        process.start()
+    for process in processes:
+        process.join()
+
+    while not result_queue.empty():
+        result.extend(result_queue.get())
+
+    return result
