@@ -8,7 +8,79 @@ from challenges.matrix.mmult.mmult import (
     multiprocessing_matrix_multiplication,
     multiprocessing_matrix_multiplication_optimized,
     perform_dot_product,
+    split_into_chunks,
 )
+
+
+@mark.parametrize(
+    ["source", "chunk_size", "splitted"],
+    [
+        (
+            [
+                [1, 1, 1],
+                [2, 2, 1],
+                [3, 3, 3],
+                [4, 4, 4],
+                [5, 5, 5],
+                [6, 6, 6],
+                [7, 7, 7],
+                [8, 8, 8],
+                [9, 9, 9],
+            ],
+            4,
+            [
+                [
+                    [1, 1, 1],
+                    [2, 2, 1],
+                    [3, 3, 3],
+                    [4, 4, 4],
+                ],
+                [
+                    [5, 5, 5],
+                    [6, 6, 6],
+                    [7, 7, 7],
+                    [8, 8, 8],
+                ],
+                [
+                    [9, 9, 9],
+                ],
+            ],
+        ),
+        (
+            [
+                [1, 1, 1],
+                [2, 2, 1],
+                [3, 3, 3],
+                [4, 4, 4],
+                [5, 5, 5],
+                [6, 6, 6],
+                [7, 7, 7],
+                [8, 8, 8],
+                [9, 9, 9],
+            ],
+            3,
+            [
+                [
+                    [1, 1, 1],
+                    [2, 2, 1],
+                    [3, 3, 3],
+                ],
+                [
+                    [4, 4, 4],
+                    [5, 5, 5],
+                    [6, 6, 6],
+                ],
+                [
+                    [7, 7, 7],
+                    [8, 8, 8],
+                    [9, 9, 9],
+                ],
+            ],
+        ),
+    ],
+)
+def test_split_into_chunks(source, chunk_size, splitted):
+    assert split_into_chunks(source, chunk_size) == splitted
 
 
 def test_extract_rows():
