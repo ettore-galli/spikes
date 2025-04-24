@@ -1,3 +1,4 @@
+import multiprocessing
 from typing import List
 
 
@@ -36,5 +37,16 @@ def direct_matrix_multiplication(matrix_a: Matrix, matrix_b: Matrix) -> Matrix:
     ]
 
 
-def multiprocessing_matrix_multiplication(matrix_a: Matrix, matrix_b: Matrix) -> Matrix:
-    return [[]]
+def multiprocessing_matrix_multiplication(
+    matrix_a: Matrix, matrix_b: Matrix, pool_size: int = 10
+) -> Matrix:
+
+    with multiprocessing.Pool(processes=pool_size) as pool:
+
+        return [
+            pool.starmap(
+                perform_dot_product,
+                ([(row, column) for column in extract_matrix_columns(matrix_b)]),
+            )
+            for row in extract_matrix_rows(matrix_a)
+        ]
