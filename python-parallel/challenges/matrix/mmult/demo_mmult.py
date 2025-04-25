@@ -47,7 +47,7 @@ def perform_mult_demo():
 
     if perform_multi_opt:
 
-        for pool_size in [3,4,5,6]:
+        for pool_size in [3, 4, 5, 6, 7, 8, 9]:
 
             tpo0 = datetime.now()
             multip = multiprocessing_matrix_multiplication_optimized(
