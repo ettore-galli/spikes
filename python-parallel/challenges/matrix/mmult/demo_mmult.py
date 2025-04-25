@@ -1,85 +1,83 @@
-from datetime import datetime
+from datetime import datetime, timedelta
+import multiprocessing
 from random import random
+import sys
 
 from challenges.matrix.mmult.mmult import (
     direct_matrix_multiplication,
     inplace_direct_matrix_multiplication,
+    multiprocessing_matrix_multiplication,
     multiprocessing_matrix_multiplication_optimized,
 )
 
 
-def perform_mult_demo():
-    BASE_SIZE = 600
-    A_MATRIX_SIZE = (BASE_SIZE, BASE_SIZE)
-    B_MATRIX_SIZE = (BASE_SIZE, BASE_SIZE)
+def log_timing(name: str, delta: timedelta, pool_size: int):
+    print(f"{name.ljust(20)} {str(delta).rjust(20)} pool size: {pool_size}")
+
+
+def perform_mult_demo(base_size: int):
+
+    A_MATRIX_SIZE = (base_size, base_size)
+    B_MATRIX_SIZE = (base_size, base_size)
 
     A = [[random() for _ in range(A_MATRIX_SIZE[1])] for _ in range(A_MATRIX_SIZE[0])]
     B = [[random() for _ in range(B_MATRIX_SIZE[1])] for _ in range(B_MATRIX_SIZE[0])]
 
-    perform_direct = True
+    t0 = datetime.now()
 
-    if perform_direct:
-        t0 = datetime.now()
+    direct = direct_matrix_multiplication(A, B)
 
-        direct = direct_matrix_multiplication(A, B)
+    t1 = datetime.now()
 
-        t1 = datetime.now()
+    direct_time = t1 - t0
 
-        direct_time = t1 - t0
+    log_timing("Direct", direct_time, 0)
 
-        print(f"Direct           : {direct_time}")
+    # --------------------------------------------------
 
-    perform_direct_inplace = False
+    ti0 = datetime.now()
 
-    if perform_direct_inplace:
+    _ = inplace_direct_matrix_multiplication(A, B)
 
-        ti0 = datetime.now()
+    ti1 = datetime.now()
 
-        _ = inplace_direct_matrix_multiplication(A, B)
+    direct_inplace_time = ti1 - ti0
 
-        ti1 = datetime.now()
+    log_timing("Direct n-place", direct_inplace_time, 0)
 
-        direct_inplace_time = ti1 - ti0
+    # --------------------------------------------------
 
-        print(f"Direct in-place  : {direct_inplace_time}")
+    pool_size = multiprocessing.cpu_count()
 
-    perform_multi_opt = True
+    tpm0 = datetime.now()
+    multi_pool = multiprocessing_matrix_multiplication(
+        A, B, pool_size=multiprocessing.cpu_count()
+    )
+    tpm1 = datetime.now()
 
-    if perform_multi_opt:
+    assert multi_pool == direct
 
-        for pool_size in [3, 4, 5, 6, 7, 8, 9]:
+    parallel_time_opt = tpm1 - tpm0
 
-            tpo0 = datetime.now()
-            multip = multiprocessing_matrix_multiplication_optimized(
-                A, B, pool_size=pool_size
-            )
+    log_timing("Parallel pool", parallel_time_opt, pool_size)
 
-            assert multip == direct
+    # --------------------------------------------------
 
-            tp01 = datetime.now()
+    pool_size = multiprocessing.cpu_count()
 
-            parallel_time_opt = tp01 - tpo0
+    tpo0 = datetime.now()
+    multi_optimized = multiprocessing_matrix_multiplication_optimized(
+        A, B, pool_size=multiprocessing.cpu_count()
+    )
+    tp01 = datetime.now()
 
-            print(f"Parallel optimized: {parallel_time_opt} [pool_size = {pool_size}]")
+    assert multi_optimized == direct
 
-    # for i in range(1, BASE_SIZE, int(BASE_SIZE / 20)):
+    parallel_time_opt = tp01 - tpo0
 
-    #     pool_size = int(BASE_SIZE / i)
-
-    #     tp0 = datetime.now()
-    #     a_times_b_parallel = multiprocessing_matrix_multiplication(
-    #         A, B, pool_size=pool_size
-    #     )
-
-    #     tp1 = datetime.now()
-
-    #     parallel_time = tp1 - tp0
-
-    #     assert a_times_b_direct == a_times_b_parallel
-    #     assert a_times_b_direct == a_times_b_direct_inplace
-
-    #     print(f"Parallel : {parallel_time} [pool_size = {pool_size}]")
+    log_timing("Parallel optimized", parallel_time_opt, pool_size)
 
 
 if __name__ == "__main__":
-    perform_mult_demo()
+    base_size = int(sys.argv[1]) if len(sys.argv) > 1 else 100
+    perform_mult_demo(base_size=base_size)
