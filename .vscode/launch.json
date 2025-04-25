@@ -54,7 +54,7 @@
             }
         },
         {
-            "name": "Python: Current Spike Filee",
+            "name": "Python: Current Spike File",
             "type": "debugpy",
             "request": "launch",
             "program": "${file}",
@@ -98,6 +98,17 @@
             "justMyCode": true,
             "env": {
                 "PYTHONPATH": "${workspaceFolder}"
+            }
+        },
+        {
+            "name": "Martix mult demo",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "python-parallel/challenges/matrix/mmult/demo_mmult.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}/python-parallel"
             }
         },
     ]
