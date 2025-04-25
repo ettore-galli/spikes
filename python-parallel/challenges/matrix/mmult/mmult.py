@@ -109,6 +109,24 @@ def direct_matrix_multiplication_to_array(
         ] = result_row
 
 
+def matrix_multiplication_inplace_to_array(
+    matrix_a: Matrix,
+    matrix_b: Matrix,
+    result_row_index: int,
+    result_array,
+) -> None:
+    matrix_a_rows = len(matrix_a)
+    matrix_a_cols = len(matrix_a[0])
+    matrix_b_cols = len(matrix_b[0])
+
+    for a_row_id in range(matrix_a_rows):
+        for b_col_id in range(matrix_b_cols):
+            for a_col_id in range(matrix_a_cols):
+                result_array[
+                    result_row_index + a_row_id * matrix_b_cols + b_col_id
+                ] += (matrix_a[a_row_id][a_col_id] * matrix_b[a_col_id][b_col_id])
+
+
 def multiprocessing_matrix_multiplication_optimized(
     matrix_a: Matrix, matrix_b: Matrix, pool_size: int = 10
 ) -> Matrix:
@@ -127,7 +145,7 @@ def multiprocessing_matrix_multiplication_optimized(
         result_row_index = chunk_index * chunk_size * result_cols
         processes.append(
             multiprocessing.Process(
-                target=direct_matrix_multiplication_to_array,
+                target=matrix_multiplication_inplace_to_array,
                 args=(chunk, matrix_b, result_row_index, result_array),
             )
         )
