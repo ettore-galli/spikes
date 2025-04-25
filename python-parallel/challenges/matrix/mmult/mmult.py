@@ -31,7 +31,12 @@ def perform_dot_product(row: MatrixRow, column: MatrixColumn) -> float:
 def direct_matrix_multiplication(matrix_a: Matrix, matrix_b: Matrix) -> Matrix:
     return [
         [
-            perform_dot_product(row, column)
+            sum(
+                [
+                    row_element * column_element
+                    for row_element, column_element in zip(row, column)
+                ]
+            )
             for column in extract_matrix_columns(matrix_b)
         ]
         for row in extract_matrix_rows(matrix_a)
@@ -70,24 +75,12 @@ def multiprocessing_matrix_multiplication(
         ]
 
 
-def perform_multiplication_row(
-    row: MatrixRow, columns: List[MatrixColumn]
-) -> MatrixRow:
-    return [perform_dot_product(row, column) for column in columns]
-
-
 def split_into_chunks(iterable: List[Any], chunk_size: int) -> List[List[Any]]:
     return [
         iterable[k * chunk_size : (k + 1) * chunk_size]
         for k in range(1 + len(iterable) // chunk_size)
         if k * chunk_size < len(iterable)
     ]
-
-
-def direct_matrix_multiplication_to_queue(
-    matrix_a: Matrix, matrix_b: Matrix, result_queue: multiprocessing.Queue
-) -> None:
-    result_queue.put(direct_matrix_multiplication(matrix_a, matrix_b))
 
 
 def direct_matrix_multiplication_to_array(
@@ -98,33 +91,14 @@ def direct_matrix_multiplication_to_array(
 ) -> None:
 
     result_cols = len(matrix_b[0])
-
-    intermediate = direct_matrix_multiplication(matrix_a, matrix_b)
-
-    for index, result_row in enumerate(intermediate):
-        result_array[
-            (result_row_index + index * result_cols) : (
-                result_row_index + (index + 1) * result_cols
+    for row_id, row in enumerate(extract_matrix_rows(matrix_a)):
+        for col_id, column in enumerate(extract_matrix_columns(matrix_b)):
+            result_array[result_row_index + row_id * result_cols + col_id] = sum(
+                [
+                    row_element * column_element
+                    for row_element, column_element in zip(row, column)
+                ]
             )
-        ] = result_row
-
-
-def matrix_multiplication_inplace_to_array(
-    matrix_a: Matrix,
-    matrix_b: Matrix,
-    result_row_index: int,
-    result_array,
-) -> None:
-    matrix_a_rows = len(matrix_a)
-    matrix_a_cols = len(matrix_a[0])
-    matrix_b_cols = len(matrix_b[0])
-
-    for a_row_id in range(matrix_a_rows):
-        for b_col_id in range(matrix_b_cols):
-            for a_col_id in range(matrix_a_cols):
-                result_array[
-                    result_row_index + a_row_id * matrix_b_cols + b_col_id
-                ] += (matrix_a[a_row_id][a_col_id] * matrix_b[a_col_id][b_col_id])
 
 
 def multiprocessing_matrix_multiplication_optimized(
@@ -145,7 +119,7 @@ def multiprocessing_matrix_multiplication_optimized(
         result_row_index = chunk_index * chunk_size * result_cols
         processes.append(
             multiprocessing.Process(
-                target=matrix_multiplication_inplace_to_array,
+                target=direct_matrix_multiplication_to_array,
                 args=(chunk, matrix_b, result_row_index, result_array),
             )
         )

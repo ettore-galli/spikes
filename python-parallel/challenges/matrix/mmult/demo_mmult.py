@@ -20,8 +20,12 @@ def perform_mult_demo(base_size: int):
     A_MATRIX_SIZE = (base_size, base_size)
     B_MATRIX_SIZE = (base_size, base_size)
 
-    A = [[random() for _ in range(A_MATRIX_SIZE[1])] for _ in range(A_MATRIX_SIZE[0])]
-    B = [[random() for _ in range(B_MATRIX_SIZE[1])] for _ in range(B_MATRIX_SIZE[0])]
+    A = [
+        [1 + random() for _ in range(A_MATRIX_SIZE[1])] for _ in range(A_MATRIX_SIZE[0])
+    ]
+    B = [
+        [1 + random() for _ in range(B_MATRIX_SIZE[1])] for _ in range(B_MATRIX_SIZE[0])
+    ]
 
     t0 = datetime.now()
 
@@ -35,7 +39,7 @@ def perform_mult_demo(base_size: int):
 
     # --------------------------------------------------
 
-    if direct_time < timedelta(seconds=10):
+    if direct_time < timedelta(seconds=3):
         ti0 = datetime.now()
 
         _ = inplace_direct_matrix_multiplication(A, B)
@@ -48,19 +52,20 @@ def perform_mult_demo(base_size: int):
 
     # --------------------------------------------------
 
-    pool_size = multiprocessing.cpu_count()
+    if direct_time < timedelta(seconds=3):
+        pool_size = multiprocessing.cpu_count()
 
-    tpm0 = datetime.now()
-    multi_pool = multiprocessing_matrix_multiplication(
-        A, B, pool_size=multiprocessing.cpu_count()
-    )
-    tpm1 = datetime.now()
+        tpm0 = datetime.now()
+        multi_pool = multiprocessing_matrix_multiplication(
+            A, B, pool_size=multiprocessing.cpu_count()
+        )
+        tpm1 = datetime.now()
 
-    assert multi_pool == direct
+        assert multi_pool == direct
 
-    parallel_time_opt = tpm1 - tpm0
+        parallel_time_opt = tpm1 - tpm0
 
-    log_timing("Parallel pool", parallel_time_opt, pool_size)
+        log_timing("Parallel pool", parallel_time_opt, pool_size)
 
     # --------------------------------------------------
 
