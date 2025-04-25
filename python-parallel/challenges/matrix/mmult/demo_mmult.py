@@ -35,15 +35,16 @@ def perform_mult_demo(base_size: int):
 
     # --------------------------------------------------
 
-    ti0 = datetime.now()
+    if direct_time < timedelta(seconds=10):
+        ti0 = datetime.now()
 
-    _ = inplace_direct_matrix_multiplication(A, B)
+        _ = inplace_direct_matrix_multiplication(A, B)
 
-    ti1 = datetime.now()
+        ti1 = datetime.now()
 
-    direct_inplace_time = ti1 - ti0
+        direct_inplace_time = ti1 - ti0
 
-    log_timing("Direct n-place", direct_inplace_time, 0)
+        log_timing("Direct in-place", direct_inplace_time, 0)
 
     # --------------------------------------------------
 
