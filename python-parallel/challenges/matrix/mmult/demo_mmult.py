@@ -37,6 +37,8 @@ def perform_mult_demo(base_size: int):
 
     log_timing("Direct", direct_time, 0)
 
+    pool_size = multiprocessing.cpu_count() - 1
+
     # --------------------------------------------------
 
     if direct_time < timedelta(seconds=3):
@@ -53,12 +55,9 @@ def perform_mult_demo(base_size: int):
     # --------------------------------------------------
 
     if direct_time < timedelta(seconds=3):
-        pool_size = multiprocessing.cpu_count()
 
         tpm0 = datetime.now()
-        multi_pool = multiprocessing_matrix_multiplication(
-            A, B, pool_size=multiprocessing.cpu_count()
-        )
+        multi_pool = multiprocessing_matrix_multiplication(A, B, pool_size=pool_size)
         tpm1 = datetime.now()
 
         assert multi_pool == direct
@@ -69,11 +68,9 @@ def perform_mult_demo(base_size: int):
 
     # --------------------------------------------------
 
-    pool_size = multiprocessing.cpu_count()
-
     tpo0 = datetime.now()
     multi_optimized = multiprocessing_matrix_multiplication_optimized(
-        A, B, pool_size=multiprocessing.cpu_count()
+        A, B, pool_size=pool_size
     )
     tp01 = datetime.now()
 
@@ -82,6 +79,8 @@ def perform_mult_demo(base_size: int):
     parallel_time_opt = tp01 - tpo0
 
     log_timing("Parallel optimized", parallel_time_opt, pool_size)
+
+    print("Speedup", direct_time / parallel_time_opt)
 
 
 if __name__ == "__main__":
