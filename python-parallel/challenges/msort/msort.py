@@ -22,6 +22,7 @@ def do_merge_sort_merge(
 
     merged.extend(left[i_left:])
     merged.extend(right[i_right:])
+
     return merged
 
 
