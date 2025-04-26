@@ -1,10 +1,12 @@
+from random import randint
+from typing import List
 from pytest import mark
 
-from challenges.msort.msort import merge_sort
+from challenges.msort.msort import ListElement, merge_sort
 
 
 @mark.parametrize(
-    ["unsorted", "sorted"],
+    ["unsorted", "expected_sorted"],
     [
         ([3, 6, 4, 1, 9], [1, 3, 4, 6, 9]),
         (
@@ -75,5 +77,12 @@ from challenges.msort.msort import merge_sort
         ),
     ],
 )
-def test_merge_sort(unsorted, sorted):
-    assert merge_sort(unsorted) == sorted
+def test_merge_sort(unsorted, expected_sorted):
+    assert merge_sort(unsorted) == expected_sorted
+
+
+def test_merge_sort_extended():
+    size = 100
+    unsorted: List[ListElement] = [int(randint(1, size)) for _ in range(size)]
+    expected_sorted = sorted(unsorted)
+    assert merge_sort(unsorted) == expected_sorted
