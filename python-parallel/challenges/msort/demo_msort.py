@@ -5,6 +5,7 @@ import sys
 
 from challenges.msort.msort import (
     merge_sort,
+    merge_sort_mp,
 )
 
 
@@ -12,7 +13,7 @@ def log_timing(name: str, delta: timedelta, pool_size: int):
     print(f"{name.ljust(20)} {str(delta).rjust(20)} pool size: {pool_size}")
 
 
-def perform_sort_demo(base_size: int):
+def perform_sort_demo(base_size: int, multiprocessing_threshold: int):
 
     SOURCE = [random() for _ in range(base_size)]
 
@@ -32,11 +33,15 @@ def perform_sort_demo(base_size: int):
 
     # --------------------------------------------------
 
-    # tp0 = datetime.now()
-    # tp1 = datetime.now()
+    tp0 = datetime.now()
 
-    parallel_time = direct_time
-    log_timing("Parallel optimized", parallel_time, pool_size)
+    _ = merge_sort_mp(SOURCE, multiprocessing_threshold)
+
+    tp1 = datetime.now()
+
+    parallel_time = tp1 - tp0
+
+    log_timing("Parallel", parallel_time, pool_size)
 
     # --------------------------------------------------
 
@@ -45,4 +50,7 @@ def perform_sort_demo(base_size: int):
 
 if __name__ == "__main__":
     base_size = int(sys.argv[1]) if len(sys.argv) > 1 else 100
-    perform_sort_demo(base_size=base_size)
+    multiprocessing_threshold = int(sys.argv[2]) if len(sys.argv) > 2 else 1000
+    perform_sort_demo(
+        base_size=base_size, multiprocessing_threshold=multiprocessing_threshold
+    )
