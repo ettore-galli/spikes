@@ -46,8 +46,8 @@ def do_merge_sort_merge_mp(merged, start, mid, end) -> None:
     i_right = 0
     i_merged = start
 
-    prev_left = multiprocessing.RawArray(c_double, merged[start:mid])
-    prev_right = multiprocessing.RawArray(c_double, merged[mid:end])
+    prev_left = merged[start:mid].copy()
+    prev_right = merged[mid:end].copy()
 
     while i_left < len(prev_left) and i_right < len(prev_right):
         if prev_left[i_left] <= prev_right[i_right]:
@@ -74,7 +74,13 @@ def do_merge_sort_mp(
     start_index: int,
     end_index: int,
     multiprocessing_threshold: int = 100,
+    description=None,
 ) -> None:
+
+    if description:
+        print(
+            f"\ndo_merge_sort_mp {description} {start_index} {end_index} threshold {multiprocessing_threshold}"
+        )
 
     if end_index - start_index < multiprocessing_threshold:
         array[start_index:end_index] = do_merge_sort(array=array[start_index:end_index])
@@ -84,7 +90,7 @@ def do_merge_sort_mp(
 
         left_proc = multiprocessing.Process(
             target=do_merge_sort_mp,
-            args=(array, start_index, mid_index, multiprocessing_threshold),
+            args=(array, start_index, mid_index, multiprocessing_threshold, "left"),
         )
         left_proc.start()
 
@@ -93,6 +99,7 @@ def do_merge_sort_mp(
             start_index=mid_index,
             end_index=end_index,
             multiprocessing_threshold=multiprocessing_threshold,
+            description="right",
         )
 
         left_proc.join()
