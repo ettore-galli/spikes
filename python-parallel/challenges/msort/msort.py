@@ -72,25 +72,28 @@ def do_merge_sort_mp(array, multiprocessing_threshold: int = 100) -> None:
         array[:] = do_merge_sort(array=array)
         return
 
+    print(
+        "Performing parallel on array of len ",
+        len(array),
+        "vs a threshold of ",
+        multiprocessing_threshold,
+    )
     if len(array) > 1:
         mid = len(array) // 2
 
         left = multiprocessing.RawArray(c_double, array[:mid])
         right = multiprocessing.RawArray(c_double, array[mid:])
 
-        processes = [
-            multiprocessing.Process(
-                target=do_merge_sort_mp, args=(left, multiprocessing_threshold)
-            ),
-            multiprocessing.Process(
-                target=do_merge_sort_mp, args=(right, multiprocessing_threshold)
-            ),
-        ]
+        left_proc = multiprocessing.Process(
+            target=do_merge_sort_mp, args=(left, multiprocessing_threshold)
+        )
+        left_proc.start()
 
-        for p in processes:
-            p.start()
-        for p in processes:
-            p.join()
+        do_merge_sort_mp(
+            array=right,
+            multiprocessing_threshold=multiprocessing_threshold,
+        )
+        left_proc.join()
 
         do_merge_sort_merge_mp(merged=array, left=left, right=right)
 
@@ -105,4 +108,5 @@ def merge_sort_mp(
     tosort = multiprocessing.RawArray(c_double, array)
 
     do_merge_sort_mp(tosort, multiprocessing_threshold=multiprocessing_threshold)
+
     return tosort[:]
