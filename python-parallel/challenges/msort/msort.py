@@ -40,62 +40,66 @@ def do_merge_sort(array: List[ListElement]) -> List[ListElement]:
         return array
 
 
-def do_merge_sort_merge_mp(merged, left, right) -> None:
+def do_merge_sort_merge_mp(merged, start, mid, end) -> None:
 
     i_left = 0
     i_right = 0
-    i_merged = 0
+    i_merged = start
 
-    while i_left < len(left) and i_right < len(right):
-        if left[i_left] <= right[i_right]:
-            merged[i_merged] = left[i_left]
+    prev_left = multiprocessing.RawArray(c_double, merged[start:mid])
+    prev_right = multiprocessing.RawArray(c_double, merged[mid:end])
+
+    while i_left < len(prev_left) and i_right < len(prev_right):
+        if prev_left[i_left] <= prev_right[i_right]:
+            merged[i_merged] = prev_left[i_left]
             i_left += 1
         else:
-            merged[i_merged] = right[i_right]
+            merged[i_merged] = prev_right[i_right]
             i_right += 1
         i_merged += 1
 
-    while i_left < len(left):
-        merged[i_merged] = left[i_left]
+    while i_left < len(prev_left):
+        merged[i_merged] = prev_left[i_left]
         i_left += 1
         i_merged += 1
 
-    while i_right < len(right):
-        merged[i_merged] = right[i_right]
+    while i_right < len(prev_right):
+        merged[i_merged] = prev_right[i_right]
         i_right += 1
         i_merged += 1
 
 
-def do_merge_sort_mp(array, multiprocessing_threshold: int = 100) -> None:
+def do_merge_sort_mp(
+    array,
+    start_index: int,
+    end_index: int,
+    multiprocessing_threshold: int = 100,
+) -> None:
 
-    if len(array) < multiprocessing_threshold:
-        array[:] = do_merge_sort(array=array)
-        return
+    if end_index - start_index < multiprocessing_threshold:
+        array[start_index:end_index] = do_merge_sort(array=array[start_index:end_index])
+    else:
 
-    print(
-        "Performing parallel on array of len ",
-        len(array),
-        "vs a threshold of ",
-        multiprocessing_threshold,
-    )
-    if len(array) > 1:
-        mid = len(array) // 2
-
-        left = multiprocessing.RawArray(c_double, array[:mid])
-        right = multiprocessing.RawArray(c_double, array[mid:])
+        mid_index = start_index + (end_index - start_index) // 2
 
         left_proc = multiprocessing.Process(
-            target=do_merge_sort_mp, args=(left, multiprocessing_threshold)
+            target=do_merge_sort_mp,
+            args=(array, start_index, mid_index, multiprocessing_threshold),
         )
         left_proc.start()
 
         do_merge_sort_mp(
-            array=right,
+            array=array,
+            start_index=mid_index,
+            end_index=end_index,
             multiprocessing_threshold=multiprocessing_threshold,
         )
+
         left_proc.join()
 
-        do_merge_sort_merge_mp(merged=array, left=left, right=right)
+        do_merge_sort_merge_mp(
+            merged=array, start=start_index, mid=mid_index, end=end_index
+        )
 
 
 def merge_sort(array: List[ListElement]) -> List[ListElement]:
@@ -107,6 +111,11 @@ def merge_sort_mp(
 ) -> List[ListElement]:
     tosort = multiprocessing.RawArray(c_double, array)
 
-    do_merge_sort_mp(tosort, multiprocessing_threshold=multiprocessing_threshold)
+    do_merge_sort_mp(
+        tosort,
+        start_index=0,
+        end_index=len(tosort),
+        multiprocessing_threshold=multiprocessing_threshold,
+    )
 
     return tosort[:]
