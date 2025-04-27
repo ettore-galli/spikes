@@ -161,7 +161,10 @@ def test_merge_sort_extended():
     ],
 )
 def test_merge_sort_mp(unsorted, expected_sorted):
-    assert merge_sort_mp(unsorted) == expected_sorted
+    assert (
+        merge_sort_mp(unsorted, multiprocessing_threshold=len(unsorted) // 2)
+        == expected_sorted
+    )
 
 
 def test_merge_sort_mp_extended():
@@ -269,4 +272,4 @@ def test_merge_sort_mp_extended():
     ]
     expected_sorted = sorted(unsorted)
 
-    assert merge_sort_mp(unsorted) == expected_sorted
+    assert merge_sort_mp(unsorted, multiprocessing_threshold=25) == expected_sorted
