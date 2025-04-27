@@ -78,16 +78,6 @@ def do_merge_sort_mp(array, multiprocessing_threshold: int = 100) -> None:
         left = multiprocessing.RawArray(c_double, array[:mid])
         right = multiprocessing.RawArray(c_double, array[mid:])
 
-        # do_merge_sort_mp(
-        #     array=left,
-        #     multiprocessing_threshold=multiprocessing_threshold,
-        # )
-
-        # do_merge_sort_mp(
-        #     array=right,
-        #     multiprocessing_threshold=multiprocessing_threshold,
-        # )
-
         processes = [
             multiprocessing.Process(
                 target=do_merge_sort_mp, args=(left, multiprocessing_threshold)
