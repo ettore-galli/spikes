@@ -1,15 +1,16 @@
+DIRS=challenges/ async/ 
 
 install:
 	pip install -r requirements.txt
 
 
 lint:
-	black challenges/
-	ruff check challenges/
-	mypy challenges/
+	black $(DIRS)
+	ruff check $(DIRS)
+	mypy $(DIRS)
 
 test:
-	pytest challenges/
+	pytest $(DIRS)
 
 all: lint test
 
