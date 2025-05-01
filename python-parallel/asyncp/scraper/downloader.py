@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+import re
 from typing import List, Optional
 from aiohttp import ClientSession
 
@@ -11,6 +12,9 @@ class DownloadResult:
     content: Optional[str]
     success: bool
     issues: List[Issue]
+
+
+HREF_RE = re.compile(r'href="(.*?)"')
 
 
 async def download_url(client_session: ClientSession, url: str) -> DownloadResult:
@@ -46,3 +50,7 @@ async def download_url(client_session: ClientSession, url: str) -> DownloadResul
             ]
         ),
     )
+
+
+def look_for_links(content: str) -> List[str]:
+    return [item for item in HREF_RE.findall(content)]
