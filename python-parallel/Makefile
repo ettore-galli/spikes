@@ -1,4 +1,4 @@
-DIRS=challenges/ async/ 
+DIRS=challenges/ asyncp/ 
 
 install:
 	pip install -r requirements.txt
