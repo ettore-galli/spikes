@@ -1,3 +1,6 @@
 aiofiles
 types-aiofiles
 aiohttp
+
+pytest
+pytest-asyncio

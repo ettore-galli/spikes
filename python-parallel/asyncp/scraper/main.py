@@ -3,7 +3,7 @@ import sys
 
 from aiohttp import ClientSession
 from asyncp.scraper.file_reader import read_url_list
-from asyncp.scraper.downloader import download_url
+from asyncp.scraper.downloader import download_url, look_for_links
 
 """
 python asyncp/scraper/main.py example-data/urls.txt output/output.txt
@@ -21,7 +21,9 @@ async def main(url_list_file: str, output_file: str):
                 with open(output_file, "a") as f:
                     f.write(f"\n{'*'*30} URL: {url} {'*'*30}\n")
                     if result.content:
-                        f.write(result.content)
+                        for url in look_for_links(result.content):
+                            f.write(f"{url}\n")
+
             else:
                 print(f"Failed to download {url}: {result.issues}")
 
