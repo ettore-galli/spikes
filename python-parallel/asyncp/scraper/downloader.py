@@ -18,38 +18,52 @@ HREF_RE = re.compile(r'href="(.*?)"')
 
 
 async def download_url(client_session: ClientSession, url: str) -> DownloadResult:
-    response = await client_session.get(url)
-    success: bool = response.status == 200
-    if not success:
+    try:
+        response = await client_session.get(url)
+        success: bool = response.status == 200
+        if not success:
+            return DownloadResult(
+                url=url,
+                content=None,
+                success=success,
+                issues=[
+                    Issue(
+                        message=f"Failed to download {url} ",
+                        issue_type=[IssueType.ERROR],
+                        data=response.status,
+                    )
+                ],
+            )
+        text = await response.text()
+        return DownloadResult(
+            url=url,
+            content=text,
+            success=success,
+            issues=(
+                []
+                if success
+                else [
+                    Issue(
+                        message=f"Failed to download {url} ",
+                        issue_type=[IssueType.ERROR],
+                        data=response.status,
+                    )
+                ]
+            ),
+        )
+    except Exception as e:
         return DownloadResult(
             url=url,
             content=None,
-            success=success,
+            success=False,
             issues=[
                 Issue(
                     message=f"Failed to download {url} ",
                     issue_type=[IssueType.ERROR],
-                    data=response.status,
+                    data=str(e),
                 )
             ],
         )
-    text = await response.text()
-    return DownloadResult(
-        url=url,
-        content=text,
-        success=success,
-        issues=(
-            []
-            if success
-            else [
-                Issue(
-                    message=f"Failed to download {url} ",
-                    issue_type=[IssueType.ERROR],
-                    data=response.status,
-                )
-            ]
-        ),
-    )
 
 
 def look_for_links(content: str) -> List[str]:
