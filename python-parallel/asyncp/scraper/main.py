@@ -4,28 +4,38 @@ import sys
 from aiohttp import ClientSession
 from asyncp.scraper.file_reader import read_url_list
 from asyncp.scraper.downloader import download_url, look_for_links
+from asyncp.scraper.file_writer import save_url_list
+from asyncp.scraper.notifier import Notifier
 
 """
 python asyncp/scraper/main.py example-data/urls.txt output/output.txt
 """
 
 
-async def main(url_list_file: str, output_file: str):
+async def process_single_site(
+    session: ClientSession, output_file: str, url: str, notifier: Notifier
+) -> None:
+    result = await download_url(session, url)
+    if result.success:
+        if result.content:
+            await notifier.notify(message=f"Retrieving links for {url}")
+            await save_url_list(
+                output_file=output_file, url_list=look_for_links(result.content)
+            )
+            await notifier.notify(message=f"Links for {url} saved to {output_file}")
+        else:
+            await notifier.notify(message=f"Failed to download {url}")
 
+
+async def main(url_list_file: str, output_file: str):
     async with ClientSession() as session:
         for url in await read_url_list(url_list_file):
-            result = await download_url(session, url)
-            if result.success:
-                print(f"Downloaded {url} successfully.")
-
-                with open(output_file, "a") as f:
-                    f.write(f"\n{'*'*30} URL: {url} {'*'*30}\n")
-                    if result.content:
-                        for url in look_for_links(result.content):
-                            f.write(f"{url}\n")
-
-            else:
-                print(f"Failed to download {url}: {result.issues}")
+            await process_single_site(
+                session=session,
+                output_file=output_file,
+                url=url,
+                notifier=Notifier(),
+            )
 
 
 if __name__ == "__main__":
