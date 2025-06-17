@@ -1,0 +1,28 @@
+jest.config.cjs
+module.exports = {
+  transform: {
+    '^.+\\.tsx?$': 'ts-jest',
+  },
+  module.exports: 'auto',
+  extensionsToTreatAsEsm: ['.ts', '.tsx'],
+};
+
+tsconfig.json
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "esModuleInterop": true,
+    "target": "ESNext",
+    "moduleResolution": "node",
+    "jsx": "react"
+  }
+}
+
+package.json
+{
+  "type": "module",
+  "dependencies": {
+    "ts-jest": "^latest",
+    "jest": "^latest"
+  }
+}
