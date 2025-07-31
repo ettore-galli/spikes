@@ -1,0 +1,1 @@
+nc -z 127.0.0.1 4005 && echo "✅ Server SLIME raggiungibile" || echo "❌ Server SLIME non raggiungibile"

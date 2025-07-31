@@ -9,5 +9,9 @@
     "python.testing.pytestArgs": [
         "-s",
         "-vvv"
-    ]
+    ],
+    "alive.lsp.remote.host": "127.0.0.1",
+    "alive.lsp.remote.port": 4005,
+    "alive.trace.server": "verbose",
+    "alive.trace.extension": true
 }
