@@ -10,8 +10,19 @@
         "-s",
         "-vvv"
     ],
+    // "files.encoding": "utf8",
+    // "alive.lsp.remote.host": "localhost",
+    // "alive.lsp.remote.port": 4005,
+    // "alive.enableDiagnostics": true
     "alive.lsp.remote.host": "127.0.0.1",
-    "alive.lsp.remote.port": 4005,
-    "alive.trace.server": "verbose",
-    "alive.trace.extension": true
+    "alive.lsp.remote.port": 8006,
+    // "alive.lsp.startCommand": [
+    //     "sbcl",
+    //     "--eval",
+    //     "(require :asdf)",
+    //     "--eval",
+    //     "(asdf:load-system :alive-lsp)",
+    //     "--eval",
+    //     "(alive/server:start)"
+    // ]
 }
