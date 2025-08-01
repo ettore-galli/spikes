@@ -15,11 +15,16 @@ RUN curl -sO https://beta.quicklisp.org/quicklisp.lisp && \
     sbcl --load quicklisp.lisp \
          --eval '(quicklisp-quickstart:install)' \
          --eval '(ql-util:without-prompting (ql:add-to-init-file))' \
-         --eval '(ql:quickload :swank)' \
+         --eval '(ql:update-all-dists)' \
          --quit
 
-# Copia script di avvio  
-COPY ./start-swank.lisp /start-swank.lisp    
+ENV QUICKLISP_HOME=/root/quicklisp
 
-EXPOSE 4005
-CMD ["sbcl",  "--load", "/start-swank.lisp"]
+RUN git clone https://github.com/nobody-famous/alive-lsp.git $QUICKLISP_HOME/local-projects/alive-lsp
+         
+# Copia script di avvio  
+COPY ./start-live-lsp.lisp /start-live-lsp.lisp    
+
+EXPOSE 8006
+
+CMD ["sbcl",  "--load", "/start-live-lsp.lisp"]
