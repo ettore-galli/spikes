@@ -19,8 +19,7 @@ RUN curl -sO https://beta.quicklisp.org/quicklisp.lisp && \
          --quit
 
 # Copia script di avvio  
-COPY ./start-swank.lisp /start-swank.lisp
-    
+COPY ./start-swank.lisp /start-swank.lisp    
 
 EXPOSE 4005
 CMD ["sbcl",  "--load", "/start-swank.lisp"]
