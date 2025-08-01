@@ -1,6 +1,21 @@
 
 # LISP SETUP
 
+<https://github.com/nobody-famous/alive>
+
+<https://github.com/nobody-famous/alive-lsp>
+
+settings.json:
+
+```json
+{
+    // ...
+    "alive.lsp.remote.host": "127.0.0.1",
+    "alive.lsp.remote.port": 8006,
+    // ...
+}
+```
+
 ## Configurazione dell'Ambiente di Sviluppo Common Lisp
 
 Ecco come puoi impostare il tuo ambiente:
@@ -71,6 +86,7 @@ Ora dovresti trovarti nella REPL di SBCL, pronta per eseguire codice Lisp:
 nc -zv 127.0.0.1 4005
 
 ALive
+
 ```json
 {
     // Host del server SLIME/SWANK
