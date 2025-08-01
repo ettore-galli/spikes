@@ -1,0 +1,1 @@
+echo '0011(:swank-rex (swank:eval "(+ 1 2)") "CL-USER" t 1)' | nc localhost 4005
