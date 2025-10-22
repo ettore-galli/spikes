@@ -26,6 +26,9 @@ def test_get_reversed_number_digits(number, assumed_base, expected):
     [
         (1728, 4, 10, 7443),
         (3215, 4, 10, 4086),
+        (321, 4, 10, 3087),
+        (3, 4, 10, 2997),
+        (3000, 4, 10, 2997),
     ],
 )
 def test_perform_kaprekar_step(number, assumed_digits, assumed_base, expected):
