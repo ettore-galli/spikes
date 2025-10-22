@@ -3,8 +3,10 @@ https://code.activestate.com/recipes/577749-experiment-with-kaprekars-routine/
 http://en.wikipedia.org/wiki/6174_(number)
 """
 
+from typing import List
 
-def get_reversed_number_digits(number: int, assumed_base=10):
+
+def get_reversed_number_digits(number: int, assumed_base=10) -> List[int]:
     digits = []
     residual = number
     while True:
@@ -16,9 +18,19 @@ def get_reversed_number_digits(number: int, assumed_base=10):
     return digits
 
 
-def perform_kaprekar_step(number: int, assumed_digits: int = 4, assumed_base=10):
+def pad_digits_to_assumed_number_unsorted(
+    digits: List[int], assumed_digits: int = 4
+) -> List[int]:
+    return digits + [0] * (assumed_digits - len(digits))
 
-    digits = get_reversed_number_digits(number, assumed_base=assumed_base)
+
+def perform_kaprekar_step(number: int, assumed_digits: int = 4, assumed_base=10) -> int:
+
+    digits = pad_digits_to_assumed_number_unsorted(
+        digits=get_reversed_number_digits(number, assumed_base=assumed_base),
+        assumed_digits=assumed_digits,
+    )
+
     upper = sum(
         [
             d * (10 ** (assumed_digits - 1 - id))
@@ -49,9 +61,7 @@ def perform_kaprekar_loop(
 
 
 def make_loop():
-    return {
-        n: perform_kaprekar_loop(number=n, assumed_digits=4) for n in range(1000, 10000)
-    }
+    return {n: perform_kaprekar_loop(number=n, assumed_digits=4) for n in range(10000)}
 
 
 if __name__ == "__main__":
