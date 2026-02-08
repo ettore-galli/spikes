@@ -1,0 +1,17 @@
+less export_sust_thresholds.log.20251209.gz
+
+09-12-2025 18:24:48|INFO|working on file(s): /var/data/import/sust/SFDR_PAI_Sov_Indicators_v1_20251203.txt
+09-12-2025 18:24:50|ALERT|file date 2025-12-03 over threshold 3 days
+09-12-2025 18:24:50|INFO|set provider SUST last update date 2025-12-09 mode MASSIVE
+09-12-2025 18:24:50|INFO|Righe processate: [566098]
+09-12-2025 18:24:50|INFO|Record inseriti: [0]
+09-12-2025 18:24:50|INFO|Record aggiornati: [0]
+09-12-2025 18:24:50|INFO|Numero errori: [0]
+09-12-2025 18:24:50|INFO|Numero alert: [566115]
+09-12-2025 18:24:50|INFO|generating excel report...
+09-12-2025 18:24:50|INFO|Completato in 0:24:33
+2025-12-09 18:24:51 - [13534] - INFO - eprod-esg.deustechnology.loc - export_sust_thresholds.sh - OK.
+2025-12-09 18:24:52 - [13534] - INFO - eprod-esg.deustechnology.loc - export_sust_thresholds.sh - Cleaning file older than '120' days from '/var/deus/logs/scripts' with pattern 'ReportSoglieSust_*.LOG.gz'.
+2025-12-09 18:24:52 - [13534] - INFO - eprod-esg.deustechnology.loc - export_sust_thresholds.sh - File '/var/deus/logs/scripts/ReportSoglieSust_20250809.LOG.gz' deleted.
+2025-12-09 18:24:52 - [13534] - INFO - eprod-esg.deustechnology.loc - export_sust_thresholds.sh - Finished.
+
