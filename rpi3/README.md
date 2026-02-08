@@ -11,3 +11,9 @@ password
 ## Config
 
 sudo raspi-config
+
+## Various Networking
+
+nslookup rpi3
+cat /etc/hosta
+hostname
