@@ -1,4 +1,3 @@
-gradio
-transformers
-torch
-diffusers[torch]
+datasets 
+evaluate 
+transformers[sentencepiece]
