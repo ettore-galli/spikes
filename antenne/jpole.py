@@ -32,18 +32,18 @@ def parallel(z_first: complex, z_second: complex) -> complex:
 
 
 def calculate_resulting_parameters(
-    antenna_specs: PhysicalSpecs, pole_stub_length: float, short_stub_length: float
+    antenna_specs: PhysicalSpecs, feed_point: float
 ) -> DesignResults:
     stub_impedance: complex = line_impedance_tranformation(
         z_line=antenna_specs.z_stub_line,
         z_load=0.0,
-        wavelength_fraction=short_stub_length,
+        wavelength_fraction=feed_point,
     )
 
     pole_impedance: complex = line_impedance_tranformation(
         z_line=antenna_specs.z_stub_line,
         z_load=antenna_specs.z_half_pole,
-        wavelength_fraction=pole_stub_length,
+        wavelength_fraction=antenna_specs.stub_length_guess - feed_point,
     )
 
     return DesignResults(
@@ -57,9 +57,10 @@ def calculate_optimal_design(antenna_specs: PhysicalSpecs) -> DesignResults:
     pass
 
 
-def calc_quarter_range(top_value: float = 25.0, number_of_points=20) -> List[float]:
+def calc_quarter_range(top_value: float = 0.25, number_of_points=20) -> List[float]:
+    step_size: float = top_value / number_of_points
     zero_quarter_range: List[float] = [
-        top_value * (x / (number_of_points) / 100) for x in range(number_of_points + 1)
+        (step) * step_size for step in range(number_of_points + 1)
     ]
     return zero_quarter_range
 
@@ -68,13 +69,12 @@ def calculate_j_pole_feed_impedance(
     antenna_specs: PhysicalSpecs,
 ) -> Tuple[List[float], List[DesignResults]]:
 
-    stub_length_range = calc_quarter_range(top_value=25)
+    stub_length_range = calc_quarter_range(top_value=antenna_specs.stub_length_guess)
 
     results = [
         calculate_resulting_parameters(
             antenna_specs=antenna_specs,
-            pole_stub_length=x,
-            short_stub_length=antenna_specs.stub_length_guess - x,
+            feed_point=x,
         )
         for x in stub_length_range
     ]
@@ -115,7 +115,7 @@ def j_pole_workflow():
     results: List[DesignResults]
     stub_length_range, results = calculate_j_pole_feed_impedance(
         antenna_specs=PhysicalSpecs(
-            z_half_pole=3000, z_stub_line=300, stub_length_guess=0.25
+            z_half_pole=3000, z_stub_line=300, stub_length_guess=0.27
         )
     )
 
@@ -124,6 +124,7 @@ def j_pole_workflow():
         stub_length_range,
         [result.feed_point_impedance.real for result in results],
     )
+
     plot(
         "feed imag",
         stub_length_range,
@@ -135,6 +136,7 @@ def j_pole_workflow():
         stub_length_range,
         [result.short_stub_impedance.imag for result in results],
     )
+
     plot(
         "pole imag",
         stub_length_range,
