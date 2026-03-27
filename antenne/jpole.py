@@ -46,10 +46,12 @@ def calculate_resulting_parameters(
         wavelength_fraction=antenna_specs.stub_length_guess - feed_point,
     )
 
+    feed_point_impedance: complex = parallel(pole_impedance, stub_impedance)
+
     return DesignResults(
         pole_stub_impedance=pole_impedance,
         short_stub_impedance=stub_impedance,
-        feed_point_impedance=parallel(pole_impedance, stub_impedance),
+        feed_point_impedance=feed_point_impedance,
     )
 
 
@@ -57,7 +59,7 @@ def calculate_optimal_design(antenna_specs: PhysicalSpecs) -> DesignResults:
     pass
 
 
-def calc_quarter_range(top_value: float = 0.25, number_of_points=20) -> List[float]:
+def calc_quarter_range(top_value: float = 0.25, number_of_points=50) -> List[float]:
     step_size: float = top_value / number_of_points
     zero_quarter_range: List[float] = [
         (step) * step_size for step in range(number_of_points + 1)
@@ -69,7 +71,9 @@ def calculate_j_pole_feed_impedance(
     antenna_specs: PhysicalSpecs,
 ) -> Tuple[List[float], List[DesignResults]]:
 
-    stub_length_range = calc_quarter_range(top_value=antenna_specs.stub_length_guess)
+    stub_length_range: List[float] = calc_quarter_range(
+        top_value=antenna_specs.stub_length_guess
+    )
 
     results = [
         calculate_resulting_parameters(
@@ -110,15 +114,84 @@ def plot(
         print(ascissa_plot, value_plot, plot_axis)
 
 
-def j_pole_workflow():
-    stub_length_range: List[float]
-    results: List[DesignResults]
-    stub_length_range, results = calculate_j_pole_feed_impedance(
-        antenna_specs=PhysicalSpecs(
-            z_half_pole=3000, z_stub_line=300, stub_length_guess=0.27
+def res_table(
+    stub_length_range: List[float],
+    results: List[DesignResults],
+    feed_point_decimals=3,
+    value_decimals=2,
+    rjust_space=15,
+):
+
+    def build_table_line(values: List[str]) -> str:
+        return "|".join(values)
+
+    print(
+        build_table_line(
+            [
+                column.rjust(rjust_space)
+                for column in [
+                    "feed point",
+                    "stub_real_plot",
+                    "stub_imag_plot",
+                    "pole_imag_plot",
+                    "pole_imag_plot",
+                    "feed_real_plot",
+                    "feed_imag_plot",
+                ]
+            ]
         )
     )
 
+    for feed_point, data_item in zip(stub_length_range, results):
+        feed_point_plot = f"{round(feed_point, feed_point_decimals)}".rjust(rjust_space)
+
+        stub_real_plot = (
+            f"{round(data_item.short_stub_impedance.real, value_decimals)}".rjust(
+                rjust_space
+            )
+        )
+        stub_imag_plot = (
+            f"{round(data_item.short_stub_impedance.imag, value_decimals)}".rjust(
+                rjust_space
+            )
+        )
+        pole_real_plot = (
+            f"{round(data_item.pole_stub_impedance.real, value_decimals)}".rjust(
+                rjust_space
+            )
+        )
+        pole_imag_plot = (
+            f"{round(data_item.pole_stub_impedance.imag, value_decimals)}".rjust(
+                rjust_space
+            )
+        )
+        feed_real_plot = (
+            f"{round(data_item.feed_point_impedance.real, value_decimals)}".rjust(
+                rjust_space
+            )
+        )
+        feed_imag_plot = (
+            f"{round(data_item.feed_point_impedance.imag, value_decimals)}".rjust(
+                rjust_space
+            )
+        )
+
+        print(
+            build_table_line(
+                [
+                    feed_point_plot,
+                    stub_real_plot,
+                    stub_imag_plot,
+                    pole_real_plot,
+                    pole_imag_plot,
+                    feed_real_plot,
+                    feed_imag_plot,
+                ]
+            )
+        )
+
+
+def all_plots(stub_length_range: List[float], results: List[DesignResults]):
     plot(
         "feed real",
         stub_length_range,
@@ -132,9 +205,21 @@ def j_pole_workflow():
     )
 
     plot(
+        "stub real",
+        stub_length_range,
+        [result.short_stub_impedance.real for result in results],
+    )
+
+    plot(
         "stub imag",
         stub_length_range,
         [result.short_stub_impedance.imag for result in results],
+    )
+
+    plot(
+        "pole real",
+        stub_length_range,
+        [result.pole_stub_impedance.real for result in results],
     )
 
     plot(
@@ -142,6 +227,19 @@ def j_pole_workflow():
         stub_length_range,
         [result.pole_stub_impedance.imag for result in results],
     )
+
+
+def j_pole_workflow():
+    stub_length_range: List[float]
+    results: List[DesignResults]
+    stub_length_range, results = calculate_j_pole_feed_impedance(
+        antenna_specs=PhysicalSpecs(
+            z_half_pole=3000, z_stub_line=300, stub_length_guess=0.25
+        )
+    )
+
+    all_plots(stub_length_range=stub_length_range, results=results)
+    res_table(stub_length_range=stub_length_range, results=results)
 
 
 if __name__ == "__main__":
