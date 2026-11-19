@@ -27,14 +27,14 @@
 </head>
 
 <body>
-    <video id="video" autoplay playsinline hidden></video>
+
     <pre id="ascii"></pre>
     <div id="container"></div>
 
     <script>
 
 
-        async function start(width, height, frameRate, renderingCallback) {
+        async function start(width, height, frameRate, frameRenderingCallback) {
             const stream = await navigator.mediaDevices.getUserMedia({
                 video: {
                     width: { ideal: width },
@@ -43,42 +43,46 @@
                 }
             });
 
-            const video = document.getElementById("video");
+            const video = document.createElement("video");
+            video.playsInline = true;
+            video.muted = true;
             video.srcObject = stream;
-
             await video.play();
 
             const canvas = document.createElement("canvas");
             canvas.width = width;
             canvas.height = height;
 
-            const ctx = canvas.getContext("2d", {
-                willReadFrequently: true
-            });
+            const ctx = canvas.getContext("2d", { willReadFrequently: true });
 
-            function frame() {
-                ctx.drawImage(
-                    video,
-                    0,
-                    0,
-                    canvas.width,
-                    canvas.height
-                );
+            let active = true;
 
-                const image = ctx.getImageData(
-                    0,
-                    0,
-                    canvas.width,
-                    canvas.height
-                );
+            const onVideoFrame = () => {
+                if (!active) return;
 
-                renderingCallback(image);
+                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
+                frameRenderingCallback(imageData);
 
-                video.requestVideoFrameCallback(frame);
+                if ("requestVideoFrameCallback" in video) {
+                    video.requestVideoFrameCallback(onVideoFrame);
+                } else {
+                    requestAnimationFrame(onVideoFrame);
+                }
+            };
+
+            if ("requestVideoFrameCallback" in video) {
+                video.requestVideoFrameCallback(onVideoFrame);
+            } else {
+                requestAnimationFrame(onVideoFrame);
             }
 
-            video.requestVideoFrameCallback(frame);
+            return () => {
+                active = false;
+                stream.getTracks().forEach(track => track.stop());
+            };
+
         }
 
         function getGray(r, g, b, _alpha) {
@@ -133,7 +137,6 @@
         }
 
         function renderGrayTable(matrix, container) {
-            console.log(matrix)
             const table = document.createElement("table");
             table.className = "gray-grid";
 
@@ -179,7 +182,7 @@
             renderGrayTable(frame, document.getElementById("container"));
         }
 
-        start(64, 64, 10, renderAsTable);
+        start(50, 50, 10, renderAsTable);
     </script>
 </body>
 
