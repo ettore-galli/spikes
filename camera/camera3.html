@@ -23,14 +23,23 @@
             padding: 0;
             border: 0;
         }
+
+        .h-layout {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .h-element {
+            width: 48%
+        }
     </style>
 </head>
 
 <body>
-
-    <pre id="ascii"></pre>
-    <div id="container"></div>
-
+    <div class="h-layout">
+        <pre class="h-element" id="ascii"></pre>
+        <div class="h-element" id="container"></div>
+    </div>
     <script>
 
 
@@ -40,7 +49,8 @@
                     width: { ideal: width },
                     height: { ideal: height },
                     frameRate: { ideal: frameRate }
-                }
+                },
+                audio: false
             });
 
             const video = document.createElement("video");
@@ -163,9 +173,9 @@
         }
 
         function renderAscii(image) {
-            const ASCII = " .:-=+*#%@".split('').reverse().join('');
+            // const ASCII = " .:-=+*#%@".split('').reverse().join('');
             // const ASCII = " ·⠂⠆⠇⠧⠷⠿⣿";
-            // const ASCII = " ░░▒▒▓▓██".split('').reverse().join('');
+            const ASCII = " ░░▒▒▓▓██".split('').reverse().join('');
             // const ASCII = " .'`^\",:;Il!i><~+_-?][}{1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$".split('').reverse().join('');
             // const ASCII = " ▁▁▂▂▃▃▄▅▅▆▆▇▇█".split('').reverse().join('');
             // const ASCII = " ░▒▓██".split('').reverse().join('');
@@ -175,7 +185,7 @@
             // const ASCII = "⠁⠃⠇⡇⣷⣿░▒▓██".split("").reverse().join("");
 
             const frame = calculateGrayscaleFrame(image);
-            renderFrameOfGraysAscii(frame, document.getElementById("ascii"), ASCII);
+            renderFrameOfGraysAscii(frame.map(row => row.reverse()), document.getElementById("ascii"), ASCII);
         }
 
         function renderAsTable(image) {
@@ -183,7 +193,8 @@
             renderGrayTable(frame.map(row => row.reverse()), document.getElementById("container"));
         }
 
-        start(80, 45, 10, renderAsTable);
+        start(40, Math.floor(40 * 16 / 9), 10, (image) => { renderAsTable(image), renderAscii(image) });
+        
     </script>
 </body>
 
