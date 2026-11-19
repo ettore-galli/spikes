@@ -47,6 +47,7 @@
             video.playsInline = true;
             video.muted = true;
             video.srcObject = stream;
+
             await video.play();
 
             const canvas = document.createElement("canvas");
@@ -128,7 +129,7 @@
             frame.forEach(row => {
                 row.forEach(pixelValue => {
                     const idx = Math.floor(pixelValue * (ascii_scale.length - 1));
-                    text += ASCII[idx];
+                    text += ascii_scale[idx];
                 })
                 text += "\n";
             });
@@ -162,7 +163,7 @@
         }
 
         function renderAscii(image) {
-            // const ASCII = " .:-=+*#%@";
+            const ASCII = " .:-=+*#%@".split('').reverse().join('');
             // const ASCII = " ·⠂⠆⠇⠧⠷⠿⣿";
             // const ASCII = " ░░▒▒▓▓██".split('').reverse().join('');
             // const ASCII = " .'`^\",:;Il!i><~+_-?][}{1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$".split('').reverse().join('');
@@ -171,18 +172,18 @@
             // const ASCII = " ░▒▓▁▂▃▄▅▆▇█".split('').reverse().join('');
             // const ASCII = "▁▂▃▄▅▆▇█".split('').reverse().join('');
             // const ASCII = "▊▋▋▌▍▎▏ ";
+            // const ASCII = "⠁⠃⠇⡇⣷⣿░▒▓██".split("").reverse().join("");
 
-            const ASCII = "⠁⠃⠇⡇⣷⣿░▒▓██".split("").reverse().join("");
             const frame = calculateGrayscaleFrame(image);
             renderFrameOfGraysAscii(frame, document.getElementById("ascii"), ASCII);
         }
 
         function renderAsTable(image) {
             const frame = calculateGrayscaleFrame(image);
-            renderGrayTable(frame, document.getElementById("container"));
+            renderGrayTable(frame.map(row => row.reverse()), document.getElementById("container"));
         }
 
-        start(50, 50, 10, renderAsTable);
+        start(80, 45, 10, renderAsTable);
     </script>
 </body>
 
