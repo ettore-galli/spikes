@@ -122,7 +122,6 @@
                 for (let x = 0; x < width; x++) {
                     const index = y * width + x;
                     const gray = grayData[index];
-
                     const normalizedGray = range === 0 ? 0 : (gray - grayMin) / range;
 
                     row.push(normalizedGray)
@@ -194,7 +193,7 @@
         }
 
         start(40, Math.floor(40 * 16 / 9), 10, (image) => { renderAsTable(image), renderAscii(image) });
-        
+
     </script>
 </body>
 
