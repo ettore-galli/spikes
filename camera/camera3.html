@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webcam Unicode Grayscale</title>
+    <style>
+        #ascii {
+            font-size: 8pt;
+            line-height: 1;
+        }
+
+        .gray-grid {
+            border-collapse: collapse;
+            table-layout: fixed;
+            line-height: 0;
+        }
+
+        .gray-grid td {
+            width: 10px;
+            height: 10px;
+            padding: 0;
+            border: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <video id="video" autoplay playsinline hidden></video>
+    <pre id="ascii"></pre>
+
+    <script>
+        // const ASCII = " .:-=+*#%@";
+        // const ASCII = " ·⠂⠆⠇⠧⠷⠿⣿";
+        // const ASCII = " ░░▒▒▓▓██".split('').reverse().join('');
+        // const ASCII = " .'`^\",:;Il!i><~+_-?][}{1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$".split('').reverse().join('');
+        // const ASCII = " ▁▁▂▂▃▃▄▅▅▆▆▇▇█".split('').reverse().join('');
+        // const ASCII = " ░▒▓██".split('').reverse().join('');
+        // const ASCII = " ░▒▓▁▂▃▄▅▆▇█".split('').reverse().join('');
+        // const ASCII = "▁▂▃▄▅▆▇█".split('').reverse().join('');
+        // const ASCII = "▊▋▋▌▍▎▏ ";
+
+        const ASCII = "⠁⠃⠇⡇⣷⣿░▒▓██".split("").reverse().join("");
+
+        async function start() {
+            const stream = await navigator.mediaDevices.getUserMedia({
+                video: true
+            });
+
+            const video = document.getElementById("video");
+            video.srcObject = stream;
+
+            await video.play();
+
+            const canvas = document.createElement("canvas");
+            canvas.width = 80;
+            canvas.height = 60;
+
+            const ctx = canvas.getContext("2d", {
+                willReadFrequently: true
+            });
+
+            function frame() {
+                ctx.drawImage(
+                    video,
+                    0,
+                    0,
+                    canvas.width,
+                    canvas.height
+                );
+
+                const image = ctx.getImageData(
+                    0,
+                    0,
+                    canvas.width,
+                    canvas.height
+                );
+
+                renderAscii(image);
+
+                video.requestVideoFrameCallback(frame);
+            }
+
+            video.requestVideoFrameCallback(frame);
+        }
+
+        function getGray(r, g, b, _alpha) {
+            return 0.299 * r + 0.587 * g + 0.114 * b;
+        }
+
+        function calculateGrayscaleFrame(image) {
+            const { width, height, data } = image;
+
+            const frame = [];
+
+            const grayData = Array.from({ length: data.length / 4 }, (_, i) => {
+                const chunk = data.slice(i * 4, i * 4 + 4);
+                return getGray(...chunk);
+            });
+
+            const grayMin = Math.min(...grayData);
+            const grayMax = Math.max(...grayData);
+            const range = grayMax - grayMin;
+
+            for (let y = 0; y < height; y++) {
+
+                const row = [];
+
+                for (let x = 0; x < width; x++) {
+                    const index = y * width + x;
+                    const gray = grayData[index];
+
+                    const normalizedGray = range === 0 ? 0 : (gray - grayMin) / range;
+
+                    row.push(normalizedGray)
+                }
+
+                frame.push(row)
+            }
+
+            return frame;
+        }
+
+        function renderFrameOfGraysAscii(frame, element, ascii_scale) {
+            let text = "";
+            frame.forEach(row => {
+                row.forEach(pixelValue => {
+                    const idx = Math.floor(pixelValue * (ascii_scale.length - 1));
+                    text += ASCII[idx];
+                })
+                text += "\n";
+            });
+
+            element.textContent = text;
+        }
+
+        function renderAscii(image) {
+            const frame = calculateGrayscaleFrame(image);
+            renderFrameOfGraysAscii(frame, document.getElementById("ascii"), ASCII);
+        }
+
+        start();
+    </script>
+</body>
+
+</html>

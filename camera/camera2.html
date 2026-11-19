@@ -1,0 +1,131 @@
+<video id="video" autoplay playsinline hidden></video>
+<pre style="font-size: 8pt; line-height: 1;" id="ascii"></pre>
+
+<style>
+  .gray-grid {
+    border-collapse: collapse;
+    table-layout: fixed;
+    line-height: 0;
+  }
+
+  .gray-grid td {
+    width: 10px;
+    height: 10px;
+    padding: 0;
+    border: 0;
+  }
+</style>
+
+<script>
+
+
+    const prog = Array.from(Array(83), (_, i)=>  [String(i, 3).padStart(3, '0'), (Math.round(1000*(2**(1/12))**i)/1000).toFixed(3).padStart(7, '0')])
+    // const ASCII = " .:-=+*#%@";
+
+    // const ASCII = " ·⠂⠆⠇⠧⠷⠿⣿";
+
+    // const ASCII = " ░░▒▒▓▓██".split('').reverse().join('');
+
+    // const ASCII = " .'`^\",:;Il!i><~+_-?][}{1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$".split('').reverse().join('');
+
+    // const ASCII = " ▁▁▂▂▃▃▄▅▅▆▆▇▇█".split('').reverse().join('');
+
+    // const ASCII = " ░▒▓██".split('').reverse().join('');
+
+    // const ASCII = " ░▒▓▁▂▃▄▅▆▇█".split('').reverse().join('');
+    
+    // const ASCII = "▁▂▃▄▅▆▇█".split('').reverse().join(''); 
+    
+    // const ASCII = "▊▋▋▌▍▎▏ ";
+    
+    const ASCII = "⠁⠃⠇⡇⣷⣿░▒▓██".split('').reverse().join(''); ;
+  
+    
+    async function start() {
+
+        const stream = await navigator.mediaDevices.getUserMedia({
+            video: true
+        });
+
+        const video = document.getElementById("video");
+        video.srcObject = stream;
+
+        await video.play();
+
+        const canvas = document.createElement("canvas");
+        canvas.width = 80;
+        canvas.height = 60;
+
+        const ctx = canvas.getContext("2d", {
+            willReadFrequently: true
+        });
+
+        function frame() {
+
+            ctx.drawImage(
+                video,
+                0,
+                0,
+                canvas.width,
+                canvas.height
+            );
+
+            const image =
+                ctx.getImageData(
+                    0,
+                    0,
+                    canvas.width,
+                    canvas.height
+                );
+
+            renderAscii(image);
+
+            video.requestVideoFrameCallback(frame);
+        }
+
+        video.requestVideoFrameCallback(frame);
+    }
+
+    function getGray(r, g, b, alfa) {
+        return 0.299 * r + 0.587 * g + 0.114 * b;
+    }
+
+    function renderAscii(image) {
+
+        const { width, height, data } = image;
+
+        let text = "";
+
+        const grayData = Array.from({ length: data.length / 4 }, (_, i) => {
+            const chunk = data.slice(i * 4, i * 4 + 4);
+            return getGray(...chunk);
+        });
+
+        const grayMin = 1.0*Math.min(...grayData);
+        const grayMax = 1.0*Math.max(...grayData);
+
+        for (let y = 0; y < height; y++) {
+
+            for (let x = 0; x < width; x++) {
+
+                const index = y * width + x;
+                const gray = grayData[index];
+
+                const normalizedGray = (gray - grayMin) / (grayMax - grayMin);
+          
+                const idx =
+                    Math.floor(
+                        normalizedGray * (ASCII.length - 1)
+                    );
+
+                text += ASCII[idx];
+            }
+
+            text += "\n";
+        }
+
+        document.getElementById("ascii").textContent = text;
+    }
+
+    start();
+</script>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Punti di una funzione (solo fillRect)</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background: #f5f5f5;
+            margin: 20px;
+        }
+
+        canvas {
+            border: 1px solid #333;
+            background: white;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Funzione disegnata come punti (senza arc)</h2>
+    <canvas id="plot" width="600" height="600"></canvas>
+
+    <script>
+        // -----------------------------
+        // Parametri
+        // -----------------------------
+        const POINT_SIZE = 2;          // lato del quadratino
+        const COLOR = "black";         // colore del punto
+
+        const X_MIN = -1.5;
+        const X_MAX = 1.5;
+        const Y_MIN = -1.5;
+        const Y_MAX = 1.5;
+
+        // Funzione hardcoded
+        function f(x) {
+            return (1 + x) / (1 - x);        // cambia qui
+        }
+
+        // -----------------------------
+        // Setup canvas
+        // -----------------------------
+        const canvas = document.getElementById("plot");
+        const ctx = canvas.getContext("2d");
+        const W = canvas.width;
+        const H = canvas.height;
+
+        // Trasformazioni coordinate matematiche → canvas
+        function toCanvasX(x) {
+            return (x - X_MIN) / (X_MAX - X_MIN) * W;
+        }
+        function toCanvasY(y) {
+            return H - (y - Y_MIN) / (Y_MAX - Y_MIN) * H;
+        }
+        function bilinear_zeta_to_gamma(c) {
+            [re, im] = c;
+
+            rho_plus1 = Math.sqrt((re + 1) ** 2 + im ** 2);
+            theta_plus1 = Math.atan2(im, re + 1);
+
+            rho_minus1 = Math.sqrt((re - 1) ** 2 + im ** 2);
+            theta_minus1 = Math.atan2(im, re - 1);
+
+            rho = rho_minus1 / rho_plus1;
+            theta = theta_minus1 - theta_plus1;
+
+            rebi = rho * Math.cos(theta);
+            imbi = rho * Math.sin(theta);
+
+            return [rebi, imbi]
+        }
+
+        ctx.fillStyle = COLOR;
+
+        resistances = [
+            0.0, 0.1, 0.2, 0.3, 0.4,
+            0.5, 1, 2, 3, 4, 5,
+            10, 20, 30, 40, 50,
+            100, 200, 300, 400, 500
+        ]
+        reactances = resistances.map(v => -v).concat(resistances.map(v => v))
+
+        const paletteA = [
+            "#003f5c", // blu notte
+            "#2f4b7c", // blu-viola
+            "#1f77b4", // blu tableau
+            "#17becf", // ciano
+            "#2ca02c", // verde medio
+            "#00a676", // verde acqua
+            "#66c2a5", // verde pastello
+            "#8dd3c7", // turchese chiaro
+            "#b3e2cd", // verde chiarissimo
+            "#ccebc5"  // verde pastello pallido
+        ];
+
+        const paletteB = [
+            "#7f0000", // rosso scuro
+            "#d62728", // rosso vivo
+            "#ff6361", // corallo
+            "#ff7f0e", // arancio tableau
+            "#ffa600", // arancio caldo
+            "#e69f00", // giallo-arancio
+            "#f0e442", // giallo oliva chiaro
+            "#cc79a7", // magenta
+            "#d45087", // fucsia
+            "#e377c2"  // rosa
+        ];
+
+
+        function plot_values(impedances_z_plane) {
+            impedances_z_plane.forEach(element => {
+
+                [xe, ye] = element;
+                const cxe = toCanvasX(xe);
+                const cye = toCanvasY(ye);
+
+                ctx.fillRect(
+                    cxe - POINT_SIZE / 2,
+                    cye - POINT_SIZE / 2,
+                    POINT_SIZE,
+                    POINT_SIZE
+                );
+
+                [x, y] = bilinear_zeta_to_gamma(element);
+
+                const cx = toCanvasX(x);
+                const cy = toCanvasY(y);
+
+                // punto quadrato indipendente
+                ctx.fillRect(
+                    cx - POINT_SIZE / 2,
+                    cy - POINT_SIZE / 2,
+                    POINT_SIZE,
+                    POINT_SIZE
+                );
+
+            });
+        }
+
+
+
+        resistances.forEach(
+            (resistance, index) => {
+                const NPOINTS = 200;
+
+                ctx.fillStyle = paletteA[index % resistances.length];
+
+                resistance_z_plane = Array.from(Array(2 * NPOINTS + 1), ((_, i) => [resistance, (Y_MAX - Y_MIN) * (i - NPOINTS) / NPOINTS]));
+
+                plot_values(resistance_z_plane);
+
+            }
+        );
+
+
+        reactances.forEach(
+            (reactance, index) => {
+                const NPOINTS = 200;
+
+                ctx.fillStyle = paletteB[index % resistances.length];
+
+                reactance_z_plane = Array.from(Array(2 * NPOINTS + 1), ((_, i) => [(Y_MAX - Y_MIN) * (i - NPOINTS) / NPOINTS, reactance]));
+
+                plot_values(reactance_z_plane, paletteB);
+
+            }
+        );
+    </script>
+
+</body>
+
+</html>
